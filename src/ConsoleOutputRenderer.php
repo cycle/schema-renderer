@@ -110,7 +110,7 @@ final class ConsoleOutputRenderer
                 $row .= "<fg=magenta>{$mmEntity}</>.<fg=green>{$mmOuterKey}</> ";
             }
 
-            yield $row . "=> <fg=magenta>{$target}</>.<fg=green>{$outerKey}</> ";
+            yield $row . "=> <fg=magenta>{$target}</>.<fg=green>{$outerKey}</>";
 
             if (count($where)) {
                 yield sprintf(
