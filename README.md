@@ -7,7 +7,7 @@ This package may be used to render schema roles in a terminal or generate php re
 ```php
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
-$renderer = new \Cycle\Schema\Renderer\ConsoleOutputRenderer();
+$renderer = new \Cycle\Schema\Renderer\PlainOutputRenderer();
 
 foreach ($renderer->render($orm->getSchema(), 'user', 'profile', ...) as $line) {
     $output->writeln($line);

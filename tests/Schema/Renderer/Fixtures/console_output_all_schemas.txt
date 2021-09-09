@@ -11,7 +11,7 @@
      [36m2[39m -> [32mbalance[39m -> [34mfloat[39m
    Relations:
      [35muser[39m->[36mtags[39m many to many [35mtag[39m ? load [33mcascaded[39m
-       n/a [32muser[39m.[32mid[39m <= [35mCycle\Schema\Renderer\Tests\Fixtures\TagContext[39m.[32muser_id[39m | [35mCycle\Schema\Renderer\Tests\Fixtures\TagContext[39m.[32mtag_id[39m => [35mtag[39m.[32mid[39m
+       n/a [32muser[39m.[32mid[39m <= [35mtag_context[39m.[32muser_id[39m | [35mtag_context[39m.[32mtag_id[39m => [35mtag[39m.[32mid[39m
 
      [35muser[39m->[36mtag[39m belongs to [35mtag[39m ? load [33mcascaded[39m
        n/a [32muser[39m.[32mtag_id[39m <==> [35mtag[39m.[32mid[39m

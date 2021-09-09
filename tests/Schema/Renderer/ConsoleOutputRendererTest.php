@@ -8,7 +8,7 @@ use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Renderer\ConsoleOutputRenderer;
+use Cycle\Schema\Renderer\PlainOutputRenderer;
 use Cycle\Schema\Renderer\Tests\Fixtures\Tag;
 use Cycle\Schema\Renderer\Tests\Fixtures\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixtures\User;
@@ -92,7 +92,7 @@ class ConsoleOutputRendererTest extends TestCase
 
     public function testConsoleOutputShouldBeRendered(): void
     {
-        $renderer = new ConsoleOutputRenderer();
+        $renderer = new PlainOutputRenderer();
         $rows = [...$renderer->render($this->schema, 'user', 'tag', 'tag_context')];
 
         $this->assertSame(
@@ -103,7 +103,7 @@ class ConsoleOutputRendererTest extends TestCase
 
     public function testRolesShouldBeFilterd(): void
     {
-        $renderer = new ConsoleOutputRenderer();
+        $renderer = new PlainOutputRenderer();
         $rows = [...$renderer->render($this->schema, 'tag', 'tag_context')];
 
         $this->assertSame(
@@ -114,7 +114,7 @@ class ConsoleOutputRendererTest extends TestCase
 
     public function testUnknownSchemaShouldReturnErrorText(): void
     {
-        $renderer = new ConsoleOutputRenderer();
+        $renderer = new PlainOutputRenderer();
         $rows = [...$renderer->render($this->schema, 'plain')];
 
         $this->assertSame(

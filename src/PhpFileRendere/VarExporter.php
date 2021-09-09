@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\PHPSchemaGenerator;
+namespace Cycle\Schema\Renderer\PhpFileRendere;
 
 final class VarExporter
 {

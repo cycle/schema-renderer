@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\PHPSchemaGenerator;
+namespace Cycle\Schema\Renderer\PhpFileRendere;
 
 use Cycle\ORM\SchemaInterface;
 use Cycle\ORM\Relation;
@@ -64,7 +64,7 @@ final class Generator
             return null;
         }
 
-        return (string)new VarExporter($role, [
+        return (string)(new VarExporter($role, [
             $this->renderDatabase($role),
             $this->renderTable($role),
             $this->renderEntity($role),
@@ -75,7 +75,7 @@ final class Generator
             $this->renderFields($role),
             $this->renderTypecast($role),
             $this->renderRelations($role),
-        ], true);
+        ], true));
     }
 
     private function renderDatabase(string $role): VarExporter

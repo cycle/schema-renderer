@@ -6,10 +6,10 @@ namespace Cycle\Schema\Renderer;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Renderer\ConsoleOutput\Formatter;
+use Cycle\Schema\Renderer\PlainOutputRenderer\ConsoleFormatter;
 use Traversable;
 
-final class ConsoleOutputRenderer
+final class PlainOutputRenderer
 {
     private const STR_RELATION = [
         Relation::HAS_ONE => 'has one',
@@ -27,39 +27,41 @@ final class ConsoleOutputRenderer
         Relation::LOAD_EAGER => 'eager',
     ];
 
-    private Formatter $formatter;
+    private ConsoleFormatter $formatter;
 
     public function __construct()
     {
-        $this->formatter = new Formatter();
+        $this->formatter = new ConsoleFormatter();
     }
 
     public function render(SchemaInterface $schema, string ...$roles): Traversable
     {
         foreach ($roles as $role) {
             if (!$schema->defines($role)) {
-                yield from $this->formatter->formatColors([
+                yield $this->formatter->formatColors(
                     "<fg=red>Role</> <fg=magenta>[{$role}]</> <fg=red>not defined!</>"
-                ]);
+                );
                 yield '';
                 continue;
             }
 
-            yield from $this->renderRole($schema, $role);
+            foreach ($this->renderRole($schema, $role) as $row) {
+                yield $this->formatter->formatColors($row);
+            }
             yield '';
         }
     }
 
     private function renderRole(SchemaInterface $schema, string $role): Traversable
     {
-        yield from $this->formatter->formatColors($this->renderTitle($schema, $role));
-        yield from $this->formatter->formatColors($this->renderEntity($schema, $role));
-        yield from $this->formatter->formatColors($this->renderMapper($schema, $role));
-        yield from $this->formatter->formatColors($this->renderConstrain($schema, $role));
-        yield from $this->formatter->formatColors($this->renderRepository($schema, $role));
-        yield from $this->formatter->formatColors($this->renderPrimaryKeys($schema, $role));
-        yield from $this->formatter->formatColors($this->renderFields($schema, $role));
-        yield from $this->formatter->formatColors($this->renderRelations($schema, $role));
+        yield from $this->renderTitle($schema, $role);
+        yield from $this->renderEntity($schema, $role);
+        yield from $this->renderMapper($schema, $role);
+        yield from $this->renderConstrain($schema, $role);
+        yield from $this->renderRepository($schema, $role);
+        yield from $this->renderPrimaryKeys($schema, $role);
+        yield from $this->renderFields($schema, $role);
+        yield from $this->renderRelations($schema, $role);
     }
 
     private function renderRelations(SchemaInterface $schema, string $role): Traversable

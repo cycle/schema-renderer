@@ -25,7 +25,7 @@ return [
             Relation::TARGET => 'tag',
             Relation::SCHEMA => [
                 Relation::CASCADE => true,
-                Relation::THROUGH_ENTITY => 'Cycle\\Schema\\Renderer\\Tests\\Fixtures\\TagContext',
+                Relation::THROUGH_ENTITY => 'tag_context',
                 Relation::INNER_KEY => 'id',
                 Relation::OUTER_KEY => 'id',
                 Relation::THROUGH_INNER_KEY => 'user_id',

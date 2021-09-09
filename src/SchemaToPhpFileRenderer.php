@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Cycle\Schema\Renderer;
 
 use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Renderer\PHPSchemaGenerator\Generator;
+use Cycle\Schema\Renderer\PhpFileRendere\Generator;
 
 final class SchemaToPhpFileRenderer
 {
