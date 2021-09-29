@@ -36,7 +36,7 @@ class ColumnsRenderer implements Renderer
             $typecast = $types[$property] ?? $types[$field] ?? null;
             $row = sprintf(
                 '     %s -> %s',
-                $formatter->property($property),
+                $formatter->property((string)$property),
                 $formatter->column($field)
             );
 
