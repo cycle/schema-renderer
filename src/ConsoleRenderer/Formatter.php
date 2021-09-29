@@ -6,7 +6,7 @@ namespace Cycle\Schema\Renderer\ConsoleRenderer;
 
 interface Formatter
 {
-    const TITLE_LENGTH = 12;
+    const TITLE_LENGTH = 13;
 
     public function title(string $title): string;
     public function property(string $string): string;

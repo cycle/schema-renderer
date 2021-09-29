@@ -1,42 +1,37 @@
-[35m[user][39m :: [32mdefault[39m.[32muser[39m
-      Entity: [34mCycle\Schema\Renderer\Tests\Fixtures\User[39m
-      Mapper: [34mCycle\ORM\Mapper\Mapper[39m
-   Constrain: [31mnot defined[39m
-  Repository: [31mnot defined[39m
- Primary key: [32mid[39m
-      Fields:
+[35m[Cycle\Schema\Renderer\Tests\Fixtures\User][39m :: [32mdefault[39m.[32muser[39m
+         Role: [34muser[39m
+       Mapper: [34mCycle\ORM\Mapper\Mapper[39m
+  Primary key: [32mid[39m
+       Fields:
      ([36mproperty[39m -> [32mdb.field[39m -> [34mtypecast[39m)
      [36m0[39m -> [32mid[39m -> [34mint[39m
      [36m1[39m -> [32memail[39m
      [36m2[39m -> [32mbalance[39m -> [34mfloat[39m
-   Relations:
-     [35muser[39m->[36mtags[39m many to many [35mtag[39m ? load [33mcascaded[39m
-       n/a [32muser[39m.[32mid[39m <= [35mtag_context[39m.[32muser_id[39m | [35mtag_context[39m.[32mtag_id[39m => [35mtag[39m.[32mid[39m
-     [35muser[39m->[36mtag[39m belongs to [35mtag[39m ? load [33mcascaded[39m
-       n/a [32muser[39m.[32mtag_id[39m <==> [35mtag[39m.[32mid[39m
-      Source: [31mnot defined[39m
+    Relations:
+     [35mCycle\Schema\Renderer\Tests\Fixtures\User[39m->[36mtags[39m many to many [35mCycle\Schema\Renderer\Tests\Fixtures\Tag[39m ? load [33mcascaded[39m
+       n/a [32muser[39m.[32mid[39m <= [35mtag_context[39m.[32muser_id[39m | [35mtag_context[39m.[32mtag_id[39m => [35mCycle\Schema\Renderer\Tests\Fixtures\Tag[39m.[32mid[39m
+     [35mCycle\Schema\Renderer\Tests\Fixtures\User[39m->[36mtag[39m belongs to [35mCycle\Schema\Renderer\Tests\Fixtures\Tag[39m ? load [33mcascaded[39m
+       n/a [32muser[39m.[32mtag_id[39m <==> [35mCycle\Schema\Renderer\Tests\Fixtures\Tag[39m.[32mid[39m
+       Source: [34mtest[39m
 
-[35m[tag][39m :: [32mdefault[39m.[32mtag[39m
-      Entity: [34mCycle\Schema\Renderer\Tests\Fixtures\Tag[39m
-      Mapper: [34mCycle\ORM\Mapper\Mapper[39m
-   Constrain: [31mnot defined[39m
-  Repository: [31mnot defined[39m
- Primary key: [32mid[39m, [32mname[39m
-      Fields:
+[35m[Cycle\Schema\Renderer\Tests\Fixtures\Tag][39m :: [32mdefault[39m.[32mtag[39m
+         Role: [34mtag[39m
+       Mapper: [34mCycle\ORM\Mapper\Mapper[39m
+  Primary key: [32mid[39m, [32mname[39m
+       Fields:
      ([36mproperty[39m -> [32mdb.field[39m -> [34mtypecast[39m)
      [36m0[39m -> [32mid[39m -> [34mint[39m
      [36m1[39m -> [32mname[39m
-   Relations:
-     [35mtag[39m->[36muser[39m belongs to [35muser[39m ? load [33mcascaded[39m
-       n/a [32mtag[39m.[32muser_id[39m <==> [35muser[39m.[32mid[39m
-      Source: [31mnot defined[39m
+    Relations:
+     [35mCycle\Schema\Renderer\Tests\Fixtures\Tag[39m->[36muser[39m belongs to [35mCycle\Schema\Renderer\Tests\Fixtures\User[39m ? load [33mcascaded[39m
+       n/a [32mtag[39m.[32muser_id[39m <==> [35mCycle\Schema\Renderer\Tests\Fixtures\User[39m.[32mid[39m
 
-[35m[tag_context][39m :: [32mdefault[39m.[32mtag_user_map[39m
-      Entity: [34mCycle\Schema\Renderer\Tests\Fixtures\TagContext[39m
-      Mapper: [34mCycle\ORM\Mapper\Mapper[39m
-   Constrain: [31mnot defined[39m
-  Repository: [31mnot defined[39m
- Primary key: [31mnot defined[39m
-      Fields: [31mnot defined[39m
-   Relations: [31mnot defined[39m
-      Source: [31mnot defined[39m
+[35m[Cycle\Schema\Renderer\Tests\Fixtures\TagContext][39m :: [32mdefault[39m.[32mtag_user_map[39m
+         Role: [34mtag_context[39m
+       Mapper: [34mCycle\ORM\Mapper\Mapper[39m
+  Primary key: [31mnot defined[39m
+       Fields: [31mnot defined[39m
+    Relations: [31mnot defined[39m
+ Custom props:
+    my_custom_property: [34msuper_value[39m
+    25: [34msuper_value[39m

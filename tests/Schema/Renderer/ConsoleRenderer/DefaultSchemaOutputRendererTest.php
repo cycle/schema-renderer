@@ -6,12 +6,10 @@ namespace Cycle\Schema\Renderer\Tests\ConsoleRenderer;
 
 use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
-use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\ConsoleRenderer\DefaultSchemaOutputRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatters\StyledFormatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderers\PropertyRenderer;
-use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\Tests\Fixtures\Tag;
 use Cycle\Schema\Renderer\Tests\Fixtures\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixtures\User;
@@ -25,7 +23,7 @@ class DefaultSchemaOutputRendererTest extends TestCase
     {
         parent::setUp();
 
-        $schema = new Schema([
+        $this->schemaArray = [
             User::class => [
                 SchemaInterface::ROLE => 'user',
                 SchemaInterface::SOURCE => 'test',
@@ -89,11 +87,11 @@ class DefaultSchemaOutputRendererTest extends TestCase
                 SchemaInterface::COLUMNS => [],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
                 SchemaInterface::SCHEMA => [],
-                SchemaInterface::RELATIONS => []
+                SchemaInterface::RELATIONS => [],
+                'my_custom_property' => 'super_value',
+                25 => 'super_value'
             ]
-        ]);
-
-        $this->schemaArray = (new SchemaToArrayConverter())->convert($schema);
+        ];
     }
 
     public function testSchemaShouldBeRendered(): void

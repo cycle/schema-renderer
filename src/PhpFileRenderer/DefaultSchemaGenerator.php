@@ -5,33 +5,30 @@ declare(strict_types=1);
 namespace Cycle\Schema\Renderer\PhpFileRenderer;
 
 use Cycle\ORM\SchemaInterface;
+use Cycle\Schema\Renderer\PhpFileRenderer\Generators\CustomPropertiesGenerator;
 use Cycle\Schema\Renderer\PhpFileRenderer\Generators\PrimitiveGenerator;
 use Cycle\Schema\Renderer\PhpFileRenderer\Generators\RelationsGenerator;
 
 class DefaultSchemaGenerator extends SchemaGenerator
 {
-    protected const PRIMITIVE_KEYS = [
-        'SchemaInterface::DATABASE' => SchemaInterface::DATABASE,
-        'SchemaInterface::TABLE' => SchemaInterface::TABLE,
-        'SchemaInterface::ENTITY' => SchemaInterface::ENTITY,
-        'SchemaInterface::MAPPER' => SchemaInterface::MAPPER,
-        'SchemaInterface::REPOSITORY' => SchemaInterface::REPOSITORY,
-        'SchemaInterface::SCOPE' => SchemaInterface::SCOPE,
-        'SchemaInterface::PRIMARY_KEY' => SchemaInterface::PRIMARY_KEY,
-        'SchemaInterface::COLUMNS' => SchemaInterface::COLUMNS,
-        'SchemaInterface::TYPECAST' => SchemaInterface::TYPECAST,
-    ];
-
     public function __construct(array $generators = [])
     {
+        $refl = new \ReflectionClass(SchemaInterface::class);
+
+        foreach ($refl->getConstants() as $key => $value) {
+            if (!array_key_exists($value, $generators)) {
+                if ($key === 'RELATIONS') {
+                    $generators[$value] = new RelationsGenerator();
+                    continue;
+                }
+
+                $generators[$value] = new PrimitiveGenerator($key, 'SchemaInterface::' . $key);
+            }
+        }
+
         parent::__construct([
             ...$generators,
-
-            ... array_map(static function (string $key, $property) {
-                return new PrimitiveGenerator($key, $property);
-            }, array_keys(self::PRIMITIVE_KEYS), self::PRIMITIVE_KEYS),
-
-            new RelationsGenerator()
+            //new CustomPropertiesGenerator(array_keys($generators))
         ]);
     }
 }

@@ -19,14 +19,16 @@ class PropertyRenderer implements Renderer
         $this->title = $title;
     }
 
-    public function render(Formatter $formatter, array $schema, string $role): string
+    public function render(Formatter $formatter, array $schema, string $role): ?string
     {
-        $data = $schema[$this->property] ?? null;
+        if (!array_key_exists($this->property, $schema)) {
+            return null;
+        }
 
         return sprintf(
             '%s: %s',
             $formatter->title($this->title),
-            $data === null ? $formatter->error('not defined') : $formatter->typecast($data)
+            $formatter->typecast($schema[$this->property])
         );
     }
 }

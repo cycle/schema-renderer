@@ -27,7 +27,7 @@ class RelationsRenderer implements Renderer
         Relation::LOAD_EAGER => 'eager',
     ];
 
-    public function render(Formatter $formatter, array $schema, string $role): string
+    public function render(Formatter $formatter, array $schema, string $role): ?string
     {
         $title = sprintf('%s:', $formatter->title('Relations'));
         $table = $schema[SchemaInterface::TABLE] ?? null;

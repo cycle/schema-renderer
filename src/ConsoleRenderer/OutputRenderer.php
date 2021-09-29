@@ -44,7 +44,9 @@ class OutputRenderer implements IteratorAggregate
         $rows = [];
 
         foreach ($this->renderers as $renderer) {
-            $rows[] = $renderer->render($this->formatter, $schema, $role);
+            if ($row = $renderer->render($this->formatter, $schema, $role)) {
+                $rows[] = $row;
+            }
         }
 
         return implode("\n", $rows);

@@ -10,7 +10,7 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 
 class TitleRenderer implements Renderer
 {
-    public function render(Formatter $formatter, array $schema, string $role): string
+    public function render(Formatter $formatter, array $schema, string $role): ?string
     {
         $database = $schema[SchemaInterface::DATABASE] ?? null;
         $table = $schema[SchemaInterface::TABLE] ?? null;

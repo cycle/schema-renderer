@@ -10,7 +10,7 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 
 class PrimaryKeysRenderer implements Renderer
 {
-    public function render(Formatter $formatter, array $schema, string $role): string
+    public function render(Formatter $formatter, array $schema, string $role): ?string
     {
         $pk = $schema[SchemaInterface::PRIMARY_KEY] ?? null;
 

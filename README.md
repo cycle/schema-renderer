@@ -11,32 +11,20 @@ $converter = new \Cycle\Schema\Renderer\SchemaToArrayConverter();
 $schemaArray = $converter->convert($schema);
 ```
 
-By default, SchemaToArrayConverter converts only common properties
-```php
-SchemaInterface::ENTITY
-SchemaInterface::MAPPER
-SchemaInterface::REPOSITORY
-SchemaInterface::DATABASE
-SchemaInterface::TABLE
-SchemaInterface::PRIMARY_KEY
-SchemaInterface::COLUMNS
-SchemaInterface::RELATIONS
-SchemaInterface::SCOPE
-SchemaInterface::TYPECAST
-```
+By default, SchemaToArrayConverter converts only common properties from `Cycle\ORM\SchemaInterface`.
 
 But if you want to use custom properties you can pass them to the constructor
 ```php
-$converter = new \Cycle\Schema\Renderer\SchemaToArrayConverter([
+$converter = new \Cycle\Schema\Renderer\SchemaToArrayConverter();
+
+$schemaArray = $converter->convert($schema, [
     'my_custom_property',
     SchemaInterface::SOURCE,
     ...
 ]);
-
-$schemaArray = $converter->convert($schema);
 ```
 
-### Render schema in a terminal
+### Render schema to a terminal
 
 ```php
 use Cycle\Schema\Renderer\ConsoleRenderer\DefaultSchemaOutputRenderer;
@@ -79,7 +67,10 @@ class CustomPropertyRenderer implements Renderer {
 
 $renderer = new DefaultSchemaOutputRenderer($schemaArray, $formatter);
 
-$renderer->addRenderer(new CustomPropertyRenderer());
+$renderer->addRenderer(
+    new CustomPropertyRenderer(),
+    new PropertyRenderer('my_custom_property', 'My super property')
+);
 
 foreach ($renderer as $role => $rows) {
     $output->writeln($rows);

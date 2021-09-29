@@ -6,5 +6,5 @@ namespace Cycle\Schema\Renderer\ConsoleRenderer;
 
 interface Renderer
 {
-    public function render(Formatter $formatter, array $schema, string $role): string;
+    public function render(Formatter $formatter, array $schema, string $role): ?string;
 }

@@ -53,8 +53,10 @@ class SchemaToArrayConverterTest extends TestCase
                             Relation::OUTER_KEY => 'id',
                         ],
                     ],
-                ]
-            ]
+                ],
+                123 => 'value'
+            ],
+
         ]);
     }
 
@@ -64,10 +66,12 @@ class SchemaToArrayConverterTest extends TestCase
             'user' => [
                 SchemaInterface::ENTITY => User::class,
                 SchemaInterface::MAPPER => Mapper::class,
+                SchemaInterface::SOURCE => 'users',
                 SchemaInterface::REPOSITORY => null,
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'user',
                 SchemaInterface::PRIMARY_KEY => 'id',
+                SchemaInterface::FIND_BY_KEYS => null,
                 SchemaInterface::COLUMNS => ['id', 'email', 'balance'],
                 SchemaInterface::RELATIONS => [
                     'tags' => [
@@ -92,11 +96,13 @@ class SchemaToArrayConverterTest extends TestCase
                         ]
                     ]
                 ],
+                SchemaInterface::CHILDREN => null,
                 SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'balance' => 'float',
                 ],
+                SchemaInterface::SCHEMA => [],
             ]
         ], (new SchemaToArrayConverter())->convert($this->schema));
     }
@@ -107,10 +113,12 @@ class SchemaToArrayConverterTest extends TestCase
             'user' => [
                 SchemaInterface::ENTITY => User::class,
                 SchemaInterface::MAPPER => Mapper::class,
+                SchemaInterface::SOURCE => 'users',
                 SchemaInterface::REPOSITORY => null,
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'user',
                 SchemaInterface::PRIMARY_KEY => 'id',
+                SchemaInterface::FIND_BY_KEYS => null,
                 SchemaInterface::COLUMNS => ['id', 'email', 'balance'],
                 SchemaInterface::RELATIONS => [
                     'tags' => [
@@ -135,13 +143,15 @@ class SchemaToArrayConverterTest extends TestCase
                         ]
                     ]
                 ],
+                SchemaInterface::CHILDREN => null,
                 SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'balance' => 'float',
                 ],
-                SchemaInterface::SOURCE => 'users',
+                SchemaInterface::SCHEMA => [],
+                123 => 'value'
             ]
-        ], (new SchemaToArrayConverter())->convert($this->schema, [SchemaInterface::SOURCE]));
+        ], (new SchemaToArrayConverter())->convert($this->schema, [123]));
     }
 }
