@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\PhpFileRendere;
+namespace Cycle\Schema\Renderer\PhpFileRenderer;
 
 final class VarExporter
 {

@@ -3,9 +3,7 @@
 declare(strict_types=1);
 
 namespace Cycle\Schema\Renderer;
-
-use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Renderer\PhpFileRendere\Generator;
+use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
 
 final class SchemaToPhpFileRenderer
 {
@@ -14,8 +12,19 @@ final class SchemaToPhpFileRenderer
         'Cycle\ORM\SchemaInterface',
     ];
 
-    public function render(SchemaInterface $schema): string
+    private Generator $generator;
+    private array $schema;
+
+    public function __construct(array $schema, Generator $generator)
     {
+        $this->generator = $generator;
+        $this->schema = $schema;
+    }
+
+    public function render(): string
+    {
+        $schema = [];
+
         $result = "<?php\n\ndeclare(strict_types=1);\n\n";
 
         // the use block
@@ -23,13 +32,11 @@ final class SchemaToPhpFileRenderer
             $result .= "use {$use};\n";
         }
 
-        $schemas = array_filter(
-            array_map(static function (string $role) use ($schema) {
-                return (new Generator($schema))->generate($role);
-            }, $schema->getRoles())
-        );
+        foreach ($this->schema as $role => $roleSchema) {
+            $schema[] = $this->generator->generate($roleSchema, $role);
+        }
 
-        $renderedArray = implode(",\n", $schemas);
+        $renderedArray = implode(",\n", $schema);
 
         return $result . "\nreturn [\n{$renderedArray}\n];";
     }

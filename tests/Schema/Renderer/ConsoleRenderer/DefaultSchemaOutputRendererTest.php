@@ -2,29 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\Tests;
+namespace Cycle\Schema\Renderer\Tests\ConsoleRenderer;
 
 use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Renderer\PlainOutputRenderer;
+use Cycle\Schema\Renderer\ConsoleRenderer\DefaultSchemaOutputRenderer;
+use Cycle\Schema\Renderer\ConsoleRenderer\Formatters\StyledFormatter;
+use Cycle\Schema\Renderer\ConsoleRenderer\Renderers\PropertyRenderer;
+use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\Tests\Fixtures\Tag;
 use Cycle\Schema\Renderer\Tests\Fixtures\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixtures\User;
 use PHPUnit\Framework\TestCase;
 
-class ConsoleOutputRendererTest extends TestCase
+class DefaultSchemaOutputRendererTest extends TestCase
 {
-    private SchemaInterface $schema;
+    private array $schemaArray;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->schema = new Schema([
+        $schema = new Schema([
             User::class => [
                 SchemaInterface::ROLE => 'user',
+                SchemaInterface::SOURCE => 'test',
                 SchemaInterface::MAPPER => Mapper::class,
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'user',
@@ -38,7 +42,7 @@ class ConsoleOutputRendererTest extends TestCase
                         Relation::TARGET => Tag::class,
                         Relation::SCHEMA => [
                             Relation::CASCADE => true,
-                            Relation::THROUGH_ENTITY => TagContext::class,
+                            Relation::THROUGH_ENTITY => 'tag_context',
                             Relation::INNER_KEY => 'id',
                             Relation::OUTER_KEY => 'id',
                             Relation::THROUGH_INNER_KEY => 'user_id',
@@ -88,38 +92,33 @@ class ConsoleOutputRendererTest extends TestCase
                 SchemaInterface::RELATIONS => []
             ]
         ]);
+
+        $this->schemaArray = (new SchemaToArrayConverter())->convert($schema);
     }
 
-    public function testConsoleOutputShouldBeRendered(): void
+    public function testSchemaShouldBeRendered(): void
     {
-        $renderer = new PlainOutputRenderer();
-        $rows = [...$renderer->render($this->schema, 'user', 'tag', 'tag_context')];
+        $renderer = new DefaultSchemaOutputRenderer(
+            $this->schemaArray, new StyledFormatter()
+        );
 
         $this->assertSame(
-            file_get_contents(__DIR__ . '/Fixtures/console_output_all_schemas.txt'),
-            implode("\n", $rows)
+            file_get_contents(__DIR__ . '/../Fixtures/console_output.txt'),
+            implode("\n\n", iterator_to_array($renderer))
         );
     }
 
-    public function testRolesShouldBeFilterd(): void
+    public function testSchemaWithExtraPropertiesShouldBeRendered(): void
     {
-        $renderer = new PlainOutputRenderer();
-        $rows = [...$renderer->render($this->schema, 'tag', 'tag_context')];
-
-        $this->assertSame(
-            file_get_contents(__DIR__ . '/Fixtures/console_output_tag_schemas.txt'),
-            implode("\n", $rows)
+        $renderer = new DefaultSchemaOutputRenderer(
+            $this->schemaArray, new StyledFormatter()
         );
-    }
 
-    public function testUnknownSchemaShouldReturnErrorText(): void
-    {
-        $renderer = new PlainOutputRenderer();
-        $rows = [...$renderer->render($this->schema, 'plain')];
+        $renderer->addRenderer(new PropertyRenderer(SchemaInterface::SOURCE, 'Source'));
 
         $this->assertSame(
-            "[31mRole[39m [35m[plain][39m [31mnot defined![39m\n",
-            implode("\n", $rows)
+            file_get_contents(__DIR__ . '/../Fixtures/console_output_with_custom_properties.txt'),
+            implode("\n\n", iterator_to_array($renderer))
         );
     }
 }

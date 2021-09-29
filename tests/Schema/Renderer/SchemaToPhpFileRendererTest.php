@@ -8,6 +8,8 @@ use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
+use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
+use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\SchemaToPhpFileRenderer;
 use Cycle\Schema\Renderer\Tests\Fixtures\Tag;
 use Cycle\Schema\Renderer\Tests\Fixtures\TagContext;
@@ -16,13 +18,13 @@ use PHPUnit\Framework\TestCase;
 
 class SchemaToPhpFileRendererTest extends TestCase
 {
-    private SchemaInterface $schema;
+    private array $schema;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->schema = new Schema([
+        $schema = new Schema([
             User::class => [
                 SchemaInterface::ROLE => 'user',
                 SchemaInterface::MAPPER => Mapper::class,
@@ -38,7 +40,7 @@ class SchemaToPhpFileRendererTest extends TestCase
                         Relation::TARGET => Tag::class,
                         Relation::SCHEMA => [
                             Relation::CASCADE => true,
-                            Relation::THROUGH_ENTITY => TagContext::class,
+                            Relation::THROUGH_ENTITY => 'tag_context',
                             Relation::INNER_KEY => 'id',
                             Relation::OUTER_KEY => 'id',
                             Relation::THROUGH_INNER_KEY => 'user_id',
@@ -88,21 +90,23 @@ class SchemaToPhpFileRendererTest extends TestCase
                 SchemaInterface::RELATIONS => []
             ]
         ]);
+
+        $this->schema = (new SchemaToArrayConverter())->convert($schema);
     }
 
     public function testRenderSchemaToPhpCode(): void
     {
-        $renderer = new SchemaToPhpFileRenderer();
+        $renderer = new SchemaToPhpFileRenderer($this->schema, new DefaultSchemaGenerator());
 
         $this->assertSame(
             file_get_contents(__DIR__ . '/Fixtures/generated_schema.php'),
-            $renderer->render($this->schema)
+            $renderer->render()
         );
     }
 
     public function testRenderEmptySchemaToPhpCode(): void
     {
-        $renderer = new SchemaToPhpFileRenderer();
+        $renderer = new SchemaToPhpFileRenderer([], new DefaultSchemaGenerator());
 
         $this->assertSame(
             <<<EOL
@@ -118,7 +122,7 @@ return [
 ];
 EOL
             ,
-            $renderer->render(new Schema([]))
+            $renderer->render()
         );
     }
 }
