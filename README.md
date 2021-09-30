@@ -114,8 +114,9 @@ class CustomPropertyGenerator implements Generator {
    }
 }
 
-$generator = new DefaultSchemaGenerator();
-$generator->addGenerator(new CustomPropertyGenerator());
+$generator = new DefaultSchemaGenerator([
+    'my_custom_property' => new CustomPropertyGenerator()
+]);
 
 $renderer = new SchemaToPhpFileRenderer(
     $orm->getSchema(), $generator

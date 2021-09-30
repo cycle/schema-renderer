@@ -28,7 +28,7 @@ class DefaultSchemaGenerator extends SchemaGenerator
 
         parent::__construct([
             ...$generators,
-            //new CustomPropertiesGenerator(array_keys($generators))
+            new CustomPropertiesGenerator(array_keys($generators))
         ]);
     }
 }

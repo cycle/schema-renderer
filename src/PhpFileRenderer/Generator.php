@@ -6,5 +6,10 @@ namespace Cycle\Schema\Renderer\PhpFileRenderer;
 
 interface Generator
 {
-    public function generate(array $schema, string $role): VarExporter;
+    /**
+     * @param array $schema
+     * @param string $role
+     * @return array<int, VarExporter>
+     */
+    public function generate(array $schema, string $role): array;
 }

@@ -11,25 +11,20 @@ class SchemaGenerator implements Generator
 
     public function __construct(array $generators = [])
     {
-        $this->addGenerator(...$generators);
+        $this->generators = $generators;
     }
 
-    public function addGenerator(Generator ...$generators): void
+    public function generate(array $schema, string $role): array
     {
-        foreach ($generators as $generator) {
-            $this->generators[] = $generator;
-        }
-    }
-
-    public function generate(array $schema, string $role): VarExporter
-    {
-        /** @var array<int, string> $array */
+        /** @var array<int, VarExporter> $array */
         $array = [];
 
         foreach ($this->generators as $generator) {
-            $array[] = $generator->generate($schema, $role);
+            foreach ($generator->generate($schema, $role) as $property) {
+                $array[] = $property;
+            }
         }
 
-        return new VarExporter($role, $array, true);
+        return $array;
     }
 }

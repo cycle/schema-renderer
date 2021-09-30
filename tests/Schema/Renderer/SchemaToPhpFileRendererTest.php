@@ -9,6 +9,8 @@ use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
+use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
+use Cycle\Schema\Renderer\PhpFileRenderer\VarExporter;
 use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\SchemaToPhpFileRenderer;
 use Cycle\Schema\Renderer\Tests\Fixtures\Tag;
@@ -119,6 +121,121 @@ use Cycle\ORM\SchemaInterface;
 
 return [
 
+];
+EOL
+            ,
+            $renderer->render()
+        );
+    }
+
+    public function testRenderSchemaWithCustomPropertyToPhpCode(): void
+    {
+        $renderer = new SchemaToPhpFileRenderer([
+            TagContext::class => [
+                SchemaInterface::ROLE => 'tag_context',
+                SchemaInterface::MAPPER => Mapper::class,
+                SchemaInterface::DATABASE => 'default',
+                SchemaInterface::TABLE => 'tag_user_map',
+                SchemaInterface::COLUMNS => [],
+                SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
+                SchemaInterface::SCHEMA => [],
+                100 => 'Hello world',
+                'hello' => 'world'
+            ]
+        ], new DefaultSchemaGenerator());
+
+        $this->assertSame(
+            <<<EOL
+<?php
+
+declare(strict_types=1);
+
+use Cycle\ORM\Relation;
+use Cycle\ORM\SchemaInterface;
+
+return [
+'Cycle\Schema\Renderer\Tests\Fixtures\TagContext' => [
+    ROLE => null,
+    ENTITY => null,
+    MAPPER => null,
+    SOURCE => null,
+    REPOSITORY => null,
+    DATABASE => null,
+    TABLE => null,
+    PRIMARY_KEY => null,
+    FIND_BY_KEYS => null,
+    COLUMNS => null,
+    SchemaInterface::RELATIONS => [],
+    CHILDREN => null,
+    SCOPE => null,
+    TYPECAST => null,
+    SCHEMA => null,
+    100 => 'Hello world',
+    'hello' => 'world',
+]
+];
+EOL
+            ,
+            $renderer->render()
+        );
+    }
+
+    public function testRenderSchemaWithCustomPropertyWithDefinedGeneratorToPhpCode(): void
+    {
+        $generator = new DefaultSchemaGenerator([
+            100 => new class implements Generator {
+                public function generate(array $schema, string $role): array
+                {
+                    return [
+                        new VarExporter('Hello', 'World', true)
+                    ];
+                }
+            }
+        ]);
+
+        $renderer = new SchemaToPhpFileRenderer([
+            TagContext::class => [
+                SchemaInterface::ROLE => 'tag_context',
+                SchemaInterface::MAPPER => Mapper::class,
+                SchemaInterface::DATABASE => 'default',
+                SchemaInterface::TABLE => 'tag_user_map',
+                SchemaInterface::COLUMNS => [],
+                SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
+                SchemaInterface::SCHEMA => [],
+                100 => 'Hello world',
+                'hello' => 'world',
+            ]
+        ], $generator);
+
+        $this->assertSame(
+            <<<EOL
+<?php
+
+declare(strict_types=1);
+
+use Cycle\ORM\Relation;
+use Cycle\ORM\SchemaInterface;
+
+return [
+'Cycle\Schema\Renderer\Tests\Fixtures\TagContext' => [
+    'Hello' => 'World',
+    ROLE => null,
+    ENTITY => null,
+    MAPPER => null,
+    SOURCE => null,
+    REPOSITORY => null,
+    DATABASE => null,
+    TABLE => null,
+    PRIMARY_KEY => null,
+    FIND_BY_KEYS => null,
+    COLUMNS => null,
+    SchemaInterface::RELATIONS => [],
+    CHILDREN => null,
+    SCOPE => null,
+    TYPECAST => null,
+    SCHEMA => null,
+    'hello' => 'world',
+]
 ];
 EOL
             ,

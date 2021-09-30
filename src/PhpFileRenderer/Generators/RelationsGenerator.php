@@ -22,6 +22,11 @@ class RelationsGenerator implements Generator
         Relation::MORPHED_HAS_MANY => 'Relation::MORPHED_HAS_MANY',
     ];
 
+    private const PREFETCH_MODE = [
+        Relation::LOAD_PROMISE => 'Relation::LOAD_PROMISE',
+        Relation::LOAD_EAGER => 'Relation::LOAD_EAGER',
+    ];
+
     private const RELATION_OPTION = [
         Relation::MORPH_KEY => 'Relation::MORPH_KEY',
         Relation::CASCADE => 'Relation::CASCADE',
@@ -35,11 +40,6 @@ class RelationsGenerator implements Generator
         Relation::THROUGH_WHERE => 'Relation::THROUGH_WHERE',
     ];
 
-    private const PREFETCH_MODE = [
-        Relation::LOAD_PROMISE => 'Relation::LOAD_PROMISE',
-        Relation::LOAD_EAGER => 'Relation::LOAD_EAGER',
-    ];
-
     private const GENERAL_OPTION = [
         Relation::TYPE => 'Relation::TYPE',
         Relation::TARGET => 'Relation::TARGET',
@@ -47,7 +47,7 @@ class RelationsGenerator implements Generator
         Relation::LOAD => 'Relation::LOAD',
     ];
 
-    public function generate(array $schema, string $role): VarExporter
+    public function generate(array $schema, string $role): array
     {
         $relations = $schema[SchemaInterface::RELATIONS] ?? [];
 
@@ -61,7 +61,9 @@ class RelationsGenerator implements Generator
             $results[] = new VarExporter($field, $relationResult, true);
         }
 
-        return new VarExporter('SchemaInterface::RELATIONS', $results);
+        return [
+            new VarExporter('SchemaInterface::RELATIONS', $results)
+        ];
     }
 
     private function renderRelationOption(int $option, $value): VarExporter

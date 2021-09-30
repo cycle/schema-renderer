@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 namespace Cycle\Schema\Renderer;
+
 use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
+use Cycle\Schema\Renderer\PhpFileRenderer\VarExporter;
 
 final class SchemaToPhpFileRenderer
 {
@@ -33,7 +35,11 @@ final class SchemaToPhpFileRenderer
         }
 
         foreach ($this->schema as $role => $roleSchema) {
-            $schema[] = $this->generator->generate($roleSchema, $role);
+            $schema[] = new VarExporter(
+                $role,
+                $this->generator->generate($roleSchema, $role),
+                true
+            );
         }
 
         $renderedArray = implode(",\n", $schema);
