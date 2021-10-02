@@ -8,9 +8,9 @@ use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
+use Cycle\Schema\Renderer\PhpFileRenderer\RoleArrayRenderer;
 use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
-use Cycle\Schema\Renderer\PhpFileRenderer\VarExporter;
+use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayItem;
 use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\SchemaToPhpRenderer;
 use Cycle\Schema\Renderer\Tests\Fixtures\Tag;
@@ -98,17 +98,17 @@ class SchemaToPhpRendererTest extends TestCase
 
     public function testRenderSchemaToPhpCode(): void
     {
-        $renderer = new SchemaToPhpRenderer($this->schema, new DefaultSchemaGenerator());
+        $renderer = new SchemaToPhpRenderer();
 
         $this->assertSame(
             file_get_contents(__DIR__ . '/Fixtures/generated_schema.php'),
-            $renderer->render()
+            $renderer->render($this->schema)
         );
     }
 
     public function testRenderEmptySchemaToPhpCode(): void
     {
-        $renderer = new SchemaToPhpRenderer([], new DefaultSchemaGenerator());
+        $renderer = new SchemaToPhpRenderer();
 
         $this->assertSame(
             <<<EOL
@@ -124,25 +124,13 @@ return [
 ];
 EOL
             ,
-            $renderer->render()
+            $renderer->render([])
         );
     }
 
     public function testRenderSchemaWithCustomPropertyToPhpCode(): void
     {
-        $renderer = new SchemaToPhpRenderer([
-            TagContext::class => [
-                SchemaInterface::ROLE => 'tag_context',
-                SchemaInterface::MAPPER => Mapper::class,
-                SchemaInterface::DATABASE => 'default',
-                SchemaInterface::TABLE => 'tag_user_map',
-                SchemaInterface::COLUMNS => [],
-                SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
-                SchemaInterface::SCHEMA => [],
-                100 => 'Hello world',
-                'hello' => 'world'
-            ]
-        ], new DefaultSchemaGenerator());
+        $renderer = new SchemaToPhpRenderer();
 
         $this->assertSame(
             <<<EOL
@@ -180,36 +168,36 @@ return [
 ];
 EOL
             ,
-            $renderer->render()
+            $renderer->render([
+                TagContext::class => [
+                    SchemaInterface::ROLE => 'tag_context',
+                    SchemaInterface::MAPPER => Mapper::class,
+                    SchemaInterface::DATABASE => 'default',
+                    SchemaInterface::TABLE => 'tag_user_map',
+                    SchemaInterface::COLUMNS => [],
+                    SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
+                    SchemaInterface::SCHEMA => [],
+                    100 => 'Hello world',
+                    'hello' => 'world'
+                ]
+            ])
         );
     }
 
     public function testRenderSchemaWithCustomPropertyWithDefinedGeneratorToPhpCode(): void
     {
-        $generator = new DefaultSchemaGenerator([
+        $generator = new RoleArrayRenderer([
             100 => new class implements Generator {
                 public function generate(array $schema, string $role): array
                 {
                     return [
-                        new VarExporter('Hello', 'World', true)
+                        new ArrayItem('World', 'Hello', true)
                     ];
                 }
             }
         ]);
 
-        $renderer = new SchemaToPhpRenderer([
-            TagContext::class => [
-                SchemaInterface::ROLE => 'tag_context',
-                SchemaInterface::MAPPER => Mapper::class,
-                SchemaInterface::DATABASE => 'default',
-                SchemaInterface::TABLE => 'tag_user_map',
-                SchemaInterface::COLUMNS => [],
-                SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
-                SchemaInterface::SCHEMA => [],
-                100 => 'Hello world',
-                'hello' => 'world',
-            ]
-        ], $generator);
+        $renderer = new SchemaToPhpRenderer();
 
         $this->assertSame(
             <<<EOL
@@ -247,7 +235,19 @@ return [
 ];
 EOL
             ,
-            $renderer->render()
+            $renderer->render([
+                TagContext::class => [
+                    SchemaInterface::ROLE => 'tag_context',
+                    SchemaInterface::MAPPER => Mapper::class,
+                    SchemaInterface::DATABASE => 'default',
+                    SchemaInterface::TABLE => 'tag_user_map',
+                    SchemaInterface::COLUMNS => [],
+                    SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
+                    SchemaInterface::SCHEMA => [],
+                    100 => 'Hello world',
+                    'hello' => 'world',
+                ]
+            ])
         );
     }
 }

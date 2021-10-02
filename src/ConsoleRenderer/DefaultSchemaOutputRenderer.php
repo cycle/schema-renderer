@@ -12,7 +12,7 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Renderers\PropertyRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderers\RelationsRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderers\TitleRenderer;
 
-class DefaultSchemaOutputRenderer extends OutputRenderer
+final class DefaultSchemaOutputRenderer extends OutputRenderer
 {
     protected const DEFAULT_PROPERTY_LIST = [
         SchemaInterface::ROLE => 'Role',

@@ -1,4 +1,4 @@
-# CycleORM Schema renderer
+# Cycle ORM Schema renderer
 
 This package may be used to render schema roles in a terminal or generate php representation for CycleORM schema.
 
@@ -11,15 +11,17 @@ $converter = new \Cycle\Schema\Renderer\SchemaToArrayConverter();
 $schemaArray = $converter->convert($schema);
 ```
 
-By default, SchemaToArrayConverter converts only common properties from `Cycle\ORM\SchemaInterface`.
+If passed `SchemaInterface` doesn't contain `toArray()` method then the `SchemaToArrayConverter`  will convert
+only common properties from `Cycle\ORM\SchemaInterface`. Null values will be skipped also.
 
-But if you want to use custom properties you can pass them to the constructor
+In this case Iif you want to use custom properties you can pass them to the constructor
+
 ```php
 $converter = new \Cycle\Schema\Renderer\SchemaToArrayConverter();
 
 $schemaArray = $converter->convert($schema, [
-    'my_custom_property',
-    SchemaInterface::SOURCE,
+    42,
+    CustomClass::CUSTOM_PROPERTY,
     ...
 ]);
 ```
@@ -81,43 +83,13 @@ foreach ($renderer as $role => $rows) {
 
 ```php
 use Cycle\Schema\Renderer\SchemaToPhpRenderer;
-use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
 
 $path = __DIR__. '/schema.php'
 
-$generator = new DefaultSchemaGenerator();
+$renderer = new SchemaToPhpRenderer();
 
-$renderer = new SchemaToPhpRenderer(
-    $orm->getSchema(), $generator
-);
-
-file_put_contents($path, $renderer->render());
+file_put_contents($path, $renderer->render($schemaArray));
 ```
 
-By default, DefaultSchemaGenerator generates only common properties.
-If you want to extend default CycleORM schema you can create custom generators and add them to the Output php file renderer.
-
-```php
-use Cycle\Schema\Renderer\SchemaToPhpRenderer;
-use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
-use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
-use Cycle\Schema\Renderer\PhpFileRenderer\VarExporter;
-
-class CustomPropertyGenerator implements Generator {
-
-   public function generate(array $schema, string $role): VarExporter
-   {
-        $key = 'my_custom_property';
-
-        return new VarExporter($key, $schema[$key] ?? null);
-   }
-}
-
-$generator = new DefaultSchemaGenerator([
-    'my_custom_property' => new CustomPropertyGenerator()
-]);
-
-$renderer = new SchemaToPhpRenderer(
-    $orm->getSchema(), $generator
-);
-```
+The Renderer generates valid PHP code, in which constants from Cycle ORM classes are substituted
+for better readability.

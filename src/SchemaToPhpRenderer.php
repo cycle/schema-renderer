@@ -4,46 +4,66 @@ declare(strict_types=1);
 
 namespace Cycle\Schema\Renderer;
 
-use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
-use Cycle\Schema\Renderer\PhpFileRenderer\VarExporter;
+use Cycle\ORM\SchemaInterface;
+use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayBlock;
+use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayItem;
+use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ExporterItem;
+use Cycle\Schema\Renderer\PhpFileRenderer\Item\RoleBlock;
 
-final class SchemaToPhpRenderer
+class SchemaToPhpRenderer implements SchemaRenderer
 {
     private const USE_LIST = [
         'Cycle\ORM\Relation',
-        'Cycle\ORM\SchemaInterface',
+        'Cycle\ORM\SchemaInterface as Schema',
     ];
 
-    private Generator $generator;
-    private array $schema;
-
-    public function __construct(array $schema, Generator $generator)
+    final public function render(array $schema): string
     {
-        $this->generator = $generator;
-        $this->schema = $schema;
-    }
-
-    public function render(): string
-    {
-        $schema = [];
-
         $result = "<?php\n\ndeclare(strict_types=1);\n\n";
 
-        // the use block
+        // The `use` block
         foreach (self::USE_LIST as $use) {
             $result .= "use {$use};\n";
         }
 
-        foreach ($this->schema as $role => $roleSchema) {
-            $schema[] = new VarExporter(
+        $items = [];
+        foreach ($schema as $role => $roleSchema) {
+            assert(is_array($roleSchema));
+
+            $item = new ArrayItem(
+                $this->wrapRoleSchema($roleSchema),
                 $role,
-                $this->generator->generate($roleSchema, $role),
                 true
             );
+            $items[] = $item->setIndentLevel();
         }
 
-        $renderedArray = implode(",\n", $schema);
+        $rendered = (new ArrayBlock($items))->toString();
 
-        return $result . "\nreturn [\n{$renderedArray}\n];";
+        return $result . "\nreturn {$rendered};";
+    }
+
+    protected function wrapRoleSchema(array $roleSchema): ExporterItem
+    {
+        return new RoleBlock(
+            $roleSchema,
+            $this->getSchemaConstants()
+        );
+    }
+
+    /**
+     * @return array<int, string> (Option value => constant name) array
+     */
+    final protected function getSchemaConstants(): array
+    {
+        $result = array_filter(
+            (new \ReflectionClass(SchemaInterface::class))->getConstants(),
+            static fn ($value): bool => is_int($value)
+        );
+        $result = array_flip($result);
+        array_walk($result, static function (string &$name): void {
+            $name = "Schema::$name";
+        });
+        return $result;
     }
 }

@@ -22,14 +22,15 @@ final class SchemaToArrayConverter
 
         $result = [];
 
-        $properties = [
-            ...$this->getSchemaConstants(),
-            ...$customProperties,
-        ];
+        $properties = array_merge($this->getSchemaConstants(), $customProperties);
 
         foreach ($schema->getRoles() as $role) {
             foreach ($properties as $property) {
-                $result[$role][$property] = $schema->define($role, $property);
+                $value = $schema->define($role, $property);
+                if ($value === null) {
+                    continue;
+                }
+                $result[$role][$property] = $value;
             }
         }
 

@@ -22,7 +22,7 @@ class OutputRenderer implements IteratorAggregate
         $this->schema = $schema;
     }
 
-    public function addRenderer(Renderer ...$renderers): void
+    final public function addRenderer(Renderer ...$renderers): void
     {
         foreach ($renderers as $renderer) {
             $this->renderers[] = $renderer;
@@ -32,7 +32,7 @@ class OutputRenderer implements IteratorAggregate
     /**
      * @return Traversable<string, string>
      */
-    public function getIterator(): Traversable
+    final public function getIterator(): Traversable
     {
         foreach ($this->schema as $role => $schema) {
             yield $role => $this->renderSchema($schema, $role);
