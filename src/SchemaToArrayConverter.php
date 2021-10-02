@@ -6,28 +6,11 @@ namespace Cycle\Schema\Renderer;
 
 use Cycle\ORM\SchemaInterface;
 
-class SchemaToArrayConverter
+final class SchemaToArrayConverter
 {
-    private const PROPERTIES = [
-        SchemaInterface::ENTITY,
-        SchemaInterface::MAPPER,
-        SchemaInterface::SOURCE,
-        SchemaInterface::REPOSITORY,
-        SchemaInterface::DATABASE,
-        SchemaInterface::TABLE,
-        SchemaInterface::PRIMARY_KEY,
-        SchemaInterface::FIND_BY_KEYS,
-        SchemaInterface::COLUMNS,
-        SchemaInterface::RELATIONS,
-        SchemaInterface::CHILDREN,
-        SchemaInterface::SCOPE,
-        SchemaInterface::TYPECAST,
-        SchemaInterface::SCHEMA,
-    ];
-
     /**
      * @param SchemaInterface $schema
-     * @param array<int, string> $customProperties
+     * @param array<int, int> $customProperties
      * @return array<string, array<int, mixed>>
      */
     public function convert(SchemaInterface $schema, array $customProperties = []): array
@@ -39,21 +22,29 @@ class SchemaToArrayConverter
 
         $result = [];
 
-        $properties = [...self::PROPERTIES, ...$customProperties];
+        $properties = [
+            ...$this->getSchemaConstants(),
+            ...$customProperties,
+        ];
 
         foreach ($schema->getRoles() as $role) {
-            $aliasOf = $schema->resolveAlias($role);
-
-            if ($aliasOf !== null && $aliasOf !== $role) {
-                // This role is an alias
-                continue;
-            }
-
             foreach ($properties as $property) {
                 $result[$role][$property] = $schema->define($role, $property);
             }
         }
 
         return $result;
+    }
+
+    /**
+     * @return array<int, int>
+     */
+    private function getSchemaConstants(): array
+    {
+        $result = array_filter(
+            (new \ReflectionClass(SchemaInterface::class))->getConstants(),
+            static fn ($value): bool => is_int($value)
+        );
+        return array_values($result);
     }
 }
