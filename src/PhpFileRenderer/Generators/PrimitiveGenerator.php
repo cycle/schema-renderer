@@ -22,8 +22,10 @@ class PrimitiveGenerator implements Generator
 
     public function generate(array $schema, string $role): array
     {
+        $data = $schema[$this->property] ?? null;
+
         return [
-            new VarExporter($this->key, $schema[$this->property] ?? null)
+            new VarExporter($this->key, $data)
         ];
     }
 }

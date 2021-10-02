@@ -1,0 +1,42 @@
+[user] :: default.user
+      Entity: Cycle\Schema\Renderer\Tests\Fixtures\User
+      Mapper: Cycle\ORM\Mapper\Mapper
+   Constrain: not defined
+  Repository: not defined
+ Primary key: id
+      Fields:
+     (property -> db.field -> typecast)
+     0 -> id -> int
+     1 -> email
+     2 -> balance -> float
+   Relations:
+     user->tags many to many tag ? load cascaded
+       n/a user.id <= tag_context.user_id | tag_context.tag_id => tag.id
+     user->tag belongs to tag ? load cascaded
+       n/a user.tag_id <==> tag.id
+Custom props:
+    123 : sdasd
+    abc : [111, 11]
+
+[tag] :: default.tag
+      Entity: Cycle\Schema\Renderer\Tests\Fixtures\Tag
+      Mapper: Cycle\ORM\Mapper\Mapper
+   Constrain: not defined
+  Repository: not defined
+ Primary key: id, name
+      Fields:
+     (property -> db.field -> typecast)
+     0 -> id -> int
+     1 -> name
+   Relations:
+     tag->user belongs to user ? load cascaded
+       n/a tag.user_id <==> user.id
+
+[tag_context] :: default.tag_user_map
+      Entity: Cycle\Schema\Renderer\Tests\Fixtures\TagContext
+      Mapper: Cycle\ORM\Mapper\Mapper
+   Constrain: not defined
+  Repository: not defined
+ Primary key: not defined
+      Fields: not defined
+   Relations: not defined
