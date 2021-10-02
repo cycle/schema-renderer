@@ -22,7 +22,7 @@ class DefaultSchemaGenerator extends SchemaGenerator
                     continue;
                 }
 
-                $generators[$value] = new PrimitiveGenerator($key, 'SchemaInterface::' . $key);
+                $generators[$value] = new PrimitiveGenerator('SchemaInterface::' . $key, $value);
             }
         }
 
