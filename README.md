@@ -80,14 +80,14 @@ foreach ($renderer as $role => $rows) {
 ### Store schema in a PHP file
 
 ```php
-use Cycle\Schema\Renderer\SchemaToPhpFileRenderer;
+use Cycle\Schema\Renderer\SchemaToPhpRenderer;
 use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
 
 $path = __DIR__. '/schema.php'
 
 $generator = new DefaultSchemaGenerator();
 
-$renderer = new SchemaToPhpFileRenderer(
+$renderer = new SchemaToPhpRenderer(
     $orm->getSchema(), $generator
 );
 
@@ -97,9 +97,8 @@ file_put_contents($path, $renderer->render());
 By default, DefaultSchemaGenerator generates only common properties.
 If you want to extend default CycleORM schema you can create custom generators and add them to the Output php file renderer.
 
-
 ```php
-use Cycle\Schema\Renderer\SchemaToPhpFileRenderer;
+use Cycle\Schema\Renderer\SchemaToPhpRenderer;
 use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
 use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
 use Cycle\Schema\Renderer\PhpFileRenderer\VarExporter;
@@ -118,7 +117,7 @@ $generator = new DefaultSchemaGenerator([
     'my_custom_property' => new CustomPropertyGenerator()
 ]);
 
-$renderer = new SchemaToPhpFileRenderer(
+$renderer = new SchemaToPhpRenderer(
     $orm->getSchema(), $generator
 );
 ```

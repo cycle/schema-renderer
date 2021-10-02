@@ -12,13 +12,13 @@ use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
 use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
 use Cycle\Schema\Renderer\PhpFileRenderer\VarExporter;
 use Cycle\Schema\Renderer\SchemaToArrayConverter;
-use Cycle\Schema\Renderer\SchemaToPhpFileRenderer;
+use Cycle\Schema\Renderer\SchemaToPhpRenderer;
 use Cycle\Schema\Renderer\Tests\Fixtures\Tag;
 use Cycle\Schema\Renderer\Tests\Fixtures\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixtures\User;
 use PHPUnit\Framework\TestCase;
 
-class SchemaToPhpFileRendererTest extends TestCase
+class SchemaToPhpRendererTest extends TestCase
 {
     private array $schema;
 
@@ -98,7 +98,7 @@ class SchemaToPhpFileRendererTest extends TestCase
 
     public function testRenderSchemaToPhpCode(): void
     {
-        $renderer = new SchemaToPhpFileRenderer($this->schema, new DefaultSchemaGenerator());
+        $renderer = new SchemaToPhpRenderer($this->schema, new DefaultSchemaGenerator());
 
         $this->assertSame(
             file_get_contents(__DIR__ . '/Fixtures/generated_schema.php'),
@@ -108,7 +108,7 @@ class SchemaToPhpFileRendererTest extends TestCase
 
     public function testRenderEmptySchemaToPhpCode(): void
     {
-        $renderer = new SchemaToPhpFileRenderer([], new DefaultSchemaGenerator());
+        $renderer = new SchemaToPhpRenderer([], new DefaultSchemaGenerator());
 
         $this->assertSame(
             <<<EOL
@@ -130,7 +130,7 @@ EOL
 
     public function testRenderSchemaWithCustomPropertyToPhpCode(): void
     {
-        $renderer = new SchemaToPhpFileRenderer([
+        $renderer = new SchemaToPhpRenderer([
             TagContext::class => [
                 SchemaInterface::ROLE => 'tag_context',
                 SchemaInterface::MAPPER => Mapper::class,
@@ -197,7 +197,7 @@ EOL
             }
         ]);
 
-        $renderer = new SchemaToPhpFileRenderer([
+        $renderer = new SchemaToPhpRenderer([
             TagContext::class => [
                 SchemaInterface::ROLE => 'tag_context',
                 SchemaInterface::MAPPER => Mapper::class,

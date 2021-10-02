@@ -7,7 +7,7 @@ namespace Cycle\Schema\Renderer;
 use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
 use Cycle\Schema\Renderer\PhpFileRenderer\VarExporter;
 
-final class SchemaToPhpFileRenderer
+final class SchemaToPhpRenderer
 {
     private const USE_LIST = [
         'Cycle\ORM\Relation',
