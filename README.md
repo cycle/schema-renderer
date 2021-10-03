@@ -95,3 +95,8 @@ file_put_contents($path, $renderer->render($schemaArray));
 
 The Renderer generates valid PHP code, in which constants from Cycle ORM classes are substituted
 for better readability.
+
+## License:
+
+The MIT License (MIT). Please see [`LICENSE`](./LICENSE) for more information.
+Maintained by [Spiral Scout](https://spiralscout.com).
