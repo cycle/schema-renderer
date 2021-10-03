@@ -1,6 +1,16 @@
 # Cycle ORM Schema renderer
 
-This package may be used to render schema roles in a terminal or generate php representation for CycleORM schema.
+This package may be used to render Cycle ORM Schema in a terminal or generate php representation.
+
+## Installation
+
+The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
+
+```bash
+composer require cycle/schema-renderer
+```
+
+## Example
 
 ### Convert schema to array
 

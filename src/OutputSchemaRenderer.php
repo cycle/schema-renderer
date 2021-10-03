@@ -15,7 +15,10 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\PropertyRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\RelationsRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\TitleRenderer;
 
-class OutputSchemaRenderer extends OutputRenderer
+/**
+ * The class is designed to prepare a human-readable representation of the Cycle ORM Schema for output to the console
+ */
+final class OutputSchemaRenderer extends OutputRenderer
 {
     protected const DEFAULT_PROPERTY_LIST = [
         'ROLE' => 'Role',

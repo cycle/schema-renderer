@@ -6,6 +6,9 @@ namespace Cycle\Schema\Renderer;
 
 use Cycle\ORM\SchemaInterface;
 
+/**
+ * The class converts the {@see SchemaInterface} class implementation into a Cycle ORM specific array
+ */
 final class SchemaToArrayConverter
 {
     /**

@@ -10,6 +10,10 @@ use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayItem;
 use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ExporterItem;
 use Cycle\Schema\Renderer\PhpFileRenderer\Item\RoleBlock;
 
+/**
+ * The Renderer generates valid PHP code, in which constants from {@see \Cycle\ORM\Relation} and
+ * {@see \Cycle\ORM\SchemaInterface} are substituted for better readability.
+ */
 class PhpSchemaRenderer implements SchemaRenderer
 {
     private const USE_LIST = [
