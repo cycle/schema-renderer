@@ -8,8 +8,5 @@ interface Indentable
 {
     public const INDENT = '    ';
 
-    /**
-     * @return static
-     */
     public function setIndentLevel(int $indentLevel = 0): self;
 }

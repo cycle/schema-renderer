@@ -12,9 +12,9 @@ interface Formatter
 
     public function title(string $title): string;
 
-    public function property(string $properties): string;
+    public function property(string $string): string;
 
-    public function column(string $columns): string;
+    public function column(string $string): string;
 
     public function info(string $string): string;
 

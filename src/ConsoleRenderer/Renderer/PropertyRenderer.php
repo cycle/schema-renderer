@@ -9,12 +9,11 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 
 class PropertyRenderer implements Renderer
 {
-    /** @var int|string */
-    private $property;
+    private int $property;
     private string $title;
     private bool $required;
 
-    public function __construct($property, string $title, bool $required = false)
+    public function __construct(int $property, string $title, bool $required = false)
     {
         $this->property = $property;
         $this->title = $title;

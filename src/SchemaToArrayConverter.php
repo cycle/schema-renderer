@@ -30,6 +30,7 @@ final class SchemaToArrayConverter
 
         foreach ($schema->getRoles() as $role) {
             foreach ($properties as $property) {
+                /** @psalm-suppress ReservedWord */
                 $value = $schema->define($role, $property);
                 if ($value === null) {
                     continue;

@@ -12,8 +12,8 @@ class TitleRenderer implements Renderer
 {
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
-        $database = $schema[SchemaInterface::DATABASE] ?? null;
-        $table = $schema[SchemaInterface::TABLE] ?? null;
+        $database = $schema[SchemaInterface::DATABASE] ?? '<undefined databse>';
+        $table = $schema[SchemaInterface::TABLE] ?? '<undefined table>';
 
         $row = $formatter->entity("[{$role}]");
 

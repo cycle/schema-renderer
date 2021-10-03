@@ -32,8 +32,6 @@ class PhpSchemaRenderer implements SchemaRenderer
 
         $items = [];
         foreach ($schema as $role => $roleSchema) {
-            assert(is_array($roleSchema));
-
             $item = new ArrayItem(
                 $this->wrapRoleSchema($roleSchema),
                 $role,
