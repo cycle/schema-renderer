@@ -1,0 +1,34 @@
+[user] :: default.user
+       Entity: Cycle\Schema\Renderer\Tests\Fixture\User
+       Mapper: Cycle\ORM\Mapper\Mapper
+  Primary key: id
+       Fields:
+     (property -> db.field -> typecast)
+     0 -> id -> int
+     1 -> email
+     2 -> balance -> float
+    Relations:
+     user->tags many to many tag, default loading, cascaded
+       n/a user.id <= tag_context.user_id | tag_context.tag_id => tag.id
+     user->tag belongs to tag, default loading, cascaded
+       n/a user.tag_id <==> tag.id
+
+[tag] :: default.tag
+       Entity: Cycle\Schema\Renderer\Tests\Fixture\Tag
+       Mapper: Cycle\ORM\Mapper\Mapper
+  Primary key: id, name
+       Fields:
+     (property -> db.field -> typecast)
+     0 -> id -> int
+     1 -> name
+    Relations:
+     tag->user belongs to user, default loading, cascaded
+       n/a tag.user_id <==> user.id
+
+[tag_context] :: default.tag_user_map
+       Entity: Cycle\Schema\Renderer\Tests\Fixture\TagContext
+       Mapper: Cycle\ORM\Mapper\Mapper
+  Primary key: not defined
+       Fields: not defined
+    Relations: not defined
+

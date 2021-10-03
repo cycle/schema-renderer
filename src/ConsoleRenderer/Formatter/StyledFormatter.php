@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\ConsoleRenderer\Formatters;
+namespace Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
 
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
 

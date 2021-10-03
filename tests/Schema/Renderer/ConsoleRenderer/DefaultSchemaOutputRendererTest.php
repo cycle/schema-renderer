@@ -6,13 +6,14 @@ namespace Cycle\Schema\Renderer\Tests\ConsoleRenderer;
 
 use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
+use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Renderer\ConsoleRenderer\DefaultSchemaOutputRenderer;
-use Cycle\Schema\Renderer\ConsoleRenderer\Formatters\StyledFormatter;
-use Cycle\Schema\Renderer\ConsoleRenderer\Renderers\PropertyRenderer;
-use Cycle\Schema\Renderer\Tests\Fixtures\Tag;
-use Cycle\Schema\Renderer\Tests\Fixtures\TagContext;
-use Cycle\Schema\Renderer\Tests\Fixtures\User;
+use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\PropertyRenderer;
+use Cycle\Schema\Renderer\OutputSchemaRenderer;
+use Cycle\Schema\Renderer\SchemaToArrayConverter;
+use Cycle\Schema\Renderer\Tests\Fixture\Tag;
+use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
+use Cycle\Schema\Renderer\Tests\Fixture\User;
 use PHPUnit\Framework\TestCase;
 
 class DefaultSchemaOutputRendererTest extends TestCase
@@ -96,27 +97,40 @@ class DefaultSchemaOutputRendererTest extends TestCase
 
     public function testSchemaShouldBeRendered(): void
     {
-        $renderer = new DefaultSchemaOutputRenderer(
-            $this->schemaArray, new StyledFormatter()
-        );
+        $renderer = new OutputSchemaRenderer(true);
+
+        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output.stub.txt');
 
         $this->assertSame(
-            file_get_contents(__DIR__ . '/../Fixtures/console_output.txt'),
-            implode("\n\n", iterator_to_array($renderer))
+            $expected,
+            $renderer->render($this->schemaArray)
+        );
+    }
+
+    public function testPlainFormat(): void
+    {
+        $schema = new Schema($this->schemaArray);
+        $schemaArray = (new SchemaToArrayConverter())->convert($schema);
+        $renderer = new OutputSchemaRenderer(false);
+
+        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_plain.stub.txt');
+
+        $this->assertSame(
+            $expected,
+            $renderer->render($schemaArray)
         );
     }
 
     public function testSchemaWithExtraPropertiesShouldBeRendered(): void
     {
-        $renderer = new DefaultSchemaOutputRenderer(
-            $this->schemaArray, new StyledFormatter()
-        );
-
+        $renderer = new OutputSchemaRenderer(true);
         $renderer->addRenderer(new PropertyRenderer(SchemaInterface::SOURCE, 'Source'));
 
+        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_with_custom_properties.stub.txt');
+
         $this->assertSame(
-            file_get_contents(__DIR__ . '/../Fixtures/console_output_with_custom_properties.txt'),
-            implode("\n\n", iterator_to_array($renderer))
+            $expected,
+            $renderer->render($this->schemaArray)
         );
     }
 }

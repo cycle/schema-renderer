@@ -40,13 +40,13 @@ final class ArrayRenderer
             }
             $elements[] = $str . self::renderValue($item);
         }
-        return '[' . implode(', ', $elements) . ']';
+        return '[' . \implode(', ', $elements) . ']';
     }
 
     private static function renderArrayBlock(array $value, bool $withKeys = true, int $indentLevel = 0): string
     {
-        $braceIdent = str_repeat(Indentable::INDENT, $indentLevel);
-        $itemIndent = str_repeat(Indentable::INDENT, $indentLevel + 1);
+        $braceIdent = \str_repeat(Indentable::INDENT, $indentLevel);
+        $itemIndent = \str_repeat(Indentable::INDENT, $indentLevel + 1);
         $result = '[';
         foreach ($value as $key => $item) {
             $result .= "\n" . $itemIndent;

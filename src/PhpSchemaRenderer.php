@@ -10,7 +10,7 @@ use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayItem;
 use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ExporterItem;
 use Cycle\Schema\Renderer\PhpFileRenderer\Item\RoleBlock;
 
-class SchemaToPhpRenderer implements SchemaRenderer
+class PhpSchemaRenderer implements SchemaRenderer
 {
     private const USE_LIST = [
         'Cycle\ORM\Relation',
@@ -40,7 +40,7 @@ class SchemaToPhpRenderer implements SchemaRenderer
 
         $rendered = (new ArrayBlock($items))->toString();
 
-        return $result . "\nreturn {$rendered};";
+        return $result . "\nreturn {$rendered};\n";
     }
 
     protected function wrapRoleSchema(array $roleSchema): ExporterItem

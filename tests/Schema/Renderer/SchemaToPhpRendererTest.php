@@ -8,17 +8,14 @@ use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Renderer\PhpFileRenderer\RoleArrayRenderer;
-use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
-use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayItem;
 use Cycle\Schema\Renderer\SchemaToArrayConverter;
-use Cycle\Schema\Renderer\SchemaToPhpRenderer;
-use Cycle\Schema\Renderer\Tests\Fixtures\Tag;
-use Cycle\Schema\Renderer\Tests\Fixtures\TagContext;
-use Cycle\Schema\Renderer\Tests\Fixtures\User;
+use Cycle\Schema\Renderer\PhpSchemaRenderer;
+use Cycle\Schema\Renderer\Tests\Fixture\Tag;
+use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
+use Cycle\Schema\Renderer\Tests\Fixture\User;
 use PHPUnit\Framework\TestCase;
 
-class SchemaToPhpRendererTest extends TestCase
+final class SchemaToPhpRendererTest extends TestCase
 {
     private array $schema;
 
@@ -98,31 +95,31 @@ class SchemaToPhpRendererTest extends TestCase
 
     public function testRenderSchemaToPhpCode(): void
     {
-        $renderer = new SchemaToPhpRenderer();
+        $renderer = new PhpSchemaRenderer();
+        $expected = file_get_contents(__DIR__ . '/Fixture/generated_schema.stub.php');
 
         $this->assertSame(
-            file_get_contents(__DIR__ . '/Fixtures/generated_schema.php'),
+            $expected,
             $renderer->render($this->schema)
         );
     }
 
     public function testRenderEmptySchemaToPhpCode(): void
     {
-        $renderer = new SchemaToPhpRenderer();
+        $renderer = new PhpSchemaRenderer();
 
         $this->assertSame(
-            <<<EOL
-<?php
+            <<<PHP
+                <?php
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-use Cycle\ORM\Relation;
-use Cycle\ORM\SchemaInterface;
+                use Cycle\ORM\Relation;
+                use Cycle\ORM\SchemaInterface as Schema;
 
-return [
+                return [];
 
-];
-EOL
+                PHP
             ,
             $renderer->render([])
         );
@@ -130,43 +127,36 @@ EOL
 
     public function testRenderSchemaWithCustomPropertyToPhpCode(): void
     {
-        $renderer = new SchemaToPhpRenderer();
+        $renderer = new PhpSchemaRenderer();
 
         $this->assertSame(
-            <<<EOL
-<?php
+            <<<PHP
+                <?php
 
-declare(strict_types=1);
+                declare(strict_types=1);
 
-use Cycle\ORM\Relation;
-use Cycle\ORM\SchemaInterface;
+                use Cycle\ORM\Relation;
+                use Cycle\ORM\SchemaInterface as Schema;
 
-return [
-'Cycle\Schema\Renderer\Tests\Fixtures\TagContext' => [
-    SchemaInterface::ROLE => 'tag_context',
-    SchemaInterface::ENTITY => null,
-    SchemaInterface::MAPPER => 'Cycle\\\\ORM\\\\Mapper\\\\Mapper',
-    SchemaInterface::SOURCE => null,
-    SchemaInterface::REPOSITORY => null,
-    SchemaInterface::DATABASE => 'default',
-    SchemaInterface::TABLE => 'tag_user_map',
-    SchemaInterface::PRIMARY_KEY => null,
-    SchemaInterface::FIND_BY_KEYS => null,
-    SchemaInterface::COLUMNS => [],
-    SchemaInterface::RELATIONS => [],
-    SchemaInterface::CHILDREN => null,
-    SchemaInterface::SCOPE => null,
-    SchemaInterface::TYPECAST => [
-        'id' => 'int',
-        'user_id' => 'int',
-        'tag_id' => 'int',
-    ],
-    SchemaInterface::SCHEMA => [],
-    100 => 'Hello world',
-    'hello' => 'world',
-]
-];
-EOL
+                return [
+                    'Cycle\Schema\Renderer\Tests\Fixture\TagContext' => [
+                        Schema::ROLE => 'tag_context',
+                        Schema::MAPPER => 'Cycle\\\\ORM\\\\Mapper\\\\Mapper',
+                        Schema::DATABASE => 'default',
+                        Schema::TABLE => 'tag_user_map',
+                        Schema::COLUMNS => [],
+                        Schema::TYPECAST => [
+                            'id' => 'int',
+                            'user_id' => 'int',
+                            'tag_id' => 'int',
+                        ],
+                        Schema::SCHEMA => [],
+                        '100' => 'Hello world',
+                        'hello' => 'world',
+                    ],
+                ];
+
+                PHP
             ,
             $renderer->render([
                 TagContext::class => [
@@ -179,73 +169,6 @@ EOL
                     SchemaInterface::SCHEMA => [],
                     100 => 'Hello world',
                     'hello' => 'world'
-                ]
-            ])
-        );
-    }
-
-    public function testRenderSchemaWithCustomPropertyWithDefinedGeneratorToPhpCode(): void
-    {
-        $generator = new RoleArrayRenderer([
-            100 => new class implements Generator {
-                public function generate(array $schema, string $role): array
-                {
-                    return [
-                        new ArrayItem('World', 'Hello', true)
-                    ];
-                }
-            }
-        ]);
-
-        $renderer = new SchemaToPhpRenderer();
-
-        $this->assertSame(
-            <<<EOL
-<?php
-
-declare(strict_types=1);
-
-use Cycle\ORM\Relation;
-use Cycle\ORM\SchemaInterface;
-
-return [
-'Cycle\Schema\Renderer\Tests\Fixtures\TagContext' => [
-    'Hello' => 'World',
-    SchemaInterface::ROLE => 'tag_context',
-    SchemaInterface::ENTITY => null,
-    SchemaInterface::MAPPER => 'Cycle\\\\ORM\\\\Mapper\\\\Mapper',
-    SchemaInterface::SOURCE => null,
-    SchemaInterface::REPOSITORY => null,
-    SchemaInterface::DATABASE => 'default',
-    SchemaInterface::TABLE => 'tag_user_map',
-    SchemaInterface::PRIMARY_KEY => null,
-    SchemaInterface::FIND_BY_KEYS => null,
-    SchemaInterface::COLUMNS => [],
-    SchemaInterface::RELATIONS => [],
-    SchemaInterface::CHILDREN => null,
-    SchemaInterface::SCOPE => null,
-    SchemaInterface::TYPECAST => [
-        'id' => 'int',
-        'user_id' => 'int',
-        'tag_id' => 'int',
-    ],
-    SchemaInterface::SCHEMA => [],
-    'hello' => 'world',
-]
-];
-EOL
-            ,
-            $renderer->render([
-                TagContext::class => [
-                    SchemaInterface::ROLE => 'tag_context',
-                    SchemaInterface::MAPPER => Mapper::class,
-                    SchemaInterface::DATABASE => 'default',
-                    SchemaInterface::TABLE => 'tag_user_map',
-                    SchemaInterface::COLUMNS => [],
-                    SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
-                    SchemaInterface::SCHEMA => [],
-                    100 => 'Hello world',
-                    'hello' => 'world',
                 ]
             ])
         );

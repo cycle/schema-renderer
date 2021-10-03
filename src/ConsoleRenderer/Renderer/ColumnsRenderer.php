@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\ConsoleRenderer\Renderers;
+namespace Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
@@ -43,13 +43,13 @@ class ColumnsRenderer implements Renderer
             if ($typecast !== null) {
                 $row .= sprintf(
                     ' -> %s',
-                    $formatter->typecast(implode('::', (array)$typecast))
+                    $formatter->typecast(\implode('::', (array)$typecast))
                 );
             }
 
             $rows[] = $row;
         }
 
-        return implode("\n", $rows);
+        return \implode("\n", $rows);
     }
 }

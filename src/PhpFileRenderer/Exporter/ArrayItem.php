@@ -35,7 +35,7 @@ final class ArrayItem implements ExporterItem, Indentable
 
     public function toString(): string
     {
-        $result = str_repeat(self::INDENT, $this->indentLevel);
+        $result = \str_repeat(self::INDENT, $this->indentLevel);
         if ($this->key !== null) {
             $result = $this->wrapKey ? "'{$this->key}' => " : "{$this->key} => ";
         }

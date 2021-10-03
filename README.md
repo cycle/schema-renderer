@@ -29,29 +29,23 @@ $schemaArray = $converter->convert($schema, [
 ### Render schema to a terminal
 
 ```php
-use Cycle\Schema\Renderer\ConsoleRenderer\DefaultSchemaOutputRenderer;
-use Cycle\Schema\Renderer\ConsoleRenderer\Formatters\StyledFormatter;
-use Cycle\Schema\Renderer\ConsoleRenderer\Formatters\PlainFormatter;
+use Cycle\Schema\Renderer\OutputSchemaRenderer;
 
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
-$formatter = new StyledFormatter(); // Colorized output
-// or
-$formatter = new PlainFormatter(); // Plain output without colors
+$renderer = new OutputSchemaRenderer(colorize: true);
 
-$renderer = new DefaultSchemaOutputRenderer($schemaArray, $formatter);
-
-foreach ($renderer as $role => $rows) {
-    $output->writeln($rows);
-}
+$output->write($renderer->render($schemaArray));
 ```
 
-By default, DefaultSchemaOutputRenderer renders only common properties.
-If you want to extend default CycleORM schema you can create custom renderers and add them to the Output renderer.
+By default, `DefaultSchemaOutputRenderer` renders in template only common properties and relations.
+Custom properties will be rendered as is in separated block.
+If you want to extend default rendering template you can create custom renderers and add them to the Output renderer.
 
 ```php
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
+use Cycle\Schema\Renderer\OutputSchemaRenderer;
 
 class CustomPropertyRenderer implements Renderer {
 
@@ -67,26 +61,24 @@ class CustomPropertyRenderer implements Renderer {
     }
 }
 
-$renderer = new DefaultSchemaOutputRenderer($schemaArray, $formatter);
+$renderer = new OutputSchemaRenderer();
 
 $renderer->addRenderer(
     new CustomPropertyRenderer(),
     new PropertyRenderer('my_custom_property', 'My super property')
 );
 
-foreach ($renderer as $role => $rows) {
-    $output->writeln($rows);
-}
+$output->write($renderer->render($schemaArray))
 ```
 
 ### Store schema in a PHP file
 
 ```php
-use Cycle\Schema\Renderer\SchemaToPhpRenderer;
+use Cycle\Schema\Renderer\PhpSchemaRenderer;
 
 $path = __DIR__. '/schema.php'
 
-$renderer = new SchemaToPhpRenderer();
+$renderer = new PhpSchemaRenderer();
 
 file_put_contents($path, $renderer->render($schemaArray));
 ```

@@ -40,11 +40,11 @@ class ArrayBlock implements ExporterItem, Indentable
 
             $result[] = $item->toString();
         }
-        $indent = str_repeat(self::INDENT, $this->indentLevel + 1);
-        $closedIndent = str_repeat(self::INDENT, $this->indentLevel);
+        $indent = \str_repeat(self::INDENT, $this->indentLevel + 1);
+        $closedIndent = \str_repeat(self::INDENT, $this->indentLevel);
         return $result === []
             ? '[]'
-            : "[\n$indent" . implode(",\n$indent", $result) . ",\n$closedIndent]";
+            : "[\n$indent" . \implode(",\n$indent", $result) . ",\n$closedIndent]";
     }
 
     /**

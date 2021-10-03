@@ -1,6 +1,6 @@
 <?php
 
-namespace Cycle\Schema\Renderer\ConsoleRenderer\Renderers;
+namespace Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
@@ -9,11 +9,19 @@ use ReflectionClass;
 
 class CustomPropertiesRenderer implements Renderer
 {
+    private array $exclude;
+
+    /**
+     * @param array<int, int> $exclude Values list that should be excluded
+     */
+    public function __construct(array $exclude)
+    {
+        $this->exclude = $exclude;
+    }
+
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
-        $refl = new ReflectionClass(SchemaInterface::class);
-
-        $customProperties = array_diff(array_keys($schema), $refl->getConstants());
+        $customProperties = array_diff(array_keys($schema), $this->exclude);
 
         if ($customProperties === []) {
             return null;
@@ -29,10 +37,10 @@ class CustomPropertiesRenderer implements Renderer
             $rows[] = sprintf(
                 '    %s: %s',
                 $property,
-                $formatter->typecast($data)
+                $formatter->typecast(print_r($data, true))
             );
         }
 
-        return implode("\n", $rows);
+        return \implode("\n", $rows);
     }
 }

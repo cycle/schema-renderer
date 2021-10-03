@@ -3,6 +3,10 @@ risky: true
 
 version: 7
 
+finder:
+    not-name:
+        - "*.stub.txt"
+
 enabled:
     - alpha_ordered_traits
     - array_indentation
