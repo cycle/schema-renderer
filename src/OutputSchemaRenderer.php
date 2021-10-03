@@ -79,10 +79,10 @@ final class OutputSchemaRenderer extends OutputRenderer
     {
         $result = [];
         foreach ($constants as $name => $value) {
-            if (!array_key_exists($name, static::DEFAULT_PROPERTY_LIST)) {
+            if (!array_key_exists($name, self::DEFAULT_PROPERTY_LIST)) {
                 continue;
             }
-            $result[$value] = static::DEFAULT_PROPERTY_LIST[$name];
+            $result[$value] = self::DEFAULT_PROPERTY_LIST[$name];
         }
         return $result;
     }

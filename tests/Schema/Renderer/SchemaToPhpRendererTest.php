@@ -55,7 +55,7 @@ final class SchemaToPhpRendererTest extends TestCase
                             Relation::OUTER_KEY => 'id',
                         ],
                     ],
-                ]
+                ],
             ],
             Tag::class => [
                 SchemaInterface::ROLE => 'tag',
@@ -75,8 +75,8 @@ final class SchemaToPhpRendererTest extends TestCase
                             Relation::INNER_KEY => 'user_id',
                             Relation::OUTER_KEY => 'id',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             TagContext::class => [
                 SchemaInterface::ROLE => 'tag_context',
@@ -86,8 +86,8 @@ final class SchemaToPhpRendererTest extends TestCase
                 SchemaInterface::COLUMNS => [],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
                 SchemaInterface::SCHEMA => [],
-                SchemaInterface::RELATIONS => []
-            ]
+                SchemaInterface::RELATIONS => [],
+            ],
         ]);
 
         $this->schema = (new SchemaToArrayConverter())->convert($schema);
@@ -168,8 +168,8 @@ final class SchemaToPhpRendererTest extends TestCase
                     SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
                     SchemaInterface::SCHEMA => [],
                     100 => 'Hello world',
-                    'hello' => 'world'
-                ]
+                    'hello' => 'world',
+                ],
             ])
         );
     }

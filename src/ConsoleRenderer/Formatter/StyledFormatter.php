@@ -59,7 +59,8 @@ final class StyledFormatter implements Formatter
     private function colorize(string $string): string
     {
         return str_replace(
-            array_keys(self::COLORS_MAP), array_values(self::COLORS_MAP),
+            array_keys(self::COLORS_MAP),
+            array_values(self::COLORS_MAP),
             $string
         );
     }

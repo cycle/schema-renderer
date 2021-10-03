@@ -57,7 +57,7 @@ class DefaultSchemaOutputRendererTest extends TestCase
                             Relation::OUTER_KEY => 'id',
                         ],
                     ],
-                ]
+                ],
             ],
             Tag::class => [
                 SchemaInterface::ROLE => 'tag',
@@ -77,8 +77,8 @@ class DefaultSchemaOutputRendererTest extends TestCase
                             Relation::INNER_KEY => 'user_id',
                             Relation::OUTER_KEY => 'id',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             TagContext::class => [
                 SchemaInterface::ROLE => 'tag_context',
@@ -90,8 +90,8 @@ class DefaultSchemaOutputRendererTest extends TestCase
                 SchemaInterface::SCHEMA => [],
                 SchemaInterface::RELATIONS => [],
                 'my_custom_property' => 'super_value',
-                25 => 'super_value'
-            ]
+                25 => 'super_value',
+            ],
         ];
     }
 

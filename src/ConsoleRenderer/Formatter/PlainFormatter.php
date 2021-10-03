@@ -8,7 +8,6 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
 
 final class PlainFormatter implements Formatter
 {
-
     public function title(string $title): string
     {
         return str_pad($title, self::TITLE_LENGTH, ' ', STR_PAD_LEFT);

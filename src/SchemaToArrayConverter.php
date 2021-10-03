@@ -14,6 +14,7 @@ final class SchemaToArrayConverter
     /**
      * @param SchemaInterface $schema
      * @param array<int, int> $customProperties
+     *
      * @return array<string, array<int, mixed>>
      */
     public function convert(SchemaInterface $schema, array $customProperties = []): array

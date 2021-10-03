@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Cycle\Schema\Renderer\PhpFileRenderer\Exporter\Rendering;
 
-use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayItem;
 use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ExporterItem;
 
 final class ArrayRenderer

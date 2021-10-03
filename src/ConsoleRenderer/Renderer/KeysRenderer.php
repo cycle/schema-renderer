@@ -35,7 +35,7 @@ class KeysRenderer implements Renderer
         }
 
         $keys = \array_map(
-            static fn(string $key) => $formatter->property($key),
+            static fn (string $key) => $formatter->property($key),
             (array)$keys
         );
 

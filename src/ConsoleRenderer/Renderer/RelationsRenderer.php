@@ -60,7 +60,7 @@ class RelationsRenderer implements Renderer
 
             // print
             $row = sprintf(
-                "     %s->%s %s %s",
+                '     %s->%s %s %s',
                 $formatter->entity($role),
                 $formatter->property($field),
                 $type,
@@ -78,7 +78,7 @@ class RelationsRenderer implements Renderer
             $rows[] = $row . sprintf(', %s loading, %s', $formatter->info($loading), $formatter->info($cascadeStr));
 
             $row = sprintf(
-                "       %s %s.%s <=",
+                '       %s %s.%s <=',
                 $nullableStr,
                 $formatter->entity($role),
                 $this->renderKeys($formatter, $innerKey)
@@ -86,7 +86,7 @@ class RelationsRenderer implements Renderer
 
             if ($mmEntity !== null) {
                 $row .= sprintf(
-                    " %s.%s | %s.%s ",
+                    ' %s.%s | %s.%s ',
                     $formatter->entity($mmEntity),
                     $this->renderKeys($formatter, $mmInnerKey),
                     $formatter->entity($mmEntity),
@@ -96,7 +96,7 @@ class RelationsRenderer implements Renderer
 
             // todo: composite $outerKey
             $rows[] = $row . sprintf(
-                "=> %s.%s",
+                '=> %s.%s',
                 $formatter->entity($target),
                 $this->renderKeys($formatter, $outerKey)
             );
@@ -129,7 +129,7 @@ class RelationsRenderer implements Renderer
         $keys = (array)$keys;
         $braces = \count($keys) > 1;
         $keys = \array_map(
-            static fn(string $key) => $formatter->property($key),
+            static fn (string $key) => $formatter->property($key),
             $keys
         );
         return sprintf(

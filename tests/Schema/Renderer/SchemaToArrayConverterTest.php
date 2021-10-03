@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cycle\Schema\Renderer\Tests;
 
 use Cycle\ORM\Mapper\Mapper;
@@ -54,9 +56,8 @@ class SchemaToArrayConverterTest extends TestCase
                         ],
                     ],
                 ],
-                123 => 'value'
+                123 => 'value',
             ],
-
         ]);
     }
 
@@ -82,7 +83,7 @@ class SchemaToArrayConverterTest extends TestCase
                             Relation::OUTER_KEY => 'id',
                             Relation::THROUGH_INNER_KEY => 'user_id',
                             Relation::THROUGH_OUTER_KEY => 'tag_id',
-                        ]
+                        ],
                     ],
                     'tag' => [
                         Relation::TYPE => 12,
@@ -91,15 +92,15 @@ class SchemaToArrayConverterTest extends TestCase
                             Relation::CASCADE => true,
                             Relation::INNER_KEY => 'tag_id',
                             Relation::OUTER_KEY => 'id',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'balance' => 'float',
                 ],
                 SchemaInterface::SCHEMA => [],
-            ]
+            ],
         ], (new SchemaToArrayConverter())->convert($this->schema));
     }
 
@@ -125,7 +126,7 @@ class SchemaToArrayConverterTest extends TestCase
                             Relation::OUTER_KEY => 'id',
                             Relation::THROUGH_INNER_KEY => 'user_id',
                             Relation::THROUGH_OUTER_KEY => 'tag_id',
-                        ]
+                        ],
                     ],
                     'tag' => [
                         Relation::TYPE => 12,
@@ -134,16 +135,16 @@ class SchemaToArrayConverterTest extends TestCase
                             Relation::CASCADE => true,
                             Relation::INNER_KEY => 'tag_id',
                             Relation::OUTER_KEY => 'id',
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'balance' => 'float',
                 ],
                 SchemaInterface::SCHEMA => [],
-                123 => 'value'
-            ]
+                123 => 'value',
+            ],
         ], (new SchemaToArrayConverter())->convert($this->schema, [123]));
     }
 }

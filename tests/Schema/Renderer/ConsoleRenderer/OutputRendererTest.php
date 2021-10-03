@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cycle\Schema\Renderer\Tests\ConsoleRenderer;
 
 use Cycle\ORM\Mapper\Mapper;
@@ -16,7 +18,6 @@ use PHPUnit\Framework\TestCase;
 
 class OutputRendererTest extends TestCase
 {
-
     private array $schemaArray;
 
     protected function setUp(): void
@@ -33,7 +34,7 @@ class OutputRendererTest extends TestCase
                 SchemaInterface::COLUMNS => ['id', 'name'],
                 SchemaInterface::TYPECAST => ['id' => 'int'],
                 SchemaInterface::SCHEMA => [],
-                SchemaInterface::RELATIONS => []
+                SchemaInterface::RELATIONS => [],
             ],
             TagContext::class => [
                 SchemaInterface::ROLE => 'tag_context',
@@ -43,8 +44,8 @@ class OutputRendererTest extends TestCase
                 SchemaInterface::COLUMNS => [],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
                 SchemaInterface::SCHEMA => [],
-                SchemaInterface::RELATIONS => []
-            ]
+                SchemaInterface::RELATIONS => [],
+            ],
         ]);
 
         $this->schemaArray = (new SchemaToArrayConverter())->convert($schema);

@@ -19,7 +19,7 @@ class TitleRenderer implements Renderer
 
         if ($database !== null) {
             $row .= sprintf(
-                " :: %s.%s",
+                ' :: %s.%s',
                 $formatter->column($database),
                 $formatter->column($table)
             );

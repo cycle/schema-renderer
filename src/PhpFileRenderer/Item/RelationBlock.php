@@ -31,7 +31,7 @@ class RelationBlock extends ArrayBlock
     {
         $item = parent::wrapItem($key, $value);
         if ($key === Relation::SCHEMA && is_array($value)) {
-            $item->setValue(new RelationBlock($value, self::RELATION_SCHEMA_KEYS), false);
+            $item->setValue(new self($value, self::RELATION_SCHEMA_KEYS), false);
         }
         return $item;
     }

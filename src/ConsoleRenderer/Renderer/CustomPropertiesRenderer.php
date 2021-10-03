@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 
-use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
-use ReflectionClass;
 
 class CustomPropertiesRenderer implements Renderer
 {
@@ -28,7 +28,7 @@ class CustomPropertiesRenderer implements Renderer
         }
 
         $rows = [
-            sprintf('%s:', $formatter->title('Custom props'))
+            sprintf('%s:', $formatter->title('Custom props')),
         ];
 
         foreach ($customProperties as $property) {
