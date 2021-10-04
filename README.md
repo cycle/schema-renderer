@@ -1,6 +1,16 @@
-# CycleORM Schema renderer
+# Cycle ORM Schema renderer
 
-This package may be used to render schema roles in a terminal or generate php representation for CycleORM schema.
+This package may be used to render Cycle ORM Schema in a terminal or generate php representation.
+
+## Installation
+
+The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
+
+```bash
+composer require cycle/schema-renderer
+```
+
+## Example
 
 ### Convert schema to array
 
@@ -11,15 +21,17 @@ $converter = new \Cycle\Schema\Renderer\SchemaToArrayConverter();
 $schemaArray = $converter->convert($schema);
 ```
 
-By default, SchemaToArrayConverter converts only common properties from `Cycle\ORM\SchemaInterface`.
+If passed `SchemaInterface` doesn't contain `toArray()` method then the `SchemaToArrayConverter`  will convert
+only common properties from `Cycle\ORM\SchemaInterface`. Null values will be skipped also.
 
-But if you want to use custom properties you can pass them to the constructor
+In this case Iif you want to use custom properties you can pass them to the constructor
+
 ```php
 $converter = new \Cycle\Schema\Renderer\SchemaToArrayConverter();
 
 $schemaArray = $converter->convert($schema, [
-    'my_custom_property',
-    SchemaInterface::SOURCE,
+    42,
+    CustomClass::CUSTOM_PROPERTY,
     ...
 ]);
 ```
@@ -27,29 +39,23 @@ $schemaArray = $converter->convert($schema, [
 ### Render schema to a terminal
 
 ```php
-use Cycle\Schema\Renderer\ConsoleRenderer\DefaultSchemaOutputRenderer;
-use Cycle\Schema\Renderer\ConsoleRenderer\Formatters\StyledFormatter;
-use Cycle\Schema\Renderer\ConsoleRenderer\Formatters\PlainFormatter;
+use Cycle\Schema\Renderer\OutputSchemaRenderer;
 
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
-$formatter = new StyledFormatter(); // Colorized output
-// or
-$formatter = new PlainFormatter(); // Plain output without colors
+$renderer = new OutputSchemaRenderer(colorize: true);
 
-$renderer = new DefaultSchemaOutputRenderer($schemaArray, $formatter);
-
-foreach ($renderer as $role => $rows) {
-    $output->writeln($rows);
-}
+$output->write($renderer->render($schemaArray));
 ```
 
-By default, DefaultSchemaOutputRenderer renders only common properties.
-If you want to extend default CycleORM schema you can create custom renderers and add them to the Output renderer.
+By default, `DefaultSchemaOutputRenderer` renders in template only common properties and relations.
+Custom properties will be rendered as is in separated block.
+If you want to extend default rendering template you can create custom renderers and add them to the Output renderer.
 
 ```php
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
+use Cycle\Schema\Renderer\OutputSchemaRenderer;
 
 class CustomPropertyRenderer implements Renderer {
 
@@ -65,60 +71,32 @@ class CustomPropertyRenderer implements Renderer {
     }
 }
 
-$renderer = new DefaultSchemaOutputRenderer($schemaArray, $formatter);
+$renderer = new OutputSchemaRenderer();
 
 $renderer->addRenderer(
     new CustomPropertyRenderer(),
     new PropertyRenderer('my_custom_property', 'My super property')
 );
 
-foreach ($renderer as $role => $rows) {
-    $output->writeln($rows);
-}
+$output->write($renderer->render($schemaArray))
 ```
 
 ### Store schema in a PHP file
 
 ```php
-use Cycle\Schema\Renderer\SchemaToPhpFileRenderer;
-use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
+use Cycle\Schema\Renderer\PhpSchemaRenderer;
 
 $path = __DIR__. '/schema.php'
 
-$generator = new DefaultSchemaGenerator();
+$renderer = new PhpSchemaRenderer();
 
-$renderer = new SchemaToPhpFileRenderer(
-    $orm->getSchema(), $generator
-);
-
-file_put_contents($path, $renderer->render());
+file_put_contents($path, $renderer->render($schemaArray));
 ```
 
-By default, DefaultSchemaGenerator generates only common properties.
-If you want to extend default CycleORM schema you can create custom generators and add them to the Output php file renderer.
+The Renderer generates valid PHP code, in which constants from Cycle ORM classes are substituted
+for better readability.
 
+## License:
 
-```php
-use Cycle\Schema\Renderer\SchemaToPhpFileRenderer;
-use Cycle\Schema\Renderer\PhpFileRenderer\DefaultSchemaGenerator;
-use Cycle\Schema\Renderer\PhpFileRenderer\Generator;
-use Cycle\Schema\Renderer\PhpFileRenderer\VarExporter;
-
-class CustomPropertyGenerator implements Generator {
-
-   public function generate(array $schema, string $role): VarExporter
-   {
-        $key = 'my_custom_property';
-
-        return new VarExporter($key, $schema[$key] ?? null);
-   }
-}
-
-$generator = new DefaultSchemaGenerator([
-    'my_custom_property' => new CustomPropertyGenerator()
-]);
-
-$renderer = new SchemaToPhpFileRenderer(
-    $orm->getSchema(), $generator
-);
-```
+The MIT License (MIT). Please see [`LICENSE`](./LICENSE) for more information.
+Maintained by [Spiral Scout](https://spiralscout.com).

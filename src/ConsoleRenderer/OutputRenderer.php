@@ -4,42 +4,37 @@ declare(strict_types=1);
 
 namespace Cycle\Schema\Renderer\ConsoleRenderer;
 
-use IteratorAggregate;
-use Traversable;
+use Cycle\Schema\Renderer\SchemaRenderer;
 
-class OutputRenderer implements IteratorAggregate
+class OutputRenderer implements SchemaRenderer
 {
     /** @var Renderer[] */
     private array $renderers = [];
-    private array $schema;
     private Formatter $formatter;
 
-    public function __construct(array $schema, Formatter $formatter, array $renderers = [])
+    public function __construct(Formatter $formatter, array $renderers = [])
     {
-        $this->addRenderer(...$renderers);
-
         $this->formatter = $formatter;
-        $this->schema = $schema;
+        $this->addRenderer(...$renderers);
     }
 
-    public function addRenderer(Renderer ...$renderers): void
+    final public function addRenderer(Renderer ...$renderers): void
     {
         foreach ($renderers as $renderer) {
             $this->renderers[] = $renderer;
         }
     }
 
-    /**
-     * @return Traversable<string, string>
-     */
-    public function getIterator(): Traversable
+    final public function render(array $schema): string
     {
-        foreach ($this->schema as $role => $schema) {
-            yield $role => $this->renderSchema($schema, $role);
+        $result = '';
+        foreach ($schema as $role => $roleSchema) {
+            $result .= $this->renderRole($roleSchema, $role) . $this->formatter::ROLE_BLOCK_SEPARATOR;
         }
+        return $result;
     }
 
-    private function renderSchema(array $schema, string $role): string
+    private function renderRole(array $schema, string $role): string
     {
         $rows = [];
 
@@ -49,6 +44,6 @@ class OutputRenderer implements IteratorAggregate
             }
         }
 
-        return implode("\n", $rows);
+        return \implode($this->formatter::LINE_SEPARATOR, $rows);
     }
 }

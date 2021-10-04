@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ '7.4', '8.0' ]
+        php: [ '7.4', '8.0', '8.1' ]
         os: [ ubuntu-latest ]
         stability: [ prefer-lowest, prefer-stable ]
 
@@ -43,25 +43,19 @@ jobs:
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Restore Composer Cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-
-      - name: Install Dependencies
-        uses: nick-invision/retry@v1
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
-      # Upgrade mockery on PHP 8
-      - name: Install Dependencies
-        if: ${{ matrix.php == '8.0' }}
-        uses: nick-invision/retry@v1
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          command: composer update mockery/mockery --prefer-dist --no-interaction --no-progress
+
+      - name: Install dependencies with composer
+        if: matrix.php-version != '8.1'
+        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
+
+      - name: Install dependencies with composer php 8.1
+        if: matrix.php-version == '8.1'
+        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi --ignore-platform-reqs
 
       # Execution
       - name: Execute Tests
