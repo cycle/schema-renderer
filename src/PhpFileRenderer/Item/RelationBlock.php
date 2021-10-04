@@ -11,16 +11,21 @@ use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayItem;
 class RelationBlock extends ArrayBlock
 {
     private const RELATION_SCHEMA_KEYS = [
-        Relation::MORPH_KEY => 'Relation::MORPH_KEY',
-        Relation::CASCADE => 'Relation::CASCADE',
-        Relation::NULLABLE => 'Relation::NULLABLE',
-        Relation::OUTER_KEY => 'Relation::OUTER_KEY',
-        Relation::INNER_KEY => 'Relation::INNER_KEY',
-        Relation::WHERE => 'Relation::WHERE',
-        Relation::THROUGH_INNER_KEY => 'Relation::THROUGH_INNER_KEY',
-        Relation::THROUGH_OUTER_KEY => 'Relation::THROUGH_OUTER_KEY',
-        Relation::THROUGH_ENTITY => 'Relation::THROUGH_ENTITY',
-        Relation::THROUGH_WHERE => 'Relation::THROUGH_WHERE',
+        'MORPH_KEY',
+        'CASCADE',
+        'NULLABLE',
+        'OUTER_KEY',
+        'INNER_KEY',
+        'WHERE',
+        'THROUGH_INNER_KEY',
+        'THROUGH_OUTER_KEY',
+        'THROUGH_ENTITY',
+        'THROUGH_WHERE',
+        // Cycle ORM v1 deprecations:
+        'THOUGH_INNER_KEY',
+        'THOUGH_OUTER_KEY',
+        'THOUGH_ENTITY',
+        'THOUGH_WHERE',
     ];
 
     /**
@@ -31,8 +36,28 @@ class RelationBlock extends ArrayBlock
     {
         $item = parent::wrapItem($key, $value);
         if ($key === Relation::SCHEMA && is_array($value)) {
-            $item->setValue(new self($value, self::RELATION_SCHEMA_KEYS), false);
+            $item->setValue(new self($value, $this->getReplaceKeys()), false);
         }
         return $item;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function getReplaceKeys(): array
+    {
+        static $result = [];
+        if ($result !== []) {
+            return $result;
+        }
+        $constants = (new \ReflectionClass(Relation::class))->getConstants();
+        foreach ($constants as $name => $value) {
+            if (!in_array($name, self::RELATION_SCHEMA_KEYS, true) || array_key_exists($value, $result)) {
+                continue;
+            }
+            $result[$value] = 'Relation::' . $name;
+        }
+
+        return $result;
     }
 }
