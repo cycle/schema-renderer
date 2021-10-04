@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\Tests\ConsoleRenderer;
+namespace Cycle\Schema\Renderer\Tests;
 
 use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
@@ -16,7 +16,7 @@ use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
 use PHPUnit\Framework\TestCase;
 
-class DefaultSchemaOutputRendererTest extends TestCase
+final class OutputSchemaRendererTest extends TestCase
 {
     private array $schemaArray;
 
@@ -97,9 +97,9 @@ class DefaultSchemaOutputRendererTest extends TestCase
 
     public function testSchemaShouldBeRendered(): void
     {
-        $renderer = new OutputSchemaRenderer(true);
+        $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
 
-        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output.stub.txt');
+        $expected = file_get_contents(__DIR__ . '/Fixture/console_output.stub.txt');
 
         $this->assertSame(
             $expected,
@@ -111,9 +111,9 @@ class DefaultSchemaOutputRendererTest extends TestCase
     {
         $schema = new Schema($this->schemaArray);
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
-        $renderer = new OutputSchemaRenderer(false);
+        $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_plain.stub.txt');
+        $expected = file_get_contents(__DIR__ . '/Fixture/console_output_plain.stub.txt');
 
         $this->assertSame(
             $expected,
@@ -123,10 +123,10 @@ class DefaultSchemaOutputRendererTest extends TestCase
 
     public function testSchemaWithExtraPropertiesShouldBeRendered(): void
     {
-        $renderer = new OutputSchemaRenderer(true);
+        $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
         $renderer->addRenderer(new PropertyRenderer(SchemaInterface::SOURCE, 'Source'));
 
-        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_with_custom_properties.stub.txt');
+        $expected = file_get_contents(__DIR__ . '/Fixture/console_output_with_custom_properties.stub.txt');
 
         $this->assertSame(
             $expected,

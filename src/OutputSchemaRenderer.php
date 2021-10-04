@@ -20,6 +20,9 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\TitleRenderer;
  */
 final class OutputSchemaRenderer extends OutputRenderer
 {
+    public const FORMAT_PLAIN_TEXT = 0;
+    public const FORMAT_CONSOLE_COLOR = 1;
+
     protected const DEFAULT_PROPERTY_LIST = [
         'ROLE' => 'Role',
         'ENTITY' => 'Entity',
@@ -28,9 +31,11 @@ final class OutputSchemaRenderer extends OutputRenderer
         'REPOSITORY' => 'Repository',
     ];
 
-    public function __construct(bool $colorize = true)
+    public function __construct(int $format = self::FORMAT_CONSOLE_COLOR)
     {
-        $formatter = $colorize ? new StyledFormatter() : new PlainFormatter();
+        $formatter = $format === self::FORMAT_CONSOLE_COLOR
+            ? new StyledFormatter()
+            : new PlainFormatter();
         parent::__construct($formatter);
 
         $constants = $this->getOrmConstants();

@@ -1,25 +1,37 @@
 {
-  "name": "cycle/schema-renderer",
-  "type": "library",
-  "license": "MIT",
-  "description": "Utils for Cycle Schema rendering",
-  "require": {
-    "php": ">=7.4",
-    "cycle/orm": "^1.5|2.0.x-dev"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^9.5",
-    "spiral/code-style": "^1.0",
-    "vimeo/psalm": "^4.9"
-  },
-  "autoload": {
-    "psr-4": {
-      "Cycle\\Schema\\Renderer\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Cycle\\Schema\\Renderer\\Tests\\": "tests/Schema/Renderer/"
-    }
-  }
+    "name": "cycle/schema-renderer",
+    "type": "library",
+    "license": "MIT",
+    "description": "Utils for Cycle ORM Schema rendering",
+    "require": {
+        "php": ">=7.4",
+        "cycle/orm": "1 - 2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "spiral/code-style": "^1.0",
+        "vimeo/psalm": "^4.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cycle\\Schema\\Renderer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cycle\\Schema\\Renderer\\Tests\\": "tests/Schema/Renderer/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "phpcs --standard=phpcs.xml",
+            "psalm --no-cache",
+            "phpunit"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
