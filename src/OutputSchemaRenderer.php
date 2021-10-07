@@ -11,6 +11,7 @@ use Cycle\Schema\Renderer\ConsoleRenderer\OutputRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\ColumnsRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\CustomPropertiesRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\KeysRenderer;
+use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\MacrosRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\PropertyRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\RelationsRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\TitleRenderer;
@@ -72,6 +73,7 @@ final class OutputSchemaRenderer extends OutputRenderer
             new ColumnsRenderer(),
             new RelationsRenderer(),
             new CustomPropertiesRenderer(array_values($constants)),
+            new MacrosRenderer(),
         ]);
     }
 

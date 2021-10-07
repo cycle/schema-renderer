@@ -41,6 +41,6 @@ class CustomPropertiesRenderer implements Renderer
             );
         }
 
-        return \implode("\n", $rows);
+        return \implode($formatter::LINE_SEPARATOR, $rows);
     }
 }
