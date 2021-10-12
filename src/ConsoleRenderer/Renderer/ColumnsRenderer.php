@@ -50,6 +50,6 @@ class ColumnsRenderer implements Renderer
             $rows[] = $row;
         }
 
-        return \implode("\n", $rows);
+        return \implode($formatter::LINE_SEPARATOR, $rows);
     }
 }

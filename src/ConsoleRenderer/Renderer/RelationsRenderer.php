@@ -105,7 +105,11 @@ class RelationsRenderer implements Renderer
                 $rows[] = sprintf(
                     '%s: %s',
                     $formatter->title('Where'),
-                    str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($where, true))
+                    str_replace(
+                        ["\r\n", "\n"],
+                        $formatter::LINE_SEPARATOR . '       ',
+                        $formatter::LINE_SEPARATOR . print_r($where, true)
+                    )
                 );
             }
 
@@ -113,12 +117,16 @@ class RelationsRenderer implements Renderer
                 $rows[] = sprintf(
                     '%s: %s',
                     $formatter->title('Through where'),
-                    str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($mmWhere, true))
+                    str_replace(
+                        ["\r\n", "\n"],
+                        $formatter::LINE_SEPARATOR . '       ',
+                        $formatter::LINE_SEPARATOR . print_r($mmWhere, true)
+                    )
                 );
             }
         }
 
-        return \implode("\n", $rows);
+        return \implode($formatter::LINE_SEPARATOR, $rows);
     }
 
     /**
