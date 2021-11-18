@@ -10,13 +10,18 @@ use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayItem;
 
 class RelationBlock extends ArrayBlock
 {
+    /**
+     * @see SchemaInterface
+     */
     private const RELATION_SCHEMA_KEYS = [
         'MORPH_KEY',
         'CASCADE',
         'NULLABLE',
         'OUTER_KEY',
         'INNER_KEY',
+        'INVERSION',
         'WHERE',
+        'ORDER_BY',
         'THROUGH_INNER_KEY',
         'THROUGH_OUTER_KEY',
         'THROUGH_ENTITY',

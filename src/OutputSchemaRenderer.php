@@ -56,7 +56,7 @@ final class OutputSchemaRenderer extends OutputRenderer
         // JTI support
         if (isset($constants['PARENT'], $constants['PARENT_KEY'])) {
             $this->addRenderer(...[
-                new PropertyRenderer($constants['PARENT'], 'CHILDREN'),
+                new PropertyRenderer($constants['PARENT'], 'Children'),
                 new KeysRenderer($constants['PARENT_KEY'], 'STI key', false),
             ]);
         }
@@ -69,12 +69,15 @@ final class OutputSchemaRenderer extends OutputRenderer
             ]);
         }
 
-        $this->addRenderer(...[
-            new ColumnsRenderer(),
+        $this->addRenderer(new ColumnsRenderer());
+        if (isset($constants['TYPECAST_HANDLER'])) {
+            $this->addRenderer(new PropertyRenderer($constants['TYPECAST_HANDLER'], 'Typecast'));
+        }
+        $this->addRenderer(
             new RelationsRenderer(),
             new CustomPropertiesRenderer(array_values($constants)),
             new MacrosRenderer(),
-        ]);
+        );
     }
 
     /**
