@@ -33,9 +33,8 @@ class PropertyRenderer implements Renderer
         if (is_array($propertyValue)) {
             if (count($propertyValue) >= 1) {
                 return $row . $this->convertArrayToString($formatter, $propertyValue);
-            } else {
-                $propertyValue = '[]';
             }
+            $propertyValue = '[]';
         }
 
         return sprintf(
