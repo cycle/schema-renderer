@@ -28,10 +28,34 @@ class PropertyRenderer implements Renderer
             return $this->required ? $row . $formatter->error('not defined') : null;
         }
 
+        $propertyValue = $schema[$this->property];
+
+        if (is_array($propertyValue)) {
+            if (count($propertyValue) > 1) {
+                return $row . $this->convertArrayToString($formatter, $propertyValue);
+            }
+
+            $propertyValue = reset($propertyValue);
+        }
+
         return sprintf(
             '%s%s',
             $row,
             $formatter->typecast($schema[$this->property])
         );
+    }
+
+    private function convertArrayToString(Formatter $formatter, array $values): string
+    {
+        $string = implode(
+            "\n",
+            array_map(static fn($property) => sprintf(
+                '  %s%s',
+                $formatter->title(' '),
+                $formatter->typecast($property)
+            ), $values)
+        );
+
+        return ltrim($string);
     }
 }
