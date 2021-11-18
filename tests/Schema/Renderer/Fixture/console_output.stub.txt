@@ -16,6 +16,7 @@
 [35m[Cycle\Schema\Renderer\Tests\Fixture\Tag][39m :: [32mdefault[39m.[32mtag[39m
          Role: [34mtag[39m
        Mapper: [34mCycle\ORM\Mapper\Mapper[39m
+               [34mApp\FooMapper[39m
   Primary key: [36mid[39m, [36mname[39m
        Fields:
      ([36mproperty[39m -> [32mdb.field[39m -> [34mtypecast[39m)

@@ -24,14 +24,37 @@ class PropertyRenderer implements Renderer
     {
         $row = sprintf('%s: ', $formatter->title($this->title));
 
-        if (!array_key_exists($this->property, $schema)) {
+        if (!isset($schema[$this->property])) {
             return $this->required ? $row . $formatter->error('not defined') : null;
+        }
+
+        $propertyValue = $schema[$this->property];
+
+        if (is_array($propertyValue)) {
+            if (count($propertyValue) >= 1) {
+                return $row . $this->convertArrayToString($formatter, $propertyValue);
+            }
+            $propertyValue = '[]';
         }
 
         return sprintf(
             '%s%s',
             $row,
-            $formatter->typecast($schema[$this->property])
+            $formatter->typecast($propertyValue)
         );
+    }
+
+    private function convertArrayToString(Formatter $formatter, array $values): string
+    {
+        $string = implode(
+            "\n",
+            array_map(static fn ($property) => sprintf(
+                '  %s%s',
+                $formatter->title(' '),
+                $formatter->typecast($property)
+            ), $values)
+        );
+
+        return ltrim($string);
     }
 }

@@ -28,7 +28,7 @@ final class OutputSchemaRenderer extends OutputRenderer
         'ROLE' => 'Role',
         'ENTITY' => 'Entity',
         'MAPPER' => 'Mapper',
-        'SCOPE' => 'Constrain',
+        'SCOPE' => 'Scope',
         'REPOSITORY' => 'Repository',
     ];
 
