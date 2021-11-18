@@ -16,6 +16,7 @@
 [tag] :: default.tag
        Entity: Cycle\Schema\Renderer\Tests\Fixture\Tag
        Mapper: Cycle\ORM\Mapper\Mapper
+               App\FooMapper
   Primary key: id, name
        Fields:
      (property -> db.field -> typecast)

@@ -61,7 +61,10 @@ final class OutputSchemaRendererTest extends TestCase
             ],
             Tag::class => [
                 SchemaInterface::ROLE => 'tag',
-                SchemaInterface::MAPPER => Mapper::class,
+                SchemaInterface::MAPPER => [
+                    Mapper::class,
+                    'App\FooMapper',
+                ],
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'tag',
                 SchemaInterface::PRIMARY_KEY => ['id', 'name'],
@@ -82,7 +85,9 @@ final class OutputSchemaRendererTest extends TestCase
             ],
             TagContext::class => [
                 SchemaInterface::ROLE => 'tag_context',
-                SchemaInterface::MAPPER => Mapper::class,
+                SchemaInterface::MAPPER => [
+                    Mapper::class
+                ],
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'tag_user_map',
                 SchemaInterface::COLUMNS => [],
