@@ -49,7 +49,7 @@ class PropertyRenderer implements Renderer
     {
         $string = implode(
             "\n",
-            array_map(static fn($property) => sprintf(
+            array_map(static fn ($property) => sprintf(
                 '  %s%s',
                 $formatter->title(' '),
                 $formatter->typecast($property)
