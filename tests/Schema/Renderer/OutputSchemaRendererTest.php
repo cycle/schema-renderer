@@ -86,7 +86,7 @@ final class OutputSchemaRendererTest extends TestCase
             TagContext::class => [
                 SchemaInterface::ROLE => 'tag_context',
                 SchemaInterface::MAPPER => [
-                    Mapper::class
+                    Mapper::class,
                 ],
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'tag_user_map',
