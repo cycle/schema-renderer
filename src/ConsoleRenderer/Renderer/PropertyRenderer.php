@@ -24,15 +24,15 @@ class PropertyRenderer implements Renderer
     {
         $row = sprintf('%s: ', $formatter->title($this->title));
 
-        if (!isset($schema[$this->property])) {
-            return $this->required ? $row . $formatter->error('not defined') : null;
+        if (! isset($schema[$this->property])) {
+            return $this->required ? $row.$formatter->error('not defined') : null;
         }
 
         $propertyValue = $schema[$this->property];
 
         if (is_array($propertyValue)) {
             if (count($propertyValue) >= 1) {
-                return $row . $this->convertArrayToString($formatter, $propertyValue);
+                return $row.$this->convertArrayToString($formatter, $propertyValue);
             }
             $propertyValue = '[]';
         }
@@ -48,7 +48,7 @@ class PropertyRenderer implements Renderer
     {
         $string = implode(
             "\n",
-            array_map(static fn ($property) => sprintf(
+            array_map(static fn($property) => sprintf(
                 '  %s%s',
                 $formatter->title(' '),
                 $formatter->typecast($property)

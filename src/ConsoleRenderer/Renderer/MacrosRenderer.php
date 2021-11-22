@@ -12,7 +12,7 @@ class MacrosRenderer implements Renderer
 {
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
-        if (!\defined(SchemaInterface::class . '::MACROS')) {
+        if (! \defined(SchemaInterface::class.'::MACROS')) {
             return null;
         }
         $macrosList = (array)($schema[SchemaInterface::MACROS] ?? []);
@@ -43,7 +43,7 @@ class MacrosRenderer implements Renderer
                 foreach ($params as $key => $value) {
                     $row = '    ';
                     if (\is_string($key)) {
-                        $row .= $formatter->property($key) . ' : ';
+                        $row .= $formatter->property($key).' : ';
                     }
                     $row .= $formatter->info($this->printValue($formatter, $value));
                     $rows[] = $row;
@@ -57,13 +57,13 @@ class MacrosRenderer implements Renderer
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      */
     private function printValue(Formatter $formatter, $value): string
     {
         return str_replace(
             ["\r\n", "\n"],
-            $formatter::LINE_SEPARATOR . '       ',
+            $formatter::LINE_SEPARATOR.'       ',
             print_r($value, true)
         );
     }

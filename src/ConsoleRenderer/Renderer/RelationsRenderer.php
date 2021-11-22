@@ -33,7 +33,7 @@ class RelationsRenderer implements Renderer
         $relations = $schema[SchemaInterface::RELATIONS] ?? [];
 
         if (count($relations) === 0) {
-            return $title . ' ' . $formatter->error('not defined');
+            return $title.' '.$formatter->error('not defined');
         }
 
         $rows = [$title];
@@ -75,7 +75,7 @@ class RelationsRenderer implements Renderer
                 );
             }
 
-            $rows[] = $row . sprintf(', %s loading, %s', $formatter->info($loading), $formatter->info($cascadeStr));
+            $rows[] = $row.sprintf(', %s loading, %s', $formatter->info($loading), $formatter->info($cascadeStr));
 
             $row = sprintf(
                 '       %s %s.%s <=',
@@ -95,11 +95,11 @@ class RelationsRenderer implements Renderer
             }
 
             // todo: composite $outerKey
-            $rows[] = $row . sprintf(
-                '=> %s.%s',
-                $formatter->entity($target),
-                $this->renderKeys($formatter, $outerKey)
-            );
+            $rows[] = $row.sprintf(
+                    '=> %s.%s',
+                    $formatter->entity($target),
+                    $this->renderKeys($formatter, $outerKey)
+                );
 
             if (count($where)) {
                 $rows[] = sprintf(
@@ -107,8 +107,8 @@ class RelationsRenderer implements Renderer
                     $formatter->title('Where'),
                     str_replace(
                         ["\r\n", "\n"],
-                        $formatter::LINE_SEPARATOR . '       ',
-                        $formatter::LINE_SEPARATOR . print_r($where, true)
+                        $formatter::LINE_SEPARATOR.'       ',
+                        $formatter::LINE_SEPARATOR.print_r($where, true)
                     )
                 );
             }
@@ -119,8 +119,8 @@ class RelationsRenderer implements Renderer
                     $formatter->title('Through where'),
                     str_replace(
                         ["\r\n", "\n"],
-                        $formatter::LINE_SEPARATOR . '       ',
-                        $formatter::LINE_SEPARATOR . print_r($mmWhere, true)
+                        $formatter::LINE_SEPARATOR.'       ',
+                        $formatter::LINE_SEPARATOR.print_r($mmWhere, true)
                     )
                 );
             }
@@ -130,16 +130,17 @@ class RelationsRenderer implements Renderer
     }
 
     /**
-     * @param array<string>|string $keys
+     * @param  array<string>|string  $keys
      */
     private function renderKeys(Formatter $formatter, $keys): string
     {
         $keys = (array)$keys;
         $braces = \count($keys) > 1;
         $keys = \array_map(
-            static fn (string $key) => $formatter->property($key),
+            static fn(string $key) => $formatter->property($key),
             $keys
         );
+
         return sprintf(
             '%s%s%s',
             $braces ? '[' : '',

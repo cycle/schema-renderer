@@ -104,6 +104,8 @@ final class OutputSchemaRendererTest extends TestCase
     {
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
 
+        echo $renderer->render($this->schemaArray);
+
         $expected = file_get_contents(__DIR__ . '/Fixture/console_output.stub.txt');
 
         $this->assertSame(

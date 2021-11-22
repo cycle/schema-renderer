@@ -30,15 +30,15 @@ class KeysRenderer implements Renderer
 
         $row = sprintf('%s: ', $formatter->title($this->title));
 
-        if ($keys === null) {
-            return $this->required ? $row . $formatter->error('not defined') : null;
+        if ($keys === null || $keys === '' || $keys === []) {
+            return $this->required ? $row.$formatter->error('not defined') : null;
         }
 
         $keys = \array_map(
-            static fn (string $key) => $formatter->property($key),
+            static fn(string $key) => $formatter->property($key),
             (array)$keys
         );
 
-        return $row . \implode(', ', $keys);
+        return $row.\implode(', ', $keys);
     }
 }
