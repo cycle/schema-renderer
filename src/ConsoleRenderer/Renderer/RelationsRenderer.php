@@ -130,7 +130,7 @@ class RelationsRenderer implements Renderer
     }
 
     /**
-     * @param array<string>|string $keys
+     * @param  array<string>|string  $keys
      */
     private function renderKeys(Formatter $formatter, $keys): string
     {
@@ -140,6 +140,7 @@ class RelationsRenderer implements Renderer
             static fn (string $key) => $formatter->property($key),
             $keys
         );
+
         return sprintf(
             '%s%s%s',
             $braces ? '[' : '',

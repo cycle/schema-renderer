@@ -15,16 +15,11 @@ class TitleRenderer implements Renderer
         $database = $schema[SchemaInterface::DATABASE] ?? '<undefined databse>';
         $table = $schema[SchemaInterface::TABLE] ?? '<undefined table>';
 
-        $row = $formatter->entity("[{$role}]");
-
-        if ($database !== null) {
-            $row .= sprintf(
-                ' :: %s.%s',
-                $formatter->column($database),
-                $formatter->column($table)
-            );
-        }
-
-        return $row;
+        return sprintf(
+            '%s :: %s.%s',
+            $formatter->entity("[{$role}]"),
+            $formatter->column($database),
+            $formatter->column($table)
+        );
     }
 }

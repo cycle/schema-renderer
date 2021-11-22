@@ -30,7 +30,7 @@ class KeysRenderer implements Renderer
 
         $row = sprintf('%s: ', $formatter->title($this->title));
 
-        if ($keys === null) {
+        if ($keys === null || $keys === '' || $keys === []) {
             return $this->required ? $row . $formatter->error('not defined') : null;
         }
 

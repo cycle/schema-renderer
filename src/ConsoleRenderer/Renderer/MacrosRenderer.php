@@ -12,7 +12,7 @@ class MacrosRenderer implements Renderer
 {
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
-        if (!\defined(SchemaInterface::class . '::MACROS')) {
+        if (! \defined(SchemaInterface::class . '::MACROS')) {
             return null;
         }
         $macrosList = (array)($schema[SchemaInterface::MACROS] ?? []);
@@ -57,7 +57,7 @@ class MacrosRenderer implements Renderer
     }
 
     /**
-     * @param mixed $value
+     * @param  mixed  $value
      */
     private function printValue(Formatter $formatter, $value): string
     {

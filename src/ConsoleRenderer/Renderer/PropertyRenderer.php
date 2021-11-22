@@ -24,7 +24,7 @@ class PropertyRenderer implements Renderer
     {
         $row = sprintf('%s: ', $formatter->title($this->title));
 
-        if (!isset($schema[$this->property])) {
+        if (! isset($schema[$this->property])) {
             return $this->required ? $row . $formatter->error('not defined') : null;
         }
 
