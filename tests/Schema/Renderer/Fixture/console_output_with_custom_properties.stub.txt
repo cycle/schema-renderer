@@ -3,10 +3,10 @@
        Mapper: [34mCycle\ORM\Mapper\Mapper[39m
   Primary key: [36mid[39m
        Fields:
-     ([36mproperty[39m -> [32mdb.field[39m -> [34mtypecast[39m)
-     [36m0[39m -> [32mid[39m -> [34mint[39m
-     [36m1[39m -> [32memail[39m
-     [36m2[39m -> [32mbalance[39m -> [34mfloat[39m
+               ([36mproperty[39m -> [32mdb.field[39m -> [34mtypecast[39m)
+               [36m0[39m -> [32mid[39m -> [34mint[39m
+               [36m1[39m -> [32memail[39m
+               [36m2[39m -> [32mbalance[39m -> [34mfloat[39m
     Relations:
      [35mCycle\Schema\Renderer\Tests\Fixture\User[39m->[36mtags[39m many to many [35mCycle\Schema\Renderer\Tests\Fixture\Tag[39m, [33mdefault[39m loading, [33mcascaded[39m
        n/a [35mCycle\Schema\Renderer\Tests\Fixture\User[39m.[36mid[39m <= [35mtag_context[39m.[36muser_id[39m | [35mtag_context[39m.[36mtag_id[39m => [35mCycle\Schema\Renderer\Tests\Fixture\Tag[39m.[36mid[39m
@@ -20,9 +20,9 @@
                [34mApp\FooMapper[39m
   Primary key: [36mid[39m, [36mname[39m
        Fields:
-     ([36mproperty[39m -> [32mdb.field[39m -> [34mtypecast[39m)
-     [36m0[39m -> [32mid[39m -> [34mint[39m
-     [36m1[39m -> [32mname[39m
+               ([36mproperty[39m -> [32mdb.field[39m -> [34mtypecast[39m)
+               [36m0[39m -> [32mid[39m -> [34mint[39m
+               [36m1[39m -> [32mname[39m
     Relations:
      [35mCycle\Schema\Renderer\Tests\Fixture\Tag[39m->[36muser[39m belongs to [35mCycle\Schema\Renderer\Tests\Fixture\User[39m, [33mdefault[39m loading, [33mcascaded[39m
        n/a [35mCycle\Schema\Renderer\Tests\Fixture\Tag[39m.[36muser_id[39m <==> [35mCycle\Schema\Renderer\Tests\Fixture\User[39m.[36mid[39m

@@ -16,8 +16,8 @@ class TitleRenderer implements Renderer
         $table = $schema[SchemaInterface::TABLE] ?? '<undefined table>';
 
         return sprintf(
-            '[%s] :: %s.%s',
-            $role,
+            '%s :: %s.%s',
+            $formatter->entity("[{$role}]"),
             $formatter->column($database),
             $formatter->column($table)
         );
