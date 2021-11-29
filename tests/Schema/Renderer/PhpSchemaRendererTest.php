@@ -13,9 +13,8 @@ use Cycle\Schema\Renderer\PhpSchemaRenderer;
 use Cycle\Schema\Renderer\Tests\Fixture\Tag;
 use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
-use PHPUnit\Framework\TestCase;
 
-final class PhpSchemaRendererTest extends TestCase
+final class PhpSchemaRendererTest extends BaseTest
 {
     private array $schema;
 

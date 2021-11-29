@@ -34,6 +34,6 @@
        Fields: [31mnot defined[39m
     Relations: [31mnot defined[39m
  Custom props:
-    my_custom_property: [34msuper_value[39m
-    25: [34msuper_value[39m
+             my_custom_property: [34msuper_value[39m
+             25: [34msuper_value[39m
 

@@ -12,7 +12,7 @@ class CustomPropertiesRenderer implements Renderer
     private array $exclude;
 
     /**
-     * @param array<int, int> $exclude Values list that should be excluded
+     * @param  array<int, int>  $exclude  Values list that should be excluded
      */
     public function __construct(array $exclude)
     {
@@ -21,26 +21,40 @@ class CustomPropertiesRenderer implements Renderer
 
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
-        $customProperties = array_diff(array_keys($schema), $this->exclude);
+        $customProperties = \array_diff(\array_keys($schema), $this->exclude);
 
         if ($customProperties === []) {
             return null;
         }
 
         $rows = [
-            sprintf('%s:', $formatter->title('Custom props')),
+            \sprintf('%s:', $formatter->title('Custom props')),
         ];
 
         foreach ($customProperties as $property) {
             $data = $schema[$property] ?? null;
 
-            $rows[] = sprintf(
-                '    %s: %s',
+            $rows[] = \sprintf(
+                '%s%s: %s',
+                $formatter->title(' '),
                 $property,
-                $formatter->typecast(print_r($data, true))
+                $formatter->typecast($this->printValue($data, $formatter))
             );
         }
 
         return \implode($formatter::LINE_SEPARATOR, $rows);
+    }
+
+    private function printValue($value, Formatter $formatter): string
+    {
+        $data = \trim(\var_export($value, true), '\'');
+        $data = \array_map(
+            static fn(string $row): string => $formatter->title(' ').$row,
+            \explode("\n", $data)
+        );
+
+        return \ltrim(
+            \implode("\n", $data)
+        );
     }
 }

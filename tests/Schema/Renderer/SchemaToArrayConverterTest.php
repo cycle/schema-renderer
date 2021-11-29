@@ -12,9 +12,8 @@ use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\Tests\Fixture\Tag;
 use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
-use PHPUnit\Framework\TestCase;
 
-class SchemaToArrayConverterTest extends TestCase
+class SchemaToArrayConverterTest extends BaseTest
 {
     private Schema $schema;
 

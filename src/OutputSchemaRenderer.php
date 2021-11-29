@@ -56,27 +56,32 @@ final class OutputSchemaRenderer extends OutputRenderer
         // JTI support
         if (isset($constants['PARENT'], $constants['PARENT_KEY'])) {
             $this->addRenderer(...[
-                new PropertyRenderer($constants['PARENT'], 'Children'),
-                new KeysRenderer($constants['PARENT_KEY'], 'STI key', false),
+                new PropertyRenderer($constants['PARENT'], 'Parent'),
+                new KeysRenderer($constants['PARENT_KEY'], 'Parent key', false),
             ]);
         }
 
         // STI support
-        if (isset($constants['CHILDREN'], $constants['DISCRIMINATOR'])) {
-            $this->addRenderer(...[
-                new PropertyRenderer($constants['CHILDREN'], 'Parent'),
-                new KeysRenderer($constants['DISCRIMINATOR'], 'Parent key', false),
-            ]);
+        if (isset($constants['CHILDREN'])) {
+            $this->addRenderer(new PropertyRenderer($constants['CHILDREN'], 'Children'));
+        }
+
+        if (isset($constants['DISCRIMINATOR'])) {
+            $this->addRenderer(new KeysRenderer($constants['DISCRIMINATOR'], 'Discriminator column', false));
         }
 
         $this->addRenderer(new ColumnsRenderer());
         if (isset($constants['TYPECAST_HANDLER'])) {
             $this->addRenderer(new PropertyRenderer($constants['TYPECAST_HANDLER'], 'Typecast'));
         }
+
+        if (isset($constants['MACROS'])) {
+            $this->addRenderer(new MacrosRenderer($constants['MACROS'], 'Macros'));
+        }
+
         $this->addRenderer(
             new RelationsRenderer(),
             new CustomPropertiesRenderer(array_values($constants)),
-            new MacrosRenderer(),
         );
     }
 

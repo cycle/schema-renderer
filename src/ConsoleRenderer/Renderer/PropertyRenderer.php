@@ -22,7 +22,7 @@ class PropertyRenderer implements Renderer
 
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
-        $row = sprintf('%s: ', $formatter->title($this->title));
+        $row = \sprintf('%s: ', $formatter->title($this->title));
 
         if (! isset($schema[$this->property])) {
             return $this->required ? $row . $formatter->error('not defined') : null;
@@ -30,14 +30,14 @@ class PropertyRenderer implements Renderer
 
         $propertyValue = $schema[$this->property];
 
-        if (is_array($propertyValue)) {
-            if (count($propertyValue) >= 1) {
+        if (\is_array($propertyValue)) {
+            if (\count($propertyValue) >= 1) {
                 return $row . $this->convertArrayToString($formatter, $propertyValue);
             }
             $propertyValue = '[]';
         }
 
-        return sprintf(
+        return \sprintf(
             '%s%s',
             $row,
             $formatter->typecast($propertyValue)
@@ -46,15 +46,15 @@ class PropertyRenderer implements Renderer
 
     private function convertArrayToString(Formatter $formatter, array $values): string
     {
-        $string = implode(
+        $string = \implode(
             "\n",
-            array_map(static fn ($property) => sprintf(
+            \array_map(static fn ($property) => \sprintf(
                 '  %s%s',
                 $formatter->title(' '),
                 $formatter->typecast($property)
             ), $values)
         );
 
-        return ltrim($string);
+        return \ltrim($string);
     }
 }
