@@ -72,7 +72,9 @@ OUTPUT
 
         $result = $renderer->render($this->formatter, [
             1 => [
-                ['foo-macros', []], ['bar-macros', ['baz' => 'bar', 'baz1', 'baz2']], ['baz-macros', 'baz'],
+                ['foo-macros', []],
+                ['bar-macros', ['baz' => 'bar', 'baz1', 'baz2']],
+                ['baz-macros', 'baz'],
             ],
         ], 'baz');
 

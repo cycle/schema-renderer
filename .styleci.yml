@@ -4,6 +4,8 @@ risky: true
 version: 7
 
 finder:
+    exclude:
+        - "tests"
     not-name:
         - "*.stub.txt"
 

@@ -78,7 +78,8 @@ OUTPUT
                 SchemaInterface::COLUMNS => ['id', 'email', 'balance'],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'balance' => 'float'],
                 SchemaInterface::MACROS => [
-                    'foo-macros', 'bar-macros',
+                    'foo-macros',
+                    'bar-macros',
                 ],
             ],
         ];
@@ -123,7 +124,10 @@ OUTPUT
                 SchemaInterface::COLUMNS => ['id', 'email', 'balance'],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'balance' => 'float'],
                 SchemaInterface::MACROS => [
-                    ['foo-macros', []], ['bar-macros', ['baz' => 'bar', 'baz1', 'baz2']], ['baz-macros', 'baz'],
+                    ['foo-macros', []],
+                    ['bar-macros', ['baz' => 'bar', 'baz1', 'baz2']],
+                    ['baz-macros', 'baz'],
+                    ['baz-macros', true],
                 ],
             ],
         ];
@@ -151,6 +155,11 @@ OUTPUT
               - baz2
              baz-macros
               - baz
+             baz-macros
+array (
+               0 => 'baz-macros',
+               1 => true,
+             )
     Relations: not defined
 
 

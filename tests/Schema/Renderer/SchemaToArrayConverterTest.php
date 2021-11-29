@@ -62,7 +62,7 @@ class SchemaToArrayConverterTest extends BaseTest
 
     public function testObjectShouldBeConvertedToArray()
     {
-        $this->assertSame([
+        $this->assertEquals([
             'user' => [
                 SchemaInterface::ENTITY => User::class,
                 SchemaInterface::MAPPER => Mapper::class,
@@ -99,13 +99,14 @@ class SchemaToArrayConverterTest extends BaseTest
                     'balance' => 'float',
                 ],
                 SchemaInterface::SCHEMA => [],
+                123 => 'value',
             ],
         ], (new SchemaToArrayConverter())->convert($this->schema));
     }
 
     public function testObjectWithCustomPropertiesShouldBeConvertedToArray()
     {
-        $this->assertSame([
+        $this->assertEquals([
             'user' => [
                 SchemaInterface::ENTITY => User::class,
                 SchemaInterface::MAPPER => Mapper::class,

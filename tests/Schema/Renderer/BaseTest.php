@@ -19,4 +19,9 @@ abstract class BaseTest extends TestCase
 
         return true;
     }
+
+    public function isOrmV2(): bool
+    {
+        return (int) \Composer\InstalledVersions::getVersion('cycle/orm') > 1;
+    }
 }
