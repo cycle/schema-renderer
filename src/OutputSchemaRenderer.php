@@ -39,9 +39,7 @@ final class OutputSchemaRenderer extends OutputRenderer
             : new PlainFormatter();
         parent::__construct($formatter);
 
-        $constants = $constants ?? new SchemaConstants();
-
-        $constants = $constants->all();
+        $constants = ($constants ?? new SchemaConstants())->all();
         $properties = $this->getOrmProperties($constants);
 
         $this->addRenderer(...[

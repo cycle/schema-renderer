@@ -7,7 +7,7 @@ namespace Cycle\Schema\Renderer;
 interface ConstantsInterface
 {
     /**
-     * @return array<string, mixed>
+     * @return array<string, int>
      */
     public function all(): array;
 }

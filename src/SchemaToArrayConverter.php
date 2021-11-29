@@ -11,6 +11,14 @@ use Cycle\ORM\SchemaInterface;
  */
 final class SchemaToArrayConverter
 {
+    /** @var array<string, int> */
+    private array $constants;
+
+    public function __construct(?ConstantsInterface $constants = null)
+    {
+        $this->constants = ($constants ?? new SchemaConstants())->all();
+    }
+
     /**
      * @param SchemaInterface $schema
      * @param array<int, int> $customProperties
@@ -26,7 +34,7 @@ final class SchemaToArrayConverter
 
         $result = [];
 
-        $properties = array_merge($this->getSchemaConstants(), $customProperties);
+        $properties = array_merge($this->constants, $customProperties);
 
         foreach ($schema->getRoles() as $role) {
             foreach ($properties as $property) {
@@ -40,17 +48,5 @@ final class SchemaToArrayConverter
         }
 
         return $result;
-    }
-
-    /**
-     * @return array<int, int>
-     */
-    private function getSchemaConstants(): array
-    {
-        $result = array_filter(
-            (new \ReflectionClass(SchemaInterface::class))->getConstants(),
-            static fn ($value): bool => is_int($value)
-        );
-        return array_values($result);
     }
 }
