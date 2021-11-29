@@ -34,7 +34,7 @@ class CustomPropertiesRendererTest extends BaseTest
             'string' => 'Hello world',
             'array' => ['foo' => 'bar'],
             'object' => $object,
-            'bool' => false
+            'bool' => false,
         ], 'foo');
 
         $this->assertSame(

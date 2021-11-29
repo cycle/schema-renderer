@@ -52,7 +52,7 @@ class CustomPropertiesRenderer implements Renderer
     {
         $data = \trim(\var_export($value, true), '\'');
         $data = \array_map(
-            static fn(string $row): string => $formatter->title(' ').$row,
+            static fn (string $row): string => $formatter->title(' ') . $row,
             \explode("\n", $data)
         );
 

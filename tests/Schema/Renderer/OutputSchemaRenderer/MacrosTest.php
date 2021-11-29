@@ -78,7 +78,7 @@ OUTPUT
                 SchemaInterface::COLUMNS => ['id', 'email', 'balance'],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'balance' => 'float'],
                 SchemaInterface::MACROS => [
-                    'foo-macros', 'bar-macros'
+                    'foo-macros', 'bar-macros',
                 ],
             ],
         ];
@@ -123,7 +123,7 @@ OUTPUT
                 SchemaInterface::COLUMNS => ['id', 'email', 'balance'],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'balance' => 'float'],
                 SchemaInterface::MACROS => [
-                    ['foo-macros', []], ['bar-macros', ['baz' => 'bar', 'baz1', 'baz2']], ['baz-macros', 'baz']
+                    ['foo-macros', []], ['bar-macros', ['baz' => 'bar', 'baz1', 'baz2']], ['baz-macros', 'baz'],
                 ],
             ],
         ];
