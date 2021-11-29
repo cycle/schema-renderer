@@ -45,6 +45,9 @@ class CustomPropertiesRenderer implements Renderer
         return \implode($formatter::LINE_SEPARATOR, $rows);
     }
 
+    /**
+     * @param mixed $value
+     */
     private function printValue($value, Formatter $formatter): string
     {
         $data = \trim(\var_export($value, true), '\'');
