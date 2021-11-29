@@ -6,5 +6,4 @@ namespace Cycle\Schema\Renderer\Tests\Fixture;
 
 class Admin
 {
-
 }

@@ -12,7 +12,7 @@ abstract class BaseTest extends TestCase
     public function constantSupported(string ...$constants): bool
     {
         foreach ($constants as $constant) {
-            if (! \defined(SchemaInterface::class.'::'.$constant)) {
+            if (! \defined(SchemaInterface::class . '::' . $constant)) {
                 return false;
             }
         }

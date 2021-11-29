@@ -61,7 +61,6 @@ OUTPUT
         );
     }
 
-
     public function testSchemaWithChildrenAndDiscriminatorPropertiesShouldBeRendered(): void
     {
         if (! $this->constantSupported('CHILDREN', 'DISCRIMINATOR')) {

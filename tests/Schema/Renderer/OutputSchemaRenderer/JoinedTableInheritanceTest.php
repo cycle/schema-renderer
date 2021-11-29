@@ -10,7 +10,6 @@ use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\OutputSchemaRenderer;
 use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\Tests\BaseTest;
-use Cycle\Schema\Renderer\Tests\Fixture\Admin;
 use Cycle\Schema\Renderer\Tests\Fixture\Guest;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
 

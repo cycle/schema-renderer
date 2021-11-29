@@ -102,7 +102,7 @@ final class CommonTest extends TestCase
     {
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
 
-        $expected = file_get_contents(__DIR__.'/../Fixture/console_output.stub.txt');
+        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output.stub.txt');
 
         $this->assertSame(
             $expected,
@@ -114,7 +114,7 @@ final class CommonTest extends TestCase
     {
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $expected = file_get_contents(__DIR__.'/../Fixture/console_output_plain.stub.txt');
+        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_plain.stub.txt');
 
         $this->assertSame(
             $expected,
@@ -127,7 +127,7 @@ final class CommonTest extends TestCase
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
         $renderer->addRenderer(new PropertyRenderer(SchemaInterface::SOURCE, 'Source'));
 
-        $expected = file_get_contents(__DIR__.'/../Fixture/console_output_with_custom_properties.stub.txt');
+        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_with_custom_properties.stub.txt');
 
         $this->assertSame(
             $expected,

@@ -6,8 +6,6 @@ namespace Cycle\Schema\Renderer\Tests\ConsoleRenderer\Renderer;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
-use Cycle\ORM\Tests\Fixtures\Comment;
-use Cycle\ORM\Tests\Fixtures\CompositePK;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter\PlainFormatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\RelationsRenderer;

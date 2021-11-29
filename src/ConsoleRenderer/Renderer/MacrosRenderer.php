@@ -50,15 +50,15 @@ class MacrosRenderer implements Renderer
             }
             if (\is_array($params)) {
                 foreach ($params as $key => $value) {
-                    $row = $formatter->title(' ').' - ';
+                    $row = $formatter->title(' ') . ' - ';
                     if (\is_string($key)) {
-                        $row .= $formatter->property($key).' : ';
+                        $row .= $formatter->property($key) . ' : ';
                     }
                     $row .= $formatter->info($this->printValue($value, $formatter));
                     $rows[] = $row;
                 }
             } elseif (is_string($params)) {
-                $rows[] = $formatter->title(' ').' - '.$formatter->info($this->printValue($params, $formatter));
+                $rows[] = $formatter->title(' ') . ' - ' . $formatter->info($this->printValue($params, $formatter));
             } else {
                 $rows[] = $formatter->typecast($this->printValue($data, $formatter));
             }
@@ -71,7 +71,7 @@ class MacrosRenderer implements Renderer
     {
         $data = \trim(\var_export($value, true), '\'');
         $data = \array_map(
-            static fn(string $row): string => $formatter->title(' ').$row,
+            static fn (string $row): string => $formatter->title(' ') . $row,
             \explode("\n", $data)
         );
 
