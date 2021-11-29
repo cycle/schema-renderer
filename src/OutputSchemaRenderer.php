@@ -32,14 +32,16 @@ final class OutputSchemaRenderer extends OutputRenderer
         'REPOSITORY' => 'Repository',
     ];
 
-    public function __construct(int $format = self::FORMAT_CONSOLE_COLOR)
+    public function __construct(int $format = self::FORMAT_CONSOLE_COLOR, ?ConstantsInterface $constants = null)
     {
         $formatter = $format === self::FORMAT_CONSOLE_COLOR
             ? new StyledFormatter()
             : new PlainFormatter();
         parent::__construct($formatter);
 
-        $constants = $this->getOrmConstants();
+        $constants = $constants ?? new SchemaConstants();
+
+        $constants = $constants->all();
         $properties = $this->getOrmProperties($constants);
 
         $this->addRenderer(...[
@@ -100,13 +102,5 @@ final class OutputSchemaRenderer extends OutputRenderer
             $result[$value] = self::DEFAULT_PROPERTY_LIST[$name];
         }
         return $result;
-    }
-
-    private function getOrmConstants(): array
-    {
-        return array_filter(
-            (new \ReflectionClass(SchemaInterface::class))->getConstants(),
-            'is_int'
-        );
     }
 }
