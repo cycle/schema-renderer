@@ -2,25 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\Tests;
+namespace Cycle\Schema\Renderer\Tests\SchemaToArrayConverter;
 
 use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\SchemaToArrayConverter;
+use Cycle\Schema\Renderer\Tests\BaseTest;
 use Cycle\Schema\Renderer\Tests\Fixture\Tag;
 use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
-use PHPUnit\Framework\TestCase;
 
-class SchemaToArrayConverterTest extends TestCase
+class CycleOrmV1Test extends BaseTest
 {
     private Schema $schema;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        if ($this->isOrmV2()) {
+            $this->markTestSkipped('Test for CycleORM v1');
+        }
 
         $this->schema = new Schema([
             User::class => [
@@ -63,7 +67,7 @@ class SchemaToArrayConverterTest extends TestCase
 
     public function testObjectShouldBeConvertedToArray()
     {
-        $this->assertSame([
+        $this->assertEquals([
             'user' => [
                 SchemaInterface::ENTITY => User::class,
                 SchemaInterface::MAPPER => Mapper::class,
@@ -106,7 +110,7 @@ class SchemaToArrayConverterTest extends TestCase
 
     public function testObjectWithCustomPropertiesShouldBeConvertedToArray()
     {
-        $this->assertSame([
+        $this->assertEquals([
             'user' => [
                 SchemaInterface::ENTITY => User::class,
                 SchemaInterface::MAPPER => Mapper::class,

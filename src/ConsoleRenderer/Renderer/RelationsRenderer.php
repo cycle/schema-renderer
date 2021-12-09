@@ -12,6 +12,7 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 class RelationsRenderer implements Renderer
 {
     private const STR_RELATION = [
+        Relation::EMBEDDED => 'has embedded',
         Relation::HAS_ONE => 'has one',
         Relation::HAS_MANY => 'has many',
         Relation::BELONGS_TO => 'belongs to',
@@ -29,10 +30,10 @@ class RelationsRenderer implements Renderer
 
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
-        $title = sprintf('%s:', $formatter->title('Relations'));
+        $title = \sprintf('%s:', $formatter->title('Relations'));
         $relations = $schema[SchemaInterface::RELATIONS] ?? [];
 
-        if (count($relations) === 0) {
+        if (\count($relations) === 0) {
             return $title . ' ' . $formatter->error('not defined');
         }
 
@@ -59,7 +60,7 @@ class RelationsRenderer implements Renderer
             $mmWhere = $relSchema[Relation::THROUGH_WHERE] ?? [];
 
             // print
-            $row = sprintf(
+            $row = \sprintf(
                 '     %s->%s %s %s',
                 $formatter->entity($role),
                 $formatter->property($field),
@@ -68,16 +69,16 @@ class RelationsRenderer implements Renderer
             );
 
             if ($morphKey !== null) {
-                $row .= sprintf(
+                $row .= \sprintf(
                     ', %s: %s',
                     $formatter->title('morphed key'),
                     $this->renderKeys($formatter, $morphKey)
                 );
             }
 
-            $rows[] = $row . sprintf(', %s loading, %s', $formatter->info($loading), $formatter->info($cascadeStr));
+            $rows[] = $row . \sprintf(', %s loading, %s', $formatter->info($loading), $formatter->info($cascadeStr));
 
-            $row = sprintf(
+            $row = \sprintf(
                 '       %s %s.%s <=',
                 $nullableStr,
                 $formatter->entity($role),
@@ -85,7 +86,7 @@ class RelationsRenderer implements Renderer
             );
 
             if ($mmEntity !== null) {
-                $row .= sprintf(
+                $row .= \sprintf(
                     ' %s.%s | %s.%s ',
                     $formatter->entity($mmEntity),
                     $this->renderKeys($formatter, $mmInnerKey),
@@ -95,17 +96,17 @@ class RelationsRenderer implements Renderer
             }
 
             // todo: composite $outerKey
-            $rows[] = $row . sprintf(
+            $rows[] = $row . \sprintf(
                 '=> %s.%s',
                 $formatter->entity($target),
                 $this->renderKeys($formatter, $outerKey)
             );
 
             if (count($where)) {
-                $rows[] = sprintf(
+                $rows[] = \sprintf(
                     '%s: %s',
                     $formatter->title('Where'),
-                    str_replace(
+                    \str_replace(
                         ["\r\n", "\n"],
                         $formatter::LINE_SEPARATOR . '       ',
                         $formatter::LINE_SEPARATOR . print_r($where, true)
@@ -114,10 +115,10 @@ class RelationsRenderer implements Renderer
             }
 
             if (count($mmWhere)) {
-                $rows[] = sprintf(
+                $rows[] = \sprintf(
                     '%s: %s',
                     $formatter->title('Through where'),
-                    str_replace(
+                    \str_replace(
                         ["\r\n", "\n"],
                         $formatter::LINE_SEPARATOR . '       ',
                         $formatter::LINE_SEPARATOR . print_r($mmWhere, true)
@@ -141,7 +142,7 @@ class RelationsRenderer implements Renderer
             $keys
         );
 
-        return sprintf(
+        return \sprintf(
             '%s%s%s',
             $braces ? '[' : '',
             \implode(', ', $keys),

@@ -15,9 +15,9 @@ class ColumnsRenderer implements Renderer
         $rows = [];
 
         $columns = $schema[SchemaInterface::COLUMNS] ?? [];
-        $title = sprintf('%s:', $formatter->title('Fields'));
+        $title = \sprintf('%s:', $formatter->title('Fields'));
 
-        if (! \is_array($columns) || count($columns) === 0) {
+        if (! \is_array($columns) || \count($columns) === 0) {
             return $title . ' ' . $formatter->error('not defined');
         }
 
@@ -25,7 +25,7 @@ class ColumnsRenderer implements Renderer
 
         $rows[] = $title;
 
-        $rows[] = sprintf(
+        $rows[] = \sprintf(
             '%s(%s -> %s -> %s)',
             $padding,
             $formatter->property('property'),
@@ -37,7 +37,7 @@ class ColumnsRenderer implements Renderer
 
         foreach ($columns as $property => $field) {
             $typecast = $types[$property] ?? $types[$field] ?? null;
-            $row = sprintf(
+            $row = \sprintf(
                 '%s%s -> %s',
                 $padding,
                 $formatter->property((string)$property),
@@ -45,7 +45,7 @@ class ColumnsRenderer implements Renderer
             );
 
             if ($typecast !== null && $typecast !== [] && $typecast !== '') {
-                $row .= sprintf(
+                $row .= \sprintf(
                     ' -> %s',
                     $formatter->typecast(\implode('::', (array)$typecast))
                 );

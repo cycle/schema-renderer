@@ -2,21 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\Tests;
+namespace Cycle\Schema\Renderer\Tests\OutputSchemaRenderer;
 
 use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
-use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\PropertyRenderer;
 use Cycle\Schema\Renderer\OutputSchemaRenderer;
-use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\Tests\Fixture\Tag;
 use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
 use PHPUnit\Framework\TestCase;
 
-final class OutputSchemaRendererTest extends TestCase
+final class CommonTest extends TestCase
 {
     private array $schemaArray;
 
@@ -104,9 +102,7 @@ final class OutputSchemaRendererTest extends TestCase
     {
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
 
-        echo $renderer->render($this->schemaArray);
-
-        $expected = file_get_contents(__DIR__ . '/Fixture/console_output.stub.txt');
+        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output.stub.txt');
 
         $this->assertSame(
             $expected,
@@ -116,15 +112,13 @@ final class OutputSchemaRendererTest extends TestCase
 
     public function testPlainFormat(): void
     {
-        $schema = new Schema($this->schemaArray);
-        $schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $expected = file_get_contents(__DIR__ . '/Fixture/console_output_plain.stub.txt');
+        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_plain.stub.txt');
 
         $this->assertSame(
             $expected,
-            $renderer->render($schemaArray)
+            $renderer->render($this->schemaArray)
         );
     }
 
@@ -133,7 +127,7 @@ final class OutputSchemaRendererTest extends TestCase
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
         $renderer->addRenderer(new PropertyRenderer(SchemaInterface::SOURCE, 'Source'));
 
-        $expected = file_get_contents(__DIR__ . '/Fixture/console_output_with_custom_properties.stub.txt');
+        $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_with_custom_properties.stub.txt');
 
         $this->assertSame(
             $expected,

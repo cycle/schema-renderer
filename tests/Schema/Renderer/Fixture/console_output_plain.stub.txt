@@ -1,5 +1,5 @@
-[user] :: default.user
-       Entity: Cycle\Schema\Renderer\Tests\Fixture\User
+[Cycle\Schema\Renderer\Tests\Fixture\User] :: default.user
+         Role: user
        Mapper: Cycle\ORM\Mapper\Mapper
   Primary key: id
        Fields:
@@ -8,13 +8,13 @@
                1 -> email
                2 -> balance -> float
     Relations:
-     user->tags many to many tag, default loading, cascaded
-       n/a user.id <= tag_context.user_id | tag_context.tag_id => tag.id
-     user->tag belongs to tag, default loading, cascaded
-       n/a user.tag_id <==> tag.id
+     Cycle\Schema\Renderer\Tests\Fixture\User->tags many to many Cycle\Schema\Renderer\Tests\Fixture\Tag, default loading, cascaded
+       n/a Cycle\Schema\Renderer\Tests\Fixture\User.id <= tag_context.user_id | tag_context.tag_id => Cycle\Schema\Renderer\Tests\Fixture\Tag.id
+     Cycle\Schema\Renderer\Tests\Fixture\User->tag belongs to Cycle\Schema\Renderer\Tests\Fixture\Tag, default loading, cascaded
+       n/a Cycle\Schema\Renderer\Tests\Fixture\User.tag_id <==> Cycle\Schema\Renderer\Tests\Fixture\Tag.id
 
-[tag] :: default.tag
-       Entity: Cycle\Schema\Renderer\Tests\Fixture\Tag
+[Cycle\Schema\Renderer\Tests\Fixture\Tag] :: default.tag
+         Role: tag
        Mapper: Cycle\ORM\Mapper\Mapper
                App\FooMapper
   Primary key: id, name
@@ -23,13 +23,16 @@
                0 -> id -> int
                1 -> name
     Relations:
-     tag->user belongs to user, default loading, cascaded
-       n/a tag.user_id <==> user.id
+     Cycle\Schema\Renderer\Tests\Fixture\Tag->user belongs to Cycle\Schema\Renderer\Tests\Fixture\User, default loading, cascaded
+       n/a Cycle\Schema\Renderer\Tests\Fixture\Tag.user_id <==> Cycle\Schema\Renderer\Tests\Fixture\User.id
 
-[tag_context] :: default.tag_user_map
-       Entity: Cycle\Schema\Renderer\Tests\Fixture\TagContext
+[Cycle\Schema\Renderer\Tests\Fixture\TagContext] :: default.tag_user_map
+         Role: tag_context
        Mapper: Cycle\ORM\Mapper\Mapper
   Primary key: not defined
        Fields: not defined
     Relations: not defined
+ Custom props:
+             my_custom_property: super_value
+             25: super_value
 

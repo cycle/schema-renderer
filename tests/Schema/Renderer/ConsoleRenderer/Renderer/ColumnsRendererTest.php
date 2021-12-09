@@ -8,9 +8,9 @@ use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter\PlainFormatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\ColumnsRenderer;
-use PHPUnit\Framework\TestCase;
+use Cycle\Schema\Renderer\Tests\BaseTest;
 
-class ColumnsRendererTest extends TestCase
+class ColumnsRendererTest extends BaseTest
 {
     private Formatter $formatter;
 

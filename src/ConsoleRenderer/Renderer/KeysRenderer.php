@@ -28,7 +28,7 @@ class KeysRenderer implements Renderer
     {
         $keys = $schema[$this->key] ?? null;
 
-        $row = sprintf('%s: ', $formatter->title($this->title));
+        $row = \sprintf('%s: ', $formatter->title($this->title));
 
         if ($keys === null || $keys === '' || $keys === []) {
             return $this->required ? $row . $formatter->error('not defined') : null;

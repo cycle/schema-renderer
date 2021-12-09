@@ -7,9 +7,9 @@ namespace Cycle\Schema\Renderer\Tests\ConsoleRenderer\Renderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter\PlainFormatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\PropertyRenderer;
-use PHPUnit\Framework\TestCase;
+use Cycle\Schema\Renderer\Tests\BaseTest;
 
-class PropertyRendererTest extends TestCase
+class PropertyRendererTest extends BaseTest
 {
     private Formatter $formatter;
 

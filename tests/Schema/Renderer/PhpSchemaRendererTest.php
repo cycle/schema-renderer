@@ -8,14 +8,13 @@ use Cycle\ORM\Mapper\Mapper;
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\PhpSchemaRenderer;
+use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\Tests\Fixture\Tag;
 use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
-use PHPUnit\Framework\TestCase;
 
-final class PhpSchemaRendererTest extends TestCase
+final class PhpSchemaRendererTest extends BaseTest
 {
     private array $schema;
 
@@ -96,7 +95,11 @@ final class PhpSchemaRendererTest extends TestCase
     public function testRenderSchemaToPhpCode(): void
     {
         $renderer = new PhpSchemaRenderer();
-        $expected = file_get_contents(__DIR__ . '/Fixture/generated_schema.stub.php');
+        if ($this->isOrmV2()) {
+            $expected = file_get_contents(__DIR__.'/Fixture/generated_schema_v2.stub.php');
+        } else {
+            $expected = file_get_contents(__DIR__.'/Fixture/generated_schema.stub.php');
+        }
 
         $this->assertSame(
             $expected,

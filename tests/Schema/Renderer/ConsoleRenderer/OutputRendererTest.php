@@ -12,11 +12,11 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Formatter\StyledFormatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\OutputRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\TitleRenderer;
 use Cycle\Schema\Renderer\SchemaToArrayConverter;
+use Cycle\Schema\Renderer\Tests\BaseTest;
 use Cycle\Schema\Renderer\Tests\Fixture\Tag;
 use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
-use PHPUnit\Framework\TestCase;
 
-class OutputRendererTest extends TestCase
+class OutputRendererTest extends BaseTest
 {
     private array $schemaArray;
 
