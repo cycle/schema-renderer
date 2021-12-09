@@ -67,7 +67,7 @@ final class OutputSchemaRenderer extends OutputRenderer
         }
 
         if (isset($constants['DISCRIMINATOR'])) {
-            $this->addRenderer(new KeysRenderer($constants['DISCRIMINATOR'], 'Discriminator column', false));
+            $this->addRenderer(new KeysRenderer($constants['DISCRIMINATOR'], 'Discriminator', false));
         }
 
         $this->addRenderer(new ColumnsRenderer());
