@@ -97,7 +97,7 @@ OUTPUT
   Primary key: id
      Children: Cycle\Schema\Renderer\Tests\Fixture\Guest
                Cycle\Schema\Renderer\Tests\Fixture\Admin
-Discriminator column: type
+Discriminator: type
        Fields:
                (property -> db.field -> typecast)
                0 -> id -> int
