@@ -11,7 +11,7 @@ use Cycle\Schema\Renderer\ConsoleRenderer\OutputRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\ColumnsRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\CustomPropertiesRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\KeysRenderer;
-use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\MacrosRenderer;
+use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\ListenersRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\PropertyRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\RelationsRenderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\TitleRenderer;
@@ -75,13 +75,13 @@ final class OutputSchemaRenderer extends OutputRenderer
             $this->addRenderer(new PropertyRenderer($constants['TYPECAST_HANDLER'], 'Typecast'));
         }
 
-        if (isset($constants['MACROS'])) {
-            $this->addRenderer(new MacrosRenderer($constants['MACROS'], 'Macros'));
+        if (isset($constants['LISTENERS'])) {
+            $this->addRenderer(new ListenersRenderer($constants['LISTENERS'], 'Listeners'));
         }
 
         $this->addRenderer(
             new RelationsRenderer(),
-            new CustomPropertiesRenderer(array_values($constants)),
+            new CustomPropertiesRenderer(\array_values($constants)),
         );
     }
 

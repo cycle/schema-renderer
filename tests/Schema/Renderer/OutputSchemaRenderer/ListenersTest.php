@@ -12,18 +12,18 @@ use Cycle\Schema\Renderer\SchemaToArrayConverter;
 use Cycle\Schema\Renderer\Tests\BaseTest;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
 
-final class MacrosTest extends BaseTest
+final class ListenersTest extends BaseTest
 {
     protected function setUp(): void
     {
         parent::setUp();
 
-        if (! $this->constantSupported('MACROS')) {
-            $this->markTestSkipped('Only CycleORM v2 supports macros');
+        if (! $this->constantSupported('LISTENERS')) {
+            $this->markTestSkipped('Only CycleORM v2 supports listener');
         }
     }
 
-    public function testSchemaWithMacrosPropertyAsStringShouldBeRendered()
+    public function testSchemaWithListenerPropertyAsStringShouldBeRendered()
     {
         $schemaArray = [
             User::class => [
@@ -35,7 +35,7 @@ final class MacrosTest extends BaseTest
                 SchemaInterface::PRIMARY_KEY => 'id',
                 SchemaInterface::COLUMNS => ['id', 'email', 'balance'],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'balance' => 'float'],
-                SchemaInterface::MACROS => 'foo-macros',
+                SchemaInterface::LISTENERS => 'foo-listener',
             ],
         ];
 
@@ -54,8 +54,8 @@ final class MacrosTest extends BaseTest
                0 -> id -> int
                1 -> email
                2 -> balance -> float
-       Macros:
-             foo-macros
+    Listeners:
+             foo-listener
     Relations: not defined
 
 
@@ -65,7 +65,7 @@ OUTPUT
         );
     }
 
-    public function testSchemaWithMacrosPropertyAsArrayShouldBeRendered()
+    public function testSchemaWithListenerPropertyAsArrayShouldBeRendered()
     {
         $schemaArray = [
             User::class => [
@@ -77,9 +77,9 @@ OUTPUT
                 SchemaInterface::PRIMARY_KEY => 'id',
                 SchemaInterface::COLUMNS => ['id', 'email', 'balance'],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'balance' => 'float'],
-                SchemaInterface::MACROS => [
-                    'foo-macros',
-                    'bar-macros',
+                SchemaInterface::LISTENERS => [
+                    'foo-listener',
+                    'bar-listener',
                 ],
             ],
         ];
@@ -99,9 +99,9 @@ OUTPUT
                0 -> id -> int
                1 -> email
                2 -> balance -> float
-       Macros:
-             foo-macros
-             bar-macros
+    Listeners:
+             foo-listener
+             bar-listener
     Relations: not defined
 
 
@@ -111,7 +111,7 @@ OUTPUT
         );
     }
 
-    public function testSchemaWithMacrosPropertyAsAssocArrayShouldBeRendered()
+    public function testSchemaWithListenerPropertyAsAssocArrayShouldBeRendered()
     {
         $schemaArray = [
             User::class => [
@@ -123,11 +123,11 @@ OUTPUT
                 SchemaInterface::PRIMARY_KEY => 'id',
                 SchemaInterface::COLUMNS => ['id', 'email', 'balance'],
                 SchemaInterface::TYPECAST => ['id' => 'int', 'balance' => 'float'],
-                SchemaInterface::MACROS => [
-                    ['foo-macros', []],
-                    ['bar-macros', ['baz' => 'bar', 'baz1', 'baz2']],
-                    ['baz-macros', 'baz'],
-                    ['baz-macros', true],
+                SchemaInterface::LISTENERS => [
+                    ['foo-listener', []],
+                    ['bar-listener', ['baz' => 'bar', 'baz1', 'baz2']],
+                    ['baz-listener', 'baz'],
+                    ['baz-listener', true],
                 ],
             ],
         ];
@@ -147,17 +147,17 @@ OUTPUT
                0 -> id -> int
                1 -> email
                2 -> balance -> float
-       Macros:
-             foo-macros
-             bar-macros
+    Listeners:
+             foo-listener
+             bar-listener
               - baz : bar
               - baz1
               - baz2
-             baz-macros
+             baz-listener
               - baz
-             baz-macros
+             baz-listener
 array (
-               0 => 'baz-macros',
+               0 => 'baz-listener',
                1 => true,
              )
     Relations: not defined
