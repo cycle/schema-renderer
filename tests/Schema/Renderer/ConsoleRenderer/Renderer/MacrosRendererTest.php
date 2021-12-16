@@ -6,10 +6,10 @@ namespace Cycle\Schema\Renderer\Tests\ConsoleRenderer\Renderer;
 
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter\PlainFormatter;
-use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\MacrosRenderer;
+use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\ListenersRenderer;
 use Cycle\Schema\Renderer\Tests\BaseTest;
 
-final class MacrosRendererTest extends BaseTest
+final class ListenersRendererTest extends BaseTest
 {
     private Formatter $formatter;
 
@@ -22,7 +22,7 @@ final class MacrosRendererTest extends BaseTest
 
     public function testRenderNotExistsProperty()
     {
-        $renderer = new MacrosRenderer(1, 'Foo');
+        $renderer = new ListenersRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [], 'baz');
 
@@ -31,7 +31,7 @@ final class MacrosRendererTest extends BaseTest
 
     public function testRenderStringProperty()
     {
-        $renderer = new MacrosRenderer(1, 'Foo');
+        $renderer = new ListenersRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [
             1 => 'bar',
@@ -49,18 +49,18 @@ OUTPUT
 
     public function testRenderArrayProperty()
     {
-        $renderer = new MacrosRenderer(1, 'Foo');
+        $renderer = new ListenersRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [
-            1 => ['foo-macros', 'bar-macros'],
+            1 => ['foo-listener', 'bar-listener'],
         ], 'baz');
 
         $this->assertSame(
             <<<'OUTPUT'
-          Foo:
-             foo-macros
-             bar-macros
-OUTPUT
+                      Foo:
+                         foo-listener
+                         bar-listener
+            OUTPUT
             ,
             $result
         );
@@ -68,27 +68,27 @@ OUTPUT
 
     public function testRenderAssocArrayProperty()
     {
-        $renderer = new MacrosRenderer(1, 'Foo');
+        $renderer = new ListenersRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [
             1 => [
-                ['foo-macros', []],
-                ['bar-macros', ['baz' => 'bar', 'baz1', 'baz2']],
-                ['baz-macros', 'baz'],
+                ['foo-listener', []],
+                ['bar-listener', ['baz' => 'bar', 'baz1', 'baz2']],
+                ['baz-listener', 'baz'],
             ],
         ], 'baz');
 
         $this->assertSame(
             <<<'OUTPUT'
-          Foo:
-             foo-macros
-             bar-macros
-              - baz : bar
-              - baz1
-              - baz2
-             baz-macros
-              - baz
-OUTPUT
+                      Foo:
+                         foo-listener
+                         bar-listener
+                          - baz : bar
+                          - baz1
+                          - baz2
+                         baz-listener
+                          - baz
+            OUTPUT
             ,
             $result
         );
