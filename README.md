@@ -3,6 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/cycle/schema-renderer/v/stable)](https://packagist.org/packages/cycle/schema-renderer)
 [![build](https://github.com/cycle/schema-renderer/actions/workflows/main.yml/badge.svg)](https://github.com/cycle/schema-renderer/actions/workflows/main.yml)
 [![static analysis](https://github.com/cycle/schema-renderer/actions/workflows/static.yml/badge.svg)](https://github.com/cycle/schema-renderer/actions/workflows/static.yml)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/schema-renderer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cycle/schema-renderer/?branch=master)
 [![Codecov](https://codecov.io/gh/cycle/schema-renderer/branch/master/graph/badge.svg)](https://codecov.io/gh/cycle/schema-renderer/)
 [![StyleCI](https://github.styleci.io/repos/401633317/shield?branch=master)](https://github.styleci.io/repos/401633317?branch=master)
 
