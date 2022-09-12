@@ -24,6 +24,8 @@ final class ValueRenderer
                 return $value->toString();
             case !$wrapValue || is_int($value):
                 return (string)$value;
+            case is_string($value) && class_exists($value):
+                return "$value::class";
             case is_string($value):
                 return "'" . addslashes($value) . "'";
             default:
