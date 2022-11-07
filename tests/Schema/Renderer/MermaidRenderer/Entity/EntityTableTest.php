@@ -13,8 +13,8 @@ class EntityTableTest extends BaseTest
     {
         $table = new EntityTable('table');
 
-        $table->addRow('string foo');
-        $table->addRow('string bar');
+        $table->addRow('string', 'foo');
+        $table->addRow('string', 'bar');
 
         $this->assertSame(<<<BLOCK
         table {
