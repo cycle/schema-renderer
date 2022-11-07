@@ -9,14 +9,14 @@ final class EntityTable implements EntityInterface
     private string $title;
     private array $rows = [];
 
-    const BLOCK = <<<BLOCK
+    public const BLOCK = <<<BLOCK
         %s {
             %s
         }
         BLOCK;
 
-    const INDENT = '    ';
-    const SEPARATOR = ' ';
+    public const INDENT = '    ';
+    public const SEPARATOR = ' ';
 
     public function __construct(string $title)
     {

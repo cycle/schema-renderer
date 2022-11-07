@@ -9,9 +9,9 @@ final class EntityArrow implements EntityInterface
     private string $title;
     private array $arrows = [];
 
-    const BLOCK = '%s %s %s : %s';
-    const NOT_NULLABLE = '||--|{';
-    const NULLABLE = '||--o{';
+    public const BLOCK = '%s %s %s : %s';
+    public const NOT_NULLABLE = '||--|{';
+    public const NULLABLE = '||--o{';
 
     public function __construct(string $title)
     {

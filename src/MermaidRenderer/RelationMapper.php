@@ -8,7 +8,7 @@ use Cycle\ORM\Relation;
 
 final class RelationMapper
 {
-    const RELATIONS = [
+    public const RELATIONS = [
         Relation::HAS_ONE => 'has_one',
         Relation::HAS_MANY => 'has_many',
         Relation::BELONGS_TO => 'belongs_to',

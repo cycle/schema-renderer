@@ -12,7 +12,7 @@ use Cycle\Schema\Renderer\SchemaRenderer;
 
 final class MermaidRenderer implements SchemaRenderer
 {
-    const DIAGRAM = <<<DIAGRAM
+    public const DIAGRAM = <<<DIAGRAM
 
     erDiagram
     %s
