@@ -11,14 +11,14 @@ class EntityArrowTest extends BaseTest
 {
     public function testToString(): void
     {
-        $arrow = new EntityArrow('table');
+        $arrow = new EntityArrow();
 
-        $arrow->addArrow('foo', 'bar', true);
-        $arrow->addArrow('bar', 'foo');
+        $arrow->addArrow('table', 'foo', 'bar', '||--||');
+        $arrow->addArrow('table','bar', 'foo', '||--o|');
 
         $this->assertSame(<<<BLOCK
-        table ||--o{ foo : bar
-        table ||--|{ bar : foo
+        table ||--|| foo : bar
+        table ||--o| bar : foo
         BLOCK, $arrow->toString());
     }
 }

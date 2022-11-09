@@ -6,21 +6,18 @@ namespace Cycle\Schema\Renderer\MermaidRenderer\Entity;
 
 final class EntityArrow implements EntityInterface
 {
-    private string $title;
+    private const PARENT_NAME = 0;
+    private const CHILDREN_NAME = 1;
+    private const RELATION_NAME = 2;
+    private const NODE = 3;
+
+    private const BLOCK = '%s %s %s : %s';
+
     private array $arrows = [];
 
-    public const BLOCK = '%s %s %s : %s';
-    public const NOT_NULLABLE = '||--|{';
-    public const NULLABLE = '||--o{';
-
-    public function __construct(string $title)
+    public function addArrow(string $parent, string $children, string $relation, string $node): void
     {
-        $this->title = $title;
-    }
-
-    public function addArrow(string $children, string $relation, bool $isNullable = false): void
-    {
-        $this->arrows[] = [$children, $relation, $isNullable];
+        $this->arrows[] = [$parent, $children, $relation, $node];
     }
 
     public function toString(): string
@@ -30,10 +27,10 @@ final class EntityArrow implements EntityInterface
         foreach ($this->arrows as $arrow) {
             $arrows[] = sprintf(
                 self::BLOCK,
-                $this->title,
-                $arrow[2] ? self::NULLABLE : self::NOT_NULLABLE,
-                $arrow[0],
-                $arrow[1]
+                $arrow[self::PARENT_NAME],
+                $arrow[self::NODE],
+                $arrow[self::CHILDREN_NAME],
+                $arrow[self::RELATION_NAME]
             );
         }
 

@@ -30,8 +30,8 @@ class MermaidRendererTest extends BaseTest
             int user_id
             int post_id
         }
-        comment ||--|{ user : belongs_to
-        comment ||--|{ post : belongs_to
+        comment ||--|| user : belongs_to
+        comment ||--|| post : belongs_to
         post {
             int id
             string slug
@@ -44,10 +44,11 @@ class MermaidRendererTest extends BaseTest
             datetime deleted_at
             int user_id
         }
-        post ||--|{ user : belongs_to
+        post ||--|| user : belongs_to
         post ||--|{ postTag : many_to_many
+        tag ||--|{ postTag : many_to_many
         post ||--|{ comment : has_many
-        post ||--|{ image : morphed_has_one
+        post ||--|| image : morphed_has_one
         postTag {
             int id
             int post_id
@@ -60,6 +61,7 @@ class MermaidRendererTest extends BaseTest
             datetime created_at
         }
         tag ||--|{ postTag : many_to_many
+        post ||--|{ postTag : many_to_many
         user {
             int id
             string login
@@ -69,7 +71,7 @@ class MermaidRendererTest extends BaseTest
         }
         user ||--o{ post : has_many
         user ||--|{ comment : has_many
-        user ||--|{ image : morphed_has_one
+        user ||--|| image : morphed_has_one
         user ||--|{ foo : morphed_has_many
         image {
             string id
@@ -90,7 +92,8 @@ class MermaidRendererTest extends BaseTest
             string title
             string body
         }
-        bar ||--|{ foo : belongs_to_morphed
+        bar ||--|| foo : belongs_to_morphed
+
         DIAGRAM, $mermaid->render($this->getSchema()));
     }
 

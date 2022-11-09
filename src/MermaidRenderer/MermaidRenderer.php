@@ -8,6 +8,7 @@ use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\MermaidRenderer\Entity\EntityArrow;
 use Cycle\Schema\Renderer\MermaidRenderer\Entity\EntityTable;
+use Cycle\Schema\Renderer\MermaidRenderer\Exception\RelationNotFoundException;
 use Cycle\Schema\Renderer\SchemaRenderer;
 
 final class MermaidRenderer implements SchemaRenderer
@@ -16,8 +17,12 @@ final class MermaidRenderer implements SchemaRenderer
 
     erDiagram
     %s
+
     DIAGRAM;
 
+    /**
+     * @throws RelationNotFoundException
+     */
     public function render(array $schema): string
     {
         $relationMapper = new RelationMapper();
@@ -30,7 +35,7 @@ final class MermaidRenderer implements SchemaRenderer
             }
 
             $table = new EntityTable($key);
-            $arrow = new EntityArrow($key);
+            $arrow = new EntityArrow();
 
             foreach ($value[SchemaInterface::COLUMNS] as $column) {
                 $table->addRow($value[SchemaInterface::TYPECAST][$column] ?? 'string', $column);
@@ -44,12 +49,13 @@ final class MermaidRenderer implements SchemaRenderer
                 $target = $relation[Relation::TARGET];
                 $throughEntity = $relation[Relation::SCHEMA][Relation::THROUGH_ENTITY] ?? null;
                 $isNullable = $relation[Relation::SCHEMA][Relation::NULLABLE] ?? false;
-                $relation = $relationMapper->map($relation[Relation::TYPE]);
+                $relation = $relationMapper->mapWithNode($relation[Relation::TYPE], $isNullable);
 
                 if ($throughEntity) {
-                    $arrow->addArrow($throughEntity, $relation, $isNullable);
+                    $arrow->addArrow($key, $throughEntity, $relation[0], $relation[1]);
+                    $arrow->addArrow($target, $throughEntity, $relation[0], $relation[1]);
                 } else {
-                    $arrow->addArrow($target, $relation, $isNullable);
+                    $arrow->addArrow($key, $target, $relation[0], $relation[1]);
                 }
             }
 
