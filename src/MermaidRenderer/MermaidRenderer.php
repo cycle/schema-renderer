@@ -25,7 +25,7 @@ final class MermaidRenderer implements SchemaRenderer
         $relationMapper = new RelationMapper();
 
         foreach ($schema as $key => $value) {
-            if (!isset($value[SchemaInterface::COLUMNS])) {
+            if (!isset($value[SchemaInterface::COLUMNS]) || str_contains($key, ':')) {
                 continue;
             }
 
@@ -49,31 +49,36 @@ final class MermaidRenderer implements SchemaRenderer
                 }
 
                 $target = $relation[Relation::TARGET];
-                $throughEntity = $relation[Relation::SCHEMA][Relation::THROUGH_ENTITY] ?? null;
                 $isNullable = $relation[Relation::SCHEMA][Relation::NULLABLE] ?? false;
 
                 $mappedRelation = $relationMapper->mapWithNode($relation[Relation::TYPE], $isNullable);
 
                 switch ($relation[Relation::TYPE]) {
                     case Relation::MANY_TO_MANY:
-                        $table->addMethod($relationKey, sprintf(self::METHOD_FORMAT, $mappedRelation[0], $target));
+                        $throughEntity = $relation[Relation::SCHEMA][Relation::THROUGH_ENTITY] ?? null;
 
-                        // tag --* post : posts
-                        $arrow->addArrow($role, $target, $relationKey, $mappedRelation[1]);
-                        // postTag ..> tag : tag.posts
-                        $arrow->addArrow($throughEntity, $role, "$role.$relationKey", '..>');
-                        // postTag ..> post : tag.posts
-                        $arrow->addArrow($throughEntity, $target, "$role.$relationKey", '..>');
+                        if ($throughEntity) {
+                            $table->addMethod($relationKey, sprintf(self::METHOD_FORMAT, $mappedRelation[0], $target));
+
+                            // tag --* post : posts
+                            $arrow->addArrow($role, $target, $relationKey, $mappedRelation[1]);
+                            // postTag ..> tag : tag.posts
+                            $arrow->addArrow($throughEntity, $role, "$role.$relationKey", '..>');
+                            // postTag ..> post : tag.posts
+                            $arrow->addArrow($throughEntity, $target, "$role.$relationKey", '..>');
+                        }
                         break;
                     case Relation::EMBEDDED:
                         // explode string like user:credentials
                         $methodTarget = explode(':', $target);
+
                         $table->addMethod(
                             $methodTarget[1] ?? $target,
                             sprintf(self::METHOD_FORMAT, $mappedRelation[0], $relationKey)
                         );
 
                         $arrowTarget = str_replace(':', '&#58', $target);
+
                         $arrow->addArrow($role, $relationKey, $arrowTarget, $mappedRelation[1]);
                         break;
                     default:
