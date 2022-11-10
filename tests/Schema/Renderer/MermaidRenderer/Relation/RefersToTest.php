@@ -17,8 +17,8 @@ class RefersToTest extends BaseTest
 
         $this->assertSame(<<<SCHEMA
 
-        erDiagram
-        post {
+        classDiagram
+        class post {
             int id
             string slug
             string title
@@ -29,9 +29,10 @@ class RefersToTest extends BaseTest
             datetime published_at
             datetime deleted_at
             int user_id
+            author(RT: user)
         }
-        post ||--|| user : refers_to
-        user {
+        post --> "nullable" user : author
+        class user {
             int id
             string login
             string password_hash
@@ -64,13 +65,13 @@ class RefersToTest extends BaseTest
                     'user_id' => 'user_id',
                 ],
                 SchemaInterface::RELATIONS => [
-                    'user' => [
+                    'author' => [
                         Relation::TYPE => Relation::REFERS_TO,
                         Relation::TARGET => 'user',
                         Relation::LOAD => Relation::LOAD_PROMISE,
                         Relation::SCHEMA => [
                             Relation::CASCADE => true,
-                            Relation::NULLABLE => false,
+                            Relation::NULLABLE => true,
                             Relation::INNER_KEY => 'user_id',
                             Relation::OUTER_KEY => ['id'],
                         ],

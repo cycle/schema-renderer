@@ -20,7 +20,7 @@ final class EntityArrow implements EntityInterface
         $this->arrows[] = [$parent, $children, $relation, $node];
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         $arrows = [];
 

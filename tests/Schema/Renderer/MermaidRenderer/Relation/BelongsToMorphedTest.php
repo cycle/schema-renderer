@@ -17,8 +17,8 @@ class BelongsToMorphedTest extends BaseTest
 
         $this->assertSame(<<<SCHEMA
 
-        erDiagram
-        post {
+        classDiagram
+        class post {
             int id
             string slug
             string title
@@ -29,9 +29,10 @@ class BelongsToMorphedTest extends BaseTest
             datetime published_at
             datetime deleted_at
             int user_id
+            comments(BtM: comment)
         }
-        post ||--|| comment : belongs_to_morphed
-        comment {
+        post --> comment : comments
+        class comment {
             string id
             string parent_id
             string parent_type

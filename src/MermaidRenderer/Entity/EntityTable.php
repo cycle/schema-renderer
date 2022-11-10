@@ -9,8 +9,8 @@ final class EntityTable implements EntityInterface
     private string $title;
     private array $rows = [];
 
-    public const BLOCK = <<<BLOCK
-        %s {
+    private const BLOCK = <<<BLOCK
+        class %s {
             %s
         }
         BLOCK;
@@ -28,7 +28,14 @@ final class EntityTable implements EntityInterface
         $this->rows[] = $values;
     }
 
-    public function toString(): string
+    public function addMethod(string $name, string ...$params): void
+    {
+        $row = sprintf('%s(%s)', $name, implode('', $params));
+
+        $this->rows[] = [$row];
+    }
+
+    public function __toString(): string
     {
         $rows = [];
 

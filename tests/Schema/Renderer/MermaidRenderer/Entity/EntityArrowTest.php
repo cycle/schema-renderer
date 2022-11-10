@@ -19,6 +19,6 @@ class EntityArrowTest extends BaseTest
         $this->assertSame(<<<BLOCK
         table ||--|| foo : bar
         table ||--o| bar : foo
-        BLOCK, $arrow->toString());
+        BLOCK, (string)$arrow);
     }
 }

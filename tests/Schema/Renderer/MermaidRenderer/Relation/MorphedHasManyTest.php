@@ -17,8 +17,8 @@ class MorphedHasManyTest extends BaseTest
 
         $this->assertSame(<<<SCHEMA
 
-        erDiagram
-        post {
+        classDiagram
+        class post {
             int id
             string slug
             string title
@@ -29,9 +29,10 @@ class MorphedHasManyTest extends BaseTest
             datetime published_at
             datetime deleted_at
             int user_id
+            comments(MoHM: comment)
         }
-        post ||--|{ comment : morphed_has_many
-        comment {
+        post --o comment : comments
+        class comment {
             string id
             string parent_id
             string parent_type

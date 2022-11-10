@@ -17,8 +17,8 @@ class ManyToManyTest extends BaseTest
 
         $this->assertSame(<<<SCHEMA
 
-        erDiagram
-        post {
+        classDiagram
+        class post {
             int id
             string slug
             string title
@@ -31,19 +31,21 @@ class ManyToManyTest extends BaseTest
             int user_id
         }
 
-        postTag {
+        class postTag {
             int id
             int post_id
             int tag_id
         }
 
-        tag {
+        class tag {
             int id
             string label
             datetime created_at
+            posts(MtM: post)
         }
-        tag ||--|{ postTag : many_to_many
-        post ||--|{ postTag : many_to_many
+        tag --* post : posts
+        postTag ..> tag : tag.posts
+        postTag ..> post : tag.posts
 
         SCHEMA, $mermaid->render($this->getSchema()));
     }
@@ -117,7 +119,6 @@ class ManyToManyTest extends BaseTest
                         Relation::LOAD => Relation::LOAD_PROMISE,
                         Relation::SCHEMA => [
                             Relation::CASCADE => true,
-                            Relation::NULLABLE => false,
                             Relation::WHERE => [],
                             Relation::ORDER_BY => [],
                             Relation::INNER_KEY => ['id'],

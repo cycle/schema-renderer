@@ -17,10 +17,10 @@ class EntityTableTest extends BaseTest
         $table->addRow('string', 'bar');
 
         $this->assertSame(<<<BLOCK
-        table {
+        class table {
             string foo
             string bar
         }
-        BLOCK, $table->toString());
+        BLOCK, (string)$table);
     }
 }

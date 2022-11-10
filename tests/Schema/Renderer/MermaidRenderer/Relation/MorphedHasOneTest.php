@@ -17,8 +17,8 @@ class MorphedHasOneTest extends BaseTest
 
         $this->assertSame(<<<SCHEMA
 
-        erDiagram
-        post {
+        classDiagram
+        class post {
             int id
             string slug
             string title
@@ -29,9 +29,10 @@ class MorphedHasOneTest extends BaseTest
             datetime published_at
             datetime deleted_at
             int user_id
+            best_comments(MoHO: comment)
         }
-        post ||--|| comment : morphed_has_one
-        comment {
+        post --> comment : best_comments
+        class comment {
             string id
             string parent_id
             string parent_type
@@ -63,7 +64,7 @@ class MorphedHasOneTest extends BaseTest
                     'user_id' => 'user_id',
                 ],
                 SchemaInterface::RELATIONS => [
-                    'comments' => [
+                    'best_comments' => [
                         Relation::TYPE => Relation::MORPHED_HAS_ONE,
                         Relation::TARGET => 'comment',
                         Relation::SCHEMA => [

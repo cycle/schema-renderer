@@ -12,22 +12,23 @@ final class RelationMapper
     private const RELATION_TYPE = 1;
 
     private const RELATIONS = [
-        Relation::HAS_ONE => ['has_one', '||--||'],
-        Relation::HAS_MANY => ['has_many', '||--|{'],
-        Relation::BELONGS_TO => ['belongs_to', '||--||'],
-        Relation::MANY_TO_MANY => ['many_to_many', '||--|{'],
-        Relation::REFERS_TO => ['refers_to', '||--||'],
-        Relation::MORPHED_HAS_MANY => ['morphed_has_many', '||--|{'],
-        Relation::MORPHED_HAS_ONE => ['morphed_has_one', '||--||'],
-        Relation::BELONGS_TO_MORPHED => ['belongs_to_morphed', '||--||'],
+        Relation::HAS_ONE => ['HO', '-->'],
+        Relation::HAS_MANY => ['HM', '--o'],
+        Relation::BELONGS_TO => ['BT', '-->'],
+        Relation::MANY_TO_MANY => ['MtM', '--*'],
+        Relation::REFERS_TO => ['RT', '-->'],
+        Relation::MORPHED_HAS_MANY => ['MoHM', '--o'],
+        Relation::MORPHED_HAS_ONE => ['MoHO', '-->'],
+        Relation::BELONGS_TO_MORPHED => ['BtM', '-->'],
+        Relation::EMBEDDED => ['Emb', '--']
     ];
 
     /**
-     * Map relation with node
+     * Map relation name
      *
      * @param int $code
      * @param bool $isNullable
-     * @return string[]
+     * @return array
      * @throws RelationNotFoundException
      */
     public function mapWithNode(int $code, bool $isNullable = false): array
@@ -39,7 +40,7 @@ final class RelationMapper
         $relation = self::RELATIONS[$code];
 
         if ($isNullable) {
-            $relation[self::RELATION_TYPE] = substr_replace($relation[self::RELATION_TYPE], 'o', -2, 1);
+            $relation[self::RELATION_TYPE] = $relation[self::RELATION_TYPE] . ' "nullable"';
         }
 
         return $relation;

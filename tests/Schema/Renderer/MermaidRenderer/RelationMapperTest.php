@@ -15,7 +15,7 @@ class RelationMapperTest extends BaseTest
     {
         $mapper = new RelationMapper();
 
-        $this->assertSame(['belongs_to', '||--||'], $mapper->mapWithNode(Relation::BELONGS_TO));
+        $this->assertSame(['BT', '-->'], $mapper->mapWithNode(Relation::BELONGS_TO));
     }
 
     public function testMapNonExistsRelation(): void

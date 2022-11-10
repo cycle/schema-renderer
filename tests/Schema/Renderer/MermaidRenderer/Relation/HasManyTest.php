@@ -17,8 +17,8 @@ class HasManyTest extends BaseTest
 
         $this->assertSame(<<<SCHEMA
 
-        erDiagram
-        post {
+        classDiagram
+        class post {
             int id
             string slug
             string title
@@ -31,14 +31,15 @@ class HasManyTest extends BaseTest
             int user_id
         }
 
-        user {
+        class user {
             int id
             string login
             string password_hash
             datetime created_at
             datetime updated_at
+            posts(HM: post)
         }
-        user ||--|{ post : has_many
+        user --o post : posts
 
         SCHEMA, $mermaid->render($this->getSchema()));
     }

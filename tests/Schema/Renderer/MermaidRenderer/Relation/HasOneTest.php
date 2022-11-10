@@ -17,8 +17,8 @@ class HasOneTest extends BaseTest
 
         $this->assertSame(<<<SCHEMA
 
-        erDiagram
-        post {
+        classDiagram
+        class post {
             int id
             string slug
             string title
@@ -30,15 +30,16 @@ class HasOneTest extends BaseTest
             datetime deleted_at
             int user_id
         }
-        post ||--|| user : has_one
-        user {
+
+        class user {
             int id
             string login
             string password_hash
             datetime created_at
             datetime updated_at
+            favorite(HO: post)
         }
-
+        user --> post : favorite
 
         SCHEMA, $mermaid->render($this->getSchema()));
     }
@@ -63,19 +64,7 @@ class HasOneTest extends BaseTest
                     'deleted_at' => 'deleted_at',
                     'user_id' => 'user_id',
                 ],
-                SchemaInterface::RELATIONS => [
-                    'user' => [
-                        Relation::TYPE => Relation::HAS_ONE,
-                        Relation::TARGET => 'user',
-                        Relation::LOAD => Relation::LOAD_PROMISE,
-                        Relation::SCHEMA => [
-                            Relation::CASCADE => true,
-                            Relation::NULLABLE => false,
-                            Relation::INNER_KEY => 'user_id',
-                            Relation::OUTER_KEY => ['id'],
-                        ],
-                    ],
-                ],
+                SchemaInterface::RELATIONS => [],
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'public' => 'bool',
@@ -99,7 +88,19 @@ class HasOneTest extends BaseTest
                     'created_at' => 'created_at',
                     'updated_at' => 'updated_at',
                 ],
-                SchemaInterface::RELATIONS => [],
+                SchemaInterface::RELATIONS => [
+                    'favorite' => [
+                        Relation::TYPE => Relation::HAS_ONE,
+                        Relation::TARGET => 'post',
+                        Relation::LOAD => Relation::LOAD_PROMISE,
+                        Relation::SCHEMA => [
+                            Relation::CASCADE => true,
+                            Relation::NULLABLE => false,
+                            Relation::INNER_KEY => 'id',
+                            Relation::OUTER_KEY => ['user_id'],
+                        ],
+                    ],
+                ],
                 SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',

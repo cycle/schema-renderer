@@ -17,8 +17,8 @@ class BelongsToTest extends BaseTest
 
         $this->assertSame(<<<SCHEMA
 
-        erDiagram
-        post {
+        classDiagram
+        class post {
             int id
             string slug
             string title
@@ -29,9 +29,10 @@ class BelongsToTest extends BaseTest
             datetime published_at
             datetime deleted_at
             int user_id
+            author(BT: user)
         }
-        post ||--|| user : belongs_to
-        user {
+        post --> user : author
+        class user {
             int id
             string login
             string password_hash
@@ -64,7 +65,7 @@ class BelongsToTest extends BaseTest
                     'user_id' => 'user_id',
                 ],
                 SchemaInterface::RELATIONS => [
-                    'user' => [
+                    'author' => [
                         Relation::TYPE => Relation::BELONGS_TO,
                         Relation::TARGET => 'user',
                         Relation::LOAD => Relation::LOAD_PROMISE,
