@@ -15,6 +15,7 @@ use Cycle\Schema\Renderer\SchemaRenderer;
 final class MermaidRenderer implements SchemaRenderer
 {
     private const METHOD_FORMAT = '%s: %s';
+    private const REGEX = "/^[a-zA-Z_]+$/";
 
     /**
      * @throws RelationNotFoundException
@@ -25,14 +26,13 @@ final class MermaidRenderer implements SchemaRenderer
         $relationMapper = new RelationMapper();
 
         foreach ($schema as $key => $value) {
-            if (!isset($value[SchemaInterface::COLUMNS]) || str_contains($key, ':')) {
+            if (!isset($value[SchemaInterface::COLUMNS]) || !preg_match(self::REGEX, $key)) {
                 continue;
             }
 
-            $role = $value[SchemaInterface::ROLE] ?? $key;
+            $role = $value[SchemaInterface::ROLE] ?? '';
 
-            // to avoid mermaid class error (user:credentials)
-            if (str_contains($role, ':')) {
+            if (!preg_match(self::REGEX, $role)) {
                 $role = $key;
             }
 
