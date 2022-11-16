@@ -6,5 +6,4 @@ namespace Cycle\Schema\Renderer\MermaidRenderer\Exception;
 
 class RelationNotFoundException extends \Exception
 {
-
 }

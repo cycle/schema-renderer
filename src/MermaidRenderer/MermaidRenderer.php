@@ -15,7 +15,7 @@ use Cycle\Schema\Renderer\SchemaRenderer;
 final class MermaidRenderer implements SchemaRenderer
 {
     private const METHOD_FORMAT = '%s: %s';
-    private const REGEX = "/^[a-zA-Z_]+$/";
+    private const REGEX = '/^[a-zA-Z_]+$/';
 
     /**
      * @throws RelationNotFoundException

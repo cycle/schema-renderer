@@ -20,7 +20,7 @@ final class RelationMapper
         Relation::MORPHED_HAS_MANY => ['MoHM', '--o'],
         Relation::MORPHED_HAS_ONE => ['MoHO', '-->'],
         Relation::BELONGS_TO_MORPHED => ['BtM', '-->'],
-        Relation::EMBEDDED => ['Emb', '--']
+        Relation::EMBEDDED => ['Emb', '--'],
     ];
 
     /**
@@ -28,8 +28,10 @@ final class RelationMapper
      *
      * @param int $code
      * @param bool $isNullable
-     * @return array
+     *
      * @throws RelationNotFoundException
+     *
+     * @return array
      */
     public function mapWithNode(int $code, bool $isNullable = false): array
     {
