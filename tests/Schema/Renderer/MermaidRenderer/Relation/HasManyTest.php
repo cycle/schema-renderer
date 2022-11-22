@@ -8,6 +8,7 @@ use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\MermaidRenderer\MermaidRenderer;
 use Cycle\Schema\Renderer\Tests\BaseTest;
+use Cycle\Schema\Renderer\Tests\Fixture\Post;
 
 class HasManyTest extends BaseTest
 {
@@ -47,7 +48,7 @@ class HasManyTest extends BaseTest
     public function getSchema(): array
     {
         return [
-            'post' => [
+            Post::class => [
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'post',
                 SchemaInterface::PRIMARY_KEY => ['id'],
@@ -91,7 +92,7 @@ class HasManyTest extends BaseTest
                 SchemaInterface::RELATIONS => [
                     'posts' => [
                         Relation::TYPE => Relation::HAS_MANY,
-                        Relation::TARGET => 'post',
+                        Relation::TARGET => Post::class,
                         Relation::COLLECTION_TYPE => 'array',
                         Relation::LOAD => Relation::LOAD_PROMISE,
                         Relation::SCHEMA => [

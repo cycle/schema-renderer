@@ -8,6 +8,8 @@ use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\MermaidRenderer\MermaidRenderer;
 use Cycle\Schema\Renderer\Tests\BaseTest;
+use Cycle\Schema\Renderer\Tests\Fixture\PostTag;
+use Cycle\Schema\Renderer\Tests\Fixture\Tag;
 
 class ManyToManyTest extends BaseTest
 {
@@ -82,7 +84,7 @@ class ManyToManyTest extends BaseTest
                 ],
                 SchemaInterface::SCHEMA => [],
             ],
-            'postTag' => [
+            PostTag::class => [
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'post_tag',
                 SchemaInterface::PRIMARY_KEY => ['id'],
@@ -101,7 +103,7 @@ class ManyToManyTest extends BaseTest
                 ],
                 SchemaInterface::SCHEMA => [],
             ],
-            'tag' => [
+            Tag::class => [
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'tag',
                 SchemaInterface::PRIMARY_KEY => ['id'],
@@ -123,7 +125,7 @@ class ManyToManyTest extends BaseTest
                             Relation::ORDER_BY => [],
                             Relation::INNER_KEY => ['id'],
                             Relation::OUTER_KEY => ['id'],
-                            Relation::THROUGH_ENTITY => 'postTag',
+                            Relation::THROUGH_ENTITY => PostTag::class,
                             Relation::THROUGH_INNER_KEY => 'tag_id',
                             Relation::THROUGH_OUTER_KEY => 'post_id',
                             Relation::THROUGH_WHERE => [],

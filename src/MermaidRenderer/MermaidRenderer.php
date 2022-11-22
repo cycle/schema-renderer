@@ -15,7 +15,6 @@ use Cycle\Schema\Renderer\SchemaRenderer;
 final class MermaidRenderer implements SchemaRenderer
 {
     private const METHOD_FORMAT = '%s: %s';
-    private const REGEX = '/^[a-zA-Z_]+$/';
 
     /**
      * @throws RelationNotFoundException
@@ -26,13 +25,17 @@ final class MermaidRenderer implements SchemaRenderer
         $relationMapper = new RelationMapper();
 
         foreach ($schema as $key => $value) {
-            if (!isset($value[SchemaInterface::COLUMNS]) || !preg_match(self::REGEX, $key)) {
+            if (!isset($value[SchemaInterface::COLUMNS])) {
                 continue;
             }
 
-            $role = $value[SchemaInterface::ROLE] ?? '';
+            $role = $value[SchemaInterface::ROLE] ?? $key;
 
-            if (!preg_match(self::REGEX, $role)) {
+            if (class_exists($role)) {
+                $role = $this->getClassShortName($key);
+            }
+
+            if (strpos($role, ':') !== false) {
                 $role = $key;
             }
 
@@ -49,6 +52,11 @@ final class MermaidRenderer implements SchemaRenderer
                 }
 
                 $target = $relation[Relation::TARGET];
+
+                if (class_exists($target)) {
+                    $target = $this->getClassShortName($target);
+                }
+
                 $isNullable = $relation[Relation::SCHEMA][Relation::NULLABLE] ?? false;
 
                 $mappedRelation = $relationMapper->mapWithNode($relation[Relation::TYPE], $isNullable);
@@ -58,6 +66,10 @@ final class MermaidRenderer implements SchemaRenderer
                         $throughEntity = $relation[Relation::SCHEMA][Relation::THROUGH_ENTITY] ?? null;
 
                         if ($throughEntity) {
+                            if (class_exists($throughEntity)) {
+                                $throughEntity = $this->getClassShortName($throughEntity);
+                            }
+
                             $table->addMethod($relationKey, sprintf(self::METHOD_FORMAT, $mappedRelation[0], $target));
 
                             // tag --* post : posts
@@ -100,5 +112,12 @@ final class MermaidRenderer implements SchemaRenderer
         }
 
         return (string)$class;
+    }
+
+    private function getClassShortName(string $namespace): string
+    {
+        $ref = new \ReflectionClass($namespace);
+
+        return lcfirst($ref->getShortName());
     }
 }

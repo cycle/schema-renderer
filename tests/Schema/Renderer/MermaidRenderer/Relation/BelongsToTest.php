@@ -8,6 +8,7 @@ use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\MermaidRenderer\MermaidRenderer;
 use Cycle\Schema\Renderer\Tests\BaseTest;
+use Cycle\Schema\Renderer\Tests\Fixture\User;
 
 class BelongsToTest extends BaseTest
 {
@@ -67,7 +68,7 @@ class BelongsToTest extends BaseTest
                 SchemaInterface::RELATIONS => [
                     'author' => [
                         Relation::TYPE => Relation::BELONGS_TO,
-                        Relation::TARGET => 'user',
+                        Relation::TARGET => User::class,
                         Relation::LOAD => Relation::LOAD_PROMISE,
                         Relation::SCHEMA => [
                             Relation::CASCADE => true,
@@ -88,7 +89,7 @@ class BelongsToTest extends BaseTest
                 ],
                 SchemaInterface::SCHEMA => [],
             ],
-            'user' => [
+            User::class => [
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'user',
                 SchemaInterface::PRIMARY_KEY => ['id'],
