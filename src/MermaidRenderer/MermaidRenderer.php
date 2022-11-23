@@ -29,10 +29,10 @@ final class MermaidRenderer implements SchemaRenderer
                 continue;
             }
 
-            $role = $value[SchemaInterface::ROLE] ?? $key;
+            $role = $key;
 
             if (class_exists($role)) {
-                $role = $this->getClassShortName($key);
+                $role = $value[SchemaInterface::ROLE];
             }
 
             if (strpos($role, ':') !== false) {
@@ -43,7 +43,9 @@ final class MermaidRenderer implements SchemaRenderer
             $arrow = new EntityArrow();
 
             foreach ($value[SchemaInterface::COLUMNS] as $column) {
-                $table->addRow($value[SchemaInterface::TYPECAST][$column] ?? 'string', $column);
+                $typecast = $this->formatTypecast($value[SchemaInterface::TYPECAST][$column] ?? 'string');
+
+                $table->addRow($typecast, $column);
             }
 
             foreach ($value[SchemaInterface::RELATIONS] ?? [] as $relationKey => $relation) {
@@ -54,7 +56,7 @@ final class MermaidRenderer implements SchemaRenderer
                 $target = $relation[Relation::TARGET];
 
                 if (class_exists($target)) {
-                    $target = $this->getClassShortName($target);
+                    $target = lcfirst($this->getClassShortName($target));
                 }
 
                 $isNullable = $relation[Relation::SCHEMA][Relation::NULLABLE] ?? false;
@@ -67,7 +69,7 @@ final class MermaidRenderer implements SchemaRenderer
 
                         if ($throughEntity) {
                             if (class_exists($throughEntity)) {
-                                $throughEntity = $this->getClassShortName($throughEntity);
+                                $throughEntity = lcfirst($this->getClassShortName($throughEntity));
                             }
 
                             $table->addMethod($relationKey, sprintf(self::METHOD_FORMAT, $mappedRelation[0], $target));
@@ -114,10 +116,33 @@ final class MermaidRenderer implements SchemaRenderer
         return (string)$class;
     }
 
-    private function getClassShortName(string $namespace): string
+    private function getClassShortName($class): string
     {
-        $ref = new \ReflectionClass($namespace);
+        $ref = new \ReflectionClass($class);
 
-        return lcfirst($ref->getShortName());
+        return $ref->getShortName();
+    }
+
+    private function formatTypecast($typecast): string
+    {
+        if (is_array($typecast)) {
+            $typecast[0] = $this->getClassShortName($typecast[0]);
+
+            return sprintf("[%s, '%s']", "$typecast[0]::class", $typecast[1]);
+        }
+
+        if ($typecast instanceof \Closure) {
+            return 'Closure';
+        }
+
+        if (class_exists($typecast)) {
+            if ($typecast === 'datetime') {
+                return $typecast;
+            }
+
+            return $this->getClassShortName($typecast) . '::class';
+        }
+
+        return \htmlentities($typecast);
     }
 }

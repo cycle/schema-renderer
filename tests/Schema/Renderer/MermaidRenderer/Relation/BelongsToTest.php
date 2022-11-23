@@ -90,6 +90,7 @@ class BelongsToTest extends BaseTest
                 SchemaInterface::SCHEMA => [],
             ],
             User::class => [
+                SchemaInterface::ROLE => 'user',
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'user',
                 SchemaInterface::PRIMARY_KEY => ['id'],

@@ -49,6 +49,7 @@ class HasManyTest extends BaseTest
     {
         return [
             Post::class => [
+                SchemaInterface::ROLE => 'post',
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'post',
                 SchemaInterface::PRIMARY_KEY => ['id'],

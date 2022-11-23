@@ -85,6 +85,7 @@ class ManyToManyTest extends BaseTest
                 SchemaInterface::SCHEMA => [],
             ],
             PostTag::class => [
+                SchemaInterface::ROLE => 'postTag',
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'post_tag',
                 SchemaInterface::PRIMARY_KEY => ['id'],
@@ -104,6 +105,7 @@ class ManyToManyTest extends BaseTest
                 SchemaInterface::SCHEMA => [],
             ],
             Tag::class => [
+                SchemaInterface::ROLE => 'tag',
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'tag',
                 SchemaInterface::PRIMARY_KEY => ['id'],
