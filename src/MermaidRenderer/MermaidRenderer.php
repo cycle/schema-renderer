@@ -8,17 +8,14 @@ use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\MermaidRenderer\Entity\EntityArrow;
 use Cycle\Schema\Renderer\MermaidRenderer\Entity\EntityTable;
-use Cycle\Schema\Renderer\MermaidRenderer\Exception\RelationNotFoundException;
 use Cycle\Schema\Renderer\MermaidRenderer\Schema\ClassDiagram;
 use Cycle\Schema\Renderer\SchemaRenderer;
+use ReflectionException;
 
 final class MermaidRenderer implements SchemaRenderer
 {
     private const METHOD_FORMAT = '%s: %s';
 
-    /**
-     * @throws RelationNotFoundException
-     */
     public function render(array $schema): string
     {
         $class = new ClassDiagram();
@@ -47,6 +44,10 @@ final class MermaidRenderer implements SchemaRenderer
 
             $table = new EntityTable($role);
             $arrow = new EntityArrow();
+
+            if (\strpos($key, ':') !== false) {
+                $table->addAnnotation($key);
+            }
 
             foreach ($value[SchemaInterface::COLUMNS] as $column) {
                 $typecast = $this->formatTypecast($value[SchemaInterface::TYPECAST][$column] ?? 'string');
@@ -89,14 +90,16 @@ final class MermaidRenderer implements SchemaRenderer
                         }
                         break;
                     case Relation::EMBEDDED:
+                        $methodTarget = explode('_', $target);
+
+                        $prop = isset($methodTarget[2]) ? $methodTarget[2] . '_prop' : $target;
+
                         $table->addMethod(
-                            $methodTarget[1] ?? $target,
-                            \sprintf(self::METHOD_FORMAT, $mappedRelation[0], $relationKey)
+                            $prop,
+                            \sprintf(self::METHOD_FORMAT, $mappedRelation[0], $relation[Relation::TARGET])
                         );
 
-                        $arrowTarget = \str_replace(':', '&#58', $target);
-
-                        $arrow->addArrow($role, $target, $arrowTarget, $mappedRelation[1]);
+                        $arrow->addArrow($role, $target, $prop, $mappedRelation[1]);
                         break;
                     default:
                         $table->addMethod($relationKey, \sprintf(self::METHOD_FORMAT, $mappedRelation[0], $target));
@@ -119,6 +122,11 @@ final class MermaidRenderer implements SchemaRenderer
         return (string)$class;
     }
 
+    /**
+     * @param class-string|object $class
+     * @return string
+     * @throws ReflectionException
+     */
     private function getClassShortName($class): string
     {
         $ref = new \ReflectionClass($class);
@@ -126,6 +134,9 @@ final class MermaidRenderer implements SchemaRenderer
         return $ref->getShortName();
     }
 
+    /**
+     * @psalm-suppress MissingParamType
+     */
     private function formatTypecast($typecast): string
     {
         if (\is_array($typecast)) {
@@ -138,11 +149,11 @@ final class MermaidRenderer implements SchemaRenderer
             return 'Closure';
         }
 
-        if (\class_exists($typecast)) {
-            if ($typecast === 'datetime') {
-                return $typecast;
-            }
+        if ($typecast === 'datetime') {
+            return $typecast;
+        }
 
+        if (\class_exists($typecast)) {
             return $this->getClassShortName($typecast) . '::class';
         }
 

@@ -25,7 +25,7 @@ final class EntityArrow implements EntityInterface
         $arrows = [];
 
         foreach ($this->arrows as $arrow) {
-            $arrows[] = sprintf(
+            $arrows[] = \sprintf(
                 self::BLOCK,
                 $arrow[self::PARENT_NAME],
                 $arrow[self::NODE],
@@ -34,6 +34,6 @@ final class EntityArrow implements EntityInterface
             );
         }
 
-        return implode("\n", $arrows);
+        return \implode("\n", $arrows);
     }
 }

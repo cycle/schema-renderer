@@ -15,10 +15,11 @@ final class AliasCollection
                 $role = \preg_replace('/[^a-z0-9_]/u', '_', $value);
                 $oldRole = $role;
                 $counter = 0;
-                do {
+
+                while (isset($aliases[$role])) {
                     $counter++;
                     $role = $oldRole . '_' . $counter;
-                } while (isset($aliases[$role]));
+                }
 
                 $aliases[$key] = $role;
             }

@@ -30,9 +30,16 @@ final class EntityTable implements EntityInterface
 
     public function addMethod(string $name, string ...$params): void
     {
-        $row = sprintf('%s(%s)', $name, implode('', $params));
+        $row = \sprintf('%s(%s)', $name, implode('', $params));
 
         $this->rows[] = [$row];
+    }
+
+    public function addAnnotation(string $name): void
+    {
+        $row = "<<$name>>";
+
+        \array_unshift($this->rows, [$row]);
     }
 
     public function __toString(): string
@@ -40,11 +47,11 @@ final class EntityTable implements EntityInterface
         $rows = [];
 
         foreach ($this->rows as $row) {
-            $rows[] = implode(self::SEPARATOR, $row);
+            $rows[] = \implode(self::SEPARATOR, $row);
         }
 
-        $body = implode("\n" . self::INDENT, $rows);
+        $body = \implode("\n" . self::INDENT, $rows);
 
-        return sprintf(self::BLOCK, $this->title, $body);
+        return \sprintf(self::BLOCK, $this->title, $body);
     }
 }
