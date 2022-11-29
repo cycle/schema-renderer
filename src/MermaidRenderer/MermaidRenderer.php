@@ -24,20 +24,26 @@ final class MermaidRenderer implements SchemaRenderer
         $class = new ClassDiagram();
         $relationMapper = new RelationMapper();
 
+        $aliases = [];
+
+        foreach ($schema as $key => $value) {
+            $role = $key;
+
+            if (\class_exists($role)) {
+                $role = $value[SchemaInterface::ROLE];
+            }
+
+            $aliases[$key] = $role;
+        }
+
+        $aliasCollection = new AliasCollection($aliases);
+
         foreach ($schema as $key => $value) {
             if (!isset($value[SchemaInterface::COLUMNS])) {
                 continue;
             }
 
-            $role = $key;
-
-            if (class_exists($role)) {
-                $role = $value[SchemaInterface::ROLE];
-            }
-
-            if (strpos($role, ':') !== false) {
-                $role = $key;
-            }
+            $role = $aliasCollection->getAlias($key);
 
             $table = new EntityTable($role);
             $arrow = new EntityArrow();
@@ -53,10 +59,10 @@ final class MermaidRenderer implements SchemaRenderer
                     continue;
                 }
 
-                $target = $relation[Relation::TARGET];
+                $target = $aliasCollection->getAlias($relation[Relation::TARGET]);
 
-                if (class_exists($target)) {
-                    $target = lcfirst($this->getClassShortName($target));
+                if (\class_exists($target)) {
+                    $target = \lcfirst($this->getClassShortName($target));
                 }
 
                 $isNullable = $relation[Relation::SCHEMA][Relation::NULLABLE] ?? false;
@@ -68,11 +74,11 @@ final class MermaidRenderer implements SchemaRenderer
                         $throughEntity = $relation[Relation::SCHEMA][Relation::THROUGH_ENTITY] ?? null;
 
                         if ($throughEntity) {
-                            if (class_exists($throughEntity)) {
-                                $throughEntity = lcfirst($this->getClassShortName($throughEntity));
+                            if (\class_exists($throughEntity)) {
+                                $throughEntity = \lcfirst($this->getClassShortName($throughEntity));
                             }
 
-                            $table->addMethod($relationKey, sprintf(self::METHOD_FORMAT, $mappedRelation[0], $target));
+                            $table->addMethod($relationKey, \sprintf(self::METHOD_FORMAT, $mappedRelation[0], $target));
 
                             // tag --* post : posts
                             $arrow->addArrow($role, $target, $relationKey, $mappedRelation[1]);
@@ -83,20 +89,17 @@ final class MermaidRenderer implements SchemaRenderer
                         }
                         break;
                     case Relation::EMBEDDED:
-                        // explode string like user:credentials
-                        $methodTarget = explode(':', $target);
-
                         $table->addMethod(
                             $methodTarget[1] ?? $target,
-                            sprintf(self::METHOD_FORMAT, $mappedRelation[0], $relationKey)
+                            \sprintf(self::METHOD_FORMAT, $mappedRelation[0], $relationKey)
                         );
 
-                        $arrowTarget = str_replace(':', '&#58', $target);
+                        $arrowTarget = \str_replace(':', '&#58', $target);
 
-                        $arrow->addArrow($role, $relationKey, $arrowTarget, $mappedRelation[1]);
+                        $arrow->addArrow($role, $target, $arrowTarget, $mappedRelation[1]);
                         break;
                     default:
-                        $table->addMethod($relationKey, sprintf(self::METHOD_FORMAT, $mappedRelation[0], $target));
+                        $table->addMethod($relationKey, \sprintf(self::METHOD_FORMAT, $mappedRelation[0], $target));
                         $arrow->addArrow($role, $target, $relationKey, $mappedRelation[1]);
                 }
             }
@@ -125,17 +128,17 @@ final class MermaidRenderer implements SchemaRenderer
 
     private function formatTypecast($typecast): string
     {
-        if (is_array($typecast)) {
+        if (\is_array($typecast)) {
             $typecast[0] = $this->getClassShortName($typecast[0]);
 
-            return sprintf("[%s, '%s']", "$typecast[0]::class", $typecast[1]);
+            return \sprintf("[%s, '%s']", "$typecast[0]::class", $typecast[1]);
         }
 
         if ($typecast instanceof \Closure) {
             return 'Closure';
         }
 
-        if (class_exists($typecast)) {
+        if (\class_exists($typecast)) {
             if ($typecast === 'datetime') {
                 return $typecast;
             }

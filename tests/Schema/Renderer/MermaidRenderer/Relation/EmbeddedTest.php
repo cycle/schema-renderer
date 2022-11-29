@@ -24,10 +24,25 @@ class EmbeddedTest extends BaseTest
             int employee_id
             string name
             int age
-            credentials(Emb: credential)
+            user_credentials_3(Emb: credential)
         }
-        user -- credential : user&#58credentials
-        class credential {
+        user -- user_credentials_3 : user_credentials_3
+        class user_credentials_3 {
+            int id
+            string street
+        }
+
+        class user_credentials {
+            int id
+            string street
+        }
+
+        class user_credentials_1 {
+            int id
+            string street
+        }
+
+        class user_credentials_2 {
             int id
             string street
         }
@@ -56,8 +71,35 @@ class EmbeddedTest extends BaseTest
                     ],
                 ],
             ],
-            'credential' => [
+            'user:credentials' => [
                 SchemaInterface::ROLE => 'user:credentials',
+                SchemaInterface::DATABASE => 'default',
+                SchemaInterface::TABLE => 'user',
+                SchemaInterface::PRIMARY_KEY => 'id',
+                SchemaInterface::COLUMNS => ['id', 'street'],
+                SchemaInterface::TYPECAST => ['id' => 'int'],
+                SchemaInterface::SCHEMA => [],
+                SchemaInterface::RELATIONS => [],
+            ],
+            'user_credentials' => [
+                SchemaInterface::DATABASE => 'default',
+                SchemaInterface::TABLE => 'user',
+                SchemaInterface::PRIMARY_KEY => 'id',
+                SchemaInterface::COLUMNS => ['id', 'street'],
+                SchemaInterface::TYPECAST => ['id' => 'int'],
+                SchemaInterface::SCHEMA => [],
+                SchemaInterface::RELATIONS => [],
+            ],
+            'user_credentials_1' => [
+                SchemaInterface::DATABASE => 'default',
+                SchemaInterface::TABLE => 'user',
+                SchemaInterface::PRIMARY_KEY => 'id',
+                SchemaInterface::COLUMNS => ['id', 'street'],
+                SchemaInterface::TYPECAST => ['id' => 'int'],
+                SchemaInterface::SCHEMA => [],
+                SchemaInterface::RELATIONS => [],
+            ],
+            'user_credentials_2' => [
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'user',
                 SchemaInterface::PRIMARY_KEY => 'id',
