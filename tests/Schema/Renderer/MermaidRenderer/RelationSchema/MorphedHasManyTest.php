@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\Relation;
+namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\RelationSchema;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\MermaidRenderer\MermaidRenderer;
 use Cycle\Schema\Renderer\Tests\BaseTest;
-use Cycle\Schema\Renderer\Tests\Fixture\Post;
 
-class HasManyTest extends BaseTest
+class MorphedHasManyTest extends BaseTest
 {
-    public function testHasMany(): void
+    public function testMorphedHasMany(): void
     {
         $mermaid = new MermaidRenderer();
 
@@ -30,17 +29,16 @@ class HasManyTest extends BaseTest
             datetime published_at
             datetime deleted_at
             int user_id
+            comments(MoHM: comment)
+        }
+        post --o comment : comments
+        class comment {
+            string id
+            string parent_id
+            string parent_type
+            string message
         }
 
-        class user {
-            int id
-            string login
-            string password_hash
-            datetime created_at
-            datetime updated_at
-            posts(HM: post)
-        }
-        user --o post : posts
 
         SCHEMA, $mermaid->render($this->getSchema()));
     }
@@ -48,8 +46,7 @@ class HasManyTest extends BaseTest
     public function getSchema(): array
     {
         return [
-            Post::class => [
-                SchemaInterface::ROLE => 'post',
+            'post' => [
                 SchemaInterface::DATABASE => 'default',
                 SchemaInterface::TABLE => 'post',
                 SchemaInterface::PRIMARY_KEY => ['id'],
@@ -66,7 +63,18 @@ class HasManyTest extends BaseTest
                     'deleted_at' => 'deleted_at',
                     'user_id' => 'user_id',
                 ],
-                SchemaInterface::RELATIONS => [],
+                SchemaInterface::RELATIONS => [
+                    'comments' => [
+                        Relation::TYPE => Relation::MORPHED_HAS_MANY,
+                        Relation::TARGET => 'comment',
+                        Relation::SCHEMA => [
+                            Relation::CASCADE => true,
+                            Relation::INNER_KEY => 'id',
+                            Relation::OUTER_KEY => 'parent_id',
+                            Relation::MORPH_KEY => 'parent_type',
+                        ],
+                    ],
+                ],
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'public' => 'bool',
@@ -78,40 +86,14 @@ class HasManyTest extends BaseTest
                 ],
                 SchemaInterface::SCHEMA => [],
             ],
-            'user' => [
+            'comment' => [
                 SchemaInterface::DATABASE => 'default',
-                SchemaInterface::TABLE => 'user',
+                SchemaInterface::TABLE => 'comment',
                 SchemaInterface::PRIMARY_KEY => ['id'],
                 SchemaInterface::FIND_BY_KEYS => ['id'],
-                SchemaInterface::COLUMNS => [
-                    'id' => 'id',
-                    'login' => 'login',
-                    'passwordHash' => 'password_hash',
-                    'created_at' => 'created_at',
-                    'updated_at' => 'updated_at',
-                ],
-                SchemaInterface::RELATIONS => [
-                    'posts' => [
-                        Relation::TYPE => Relation::HAS_MANY,
-                        Relation::TARGET => Post::class,
-                        Relation::COLLECTION_TYPE => 'array',
-                        Relation::LOAD => Relation::LOAD_PROMISE,
-                        Relation::SCHEMA => [
-                            Relation::CASCADE => true,
-                            Relation::NULLABLE => false,
-                            Relation::WHERE => [],
-                            Relation::ORDER_BY => [],
-                            Relation::INNER_KEY => ['id'],
-                            Relation::OUTER_KEY => 'user_id',
-                        ],
-                    ],
-                ],
-                SchemaInterface::SCOPE => null,
-                SchemaInterface::TYPECAST => [
-                    'id' => 'int',
-                    'created_at' => 'datetime',
-                    'updated_at' => 'datetime',
-                ],
+                SchemaInterface::COLUMNS => ['id', 'parent_id', 'parent_type', 'message'],
+                SchemaInterface::RELATIONS => [],
+                SchemaInterface::TYPECAST => [],
                 SchemaInterface::SCHEMA => [],
             ],
         ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\Relation;
+namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\RelationSchema;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;

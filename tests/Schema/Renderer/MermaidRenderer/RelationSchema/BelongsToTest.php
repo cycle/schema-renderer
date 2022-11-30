@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\Relation;
+namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\RelationSchema;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\MermaidRenderer\MermaidRenderer;
 use Cycle\Schema\Renderer\Tests\BaseTest;
-use Cycle\Schema\Renderer\Tests\Fixture\PostTag;
-use Cycle\Schema\Renderer\Tests\Fixture\Tag;
+use Cycle\Schema\Renderer\Tests\Fixture\User;
 
-class ManyToManyTest extends BaseTest
+class BelongsToTest extends BaseTest
 {
-    public function testManyToMany(): void
+    public function testBelongsTo(): void
     {
         $mermaid = new MermaidRenderer();
 
@@ -31,23 +30,17 @@ class ManyToManyTest extends BaseTest
             datetime published_at
             datetime deleted_at
             int user_id
+            author(BT: user)
         }
-
-        class postTag {
+        post --> user : author
+        class user {
             int id
-            int post_id
-            int tag_id
-        }
-
-        class tag {
-            int id
-            string label
+            string login
+            string password_hash
             datetime created_at
-            posts(MtM: post)
+            datetime updated_at
         }
-        tag --* post : posts
-        postTag ..> tag : tag.posts
-        postTag ..> post : tag.posts
+
 
         SCHEMA, $mermaid->render($this->getSchema()));
     }
@@ -72,7 +65,19 @@ class ManyToManyTest extends BaseTest
                     'deleted_at' => 'deleted_at',
                     'user_id' => 'user_id',
                 ],
-                SchemaInterface::RELATIONS => [],
+                SchemaInterface::RELATIONS => [
+                    'author' => [
+                        Relation::TYPE => Relation::BELONGS_TO,
+                        Relation::TARGET => User::class,
+                        Relation::LOAD => Relation::LOAD_PROMISE,
+                        Relation::SCHEMA => [
+                            Relation::CASCADE => true,
+                            Relation::NULLABLE => false,
+                            Relation::INNER_KEY => 'user_id',
+                            Relation::OUTER_KEY => ['id'],
+                        ],
+                    ],
+                ],
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'public' => 'bool',
@@ -84,60 +89,25 @@ class ManyToManyTest extends BaseTest
                 ],
                 SchemaInterface::SCHEMA => [],
             ],
-            PostTag::class => [
-                SchemaInterface::ROLE => 'postTag',
+            User::class => [
+                SchemaInterface::ROLE => 'user',
                 SchemaInterface::DATABASE => 'default',
-                SchemaInterface::TABLE => 'post_tag',
+                SchemaInterface::TABLE => 'user',
                 SchemaInterface::PRIMARY_KEY => ['id'],
                 SchemaInterface::FIND_BY_KEYS => ['id'],
                 SchemaInterface::COLUMNS => [
                     'id' => 'id',
-                    'post_id' => 'post_id',
-                    'tag_id' => 'tag_id',
+                    'login' => 'login',
+                    'passwordHash' => 'password_hash',
+                    'created_at' => 'created_at',
+                    'updated_at' => 'updated_at',
                 ],
                 SchemaInterface::RELATIONS => [],
                 SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
-                    'post_id' => 'int',
-                    'tag_id' => 'int',
-                ],
-                SchemaInterface::SCHEMA => [],
-            ],
-            Tag::class => [
-                SchemaInterface::ROLE => 'tag',
-                SchemaInterface::DATABASE => 'default',
-                SchemaInterface::TABLE => 'tag',
-                SchemaInterface::PRIMARY_KEY => ['id'],
-                SchemaInterface::FIND_BY_KEYS => ['id'],
-                SchemaInterface::COLUMNS => [
-                    'id' => 'id',
-                    'label' => 'label',
-                    'created_at' => 'created_at',
-                ],
-                SchemaInterface::RELATIONS => [
-                    'posts' => [
-                        Relation::TYPE => Relation::MANY_TO_MANY,
-                        Relation::TARGET => 'post',
-                        Relation::COLLECTION_TYPE => 'array',
-                        Relation::LOAD => Relation::LOAD_PROMISE,
-                        Relation::SCHEMA => [
-                            Relation::CASCADE => true,
-                            Relation::WHERE => [],
-                            Relation::ORDER_BY => [],
-                            Relation::INNER_KEY => ['id'],
-                            Relation::OUTER_KEY => ['id'],
-                            Relation::THROUGH_ENTITY => PostTag::class,
-                            Relation::THROUGH_INNER_KEY => 'tag_id',
-                            Relation::THROUGH_OUTER_KEY => 'post_id',
-                            Relation::THROUGH_WHERE => [],
-                        ],
-                    ],
-                ],
-                SchemaInterface::SCOPE => null,
-                SchemaInterface::TYPECAST => [
-                    'id' => 'int',
                     'created_at' => 'datetime',
+                    'updated_at' => 'datetime',
                 ],
                 SchemaInterface::SCHEMA => [],
             ],

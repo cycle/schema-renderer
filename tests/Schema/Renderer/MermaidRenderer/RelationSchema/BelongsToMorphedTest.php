@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\Relation;
+namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\RelationSchema;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\MermaidRenderer\MermaidRenderer;
 use Cycle\Schema\Renderer\Tests\BaseTest;
-use Cycle\Schema\Renderer\Tests\Fixture\User;
 
-class BelongsToTest extends BaseTest
+class BelongsToMorphedTest extends BaseTest
 {
-    public function testBelongsTo(): void
+    public function testBelongsToMorphed(): void
     {
         $mermaid = new MermaidRenderer();
 
@@ -30,15 +29,14 @@ class BelongsToTest extends BaseTest
             datetime published_at
             datetime deleted_at
             int user_id
-            author(BT: user)
+            comments(BtM: comment)
         }
-        post --> user : author
-        class user {
-            int id
-            string login
-            string password_hash
-            datetime created_at
-            datetime updated_at
+        post --> comment : comments
+        class comment {
+            string id
+            string parent_id
+            string parent_type
+            string message
         }
 
 
@@ -66,15 +64,14 @@ class BelongsToTest extends BaseTest
                     'user_id' => 'user_id',
                 ],
                 SchemaInterface::RELATIONS => [
-                    'author' => [
-                        Relation::TYPE => Relation::BELONGS_TO,
-                        Relation::TARGET => User::class,
-                        Relation::LOAD => Relation::LOAD_PROMISE,
+                    'comments' => [
+                        Relation::TYPE => Relation::BELONGS_TO_MORPHED,
+                        Relation::TARGET => 'comment',
                         Relation::SCHEMA => [
                             Relation::CASCADE => true,
-                            Relation::NULLABLE => false,
-                            Relation::INNER_KEY => 'user_id',
-                            Relation::OUTER_KEY => ['id'],
+                            Relation::INNER_KEY => 'id',
+                            Relation::OUTER_KEY => 'parent_id',
+                            Relation::MORPH_KEY => 'parent_type',
                         ],
                     ],
                 ],
@@ -89,26 +86,14 @@ class BelongsToTest extends BaseTest
                 ],
                 SchemaInterface::SCHEMA => [],
             ],
-            User::class => [
-                SchemaInterface::ROLE => 'user',
+            'comment' => [
                 SchemaInterface::DATABASE => 'default',
-                SchemaInterface::TABLE => 'user',
+                SchemaInterface::TABLE => 'comment',
                 SchemaInterface::PRIMARY_KEY => ['id'],
                 SchemaInterface::FIND_BY_KEYS => ['id'],
-                SchemaInterface::COLUMNS => [
-                    'id' => 'id',
-                    'login' => 'login',
-                    'passwordHash' => 'password_hash',
-                    'created_at' => 'created_at',
-                    'updated_at' => 'updated_at',
-                ],
+                SchemaInterface::COLUMNS => ['id', 'parent_id', 'parent_type', 'message'],
                 SchemaInterface::RELATIONS => [],
-                SchemaInterface::SCOPE => null,
-                SchemaInterface::TYPECAST => [
-                    'id' => 'int',
-                    'created_at' => 'datetime',
-                    'updated_at' => 'datetime',
-                ],
+                SchemaInterface::TYPECAST => [],
                 SchemaInterface::SCHEMA => [],
             ],
         ];

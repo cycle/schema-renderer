@@ -19,7 +19,7 @@ final class ClassDiagram implements SchemaInterface
 
     public function __toString(): string
     {
-        return sprintf(self::DIAGRAM, implode("\n", $this->entities));
+        return sprintf(self::DIAGRAM, \implode("\n", $this->entities));
     }
 
     public function addEntity(EntityInterface $entity): void

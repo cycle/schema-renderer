@@ -26,6 +26,7 @@ class TypecastTest extends BaseTest
             Closure title
             bool public
             [PostContent::class, 'cast'] content
+            [PostDescription::class, 'cast'] description
             PostImage::class image
             datetime created_at
             datetime updated_at
@@ -52,6 +53,7 @@ class TypecastTest extends BaseTest
                     'title' => 'title',
                     'public' => 'public',
                     'content' => 'content',
+                    'description' => 'description',
                     'image' => 'image',
                     'created_at' => 'created_at',
                     'updated_at' => 'updated_at',
@@ -66,6 +68,7 @@ class TypecastTest extends BaseTest
                     'slug' => [new PostSlug(), 'cast'],
                     'title' => fn() => 'string',
                     'content' => [PostContent::class, 'cast'],
+                    'description' => [Foo\Bar\PostDescription::class, 'cast'],
                     'image' => PostImage::class,
                     'created_at' => 'datetime',
                     'updated_at' => 'datetime',

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\Relation;
+namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\RelationSchema;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Renderer\MermaidRenderer\MermaidRenderer;
 use Cycle\Schema\Renderer\Tests\BaseTest;
 
-class HasOneTest extends BaseTest
+class RefersToTest extends BaseTest
 {
-    public function testHasOne(): void
+    public function testRefersTo(): void
     {
         $mermaid = new MermaidRenderer();
 
@@ -29,17 +29,17 @@ class HasOneTest extends BaseTest
             datetime published_at
             datetime deleted_at
             int user_id
+            author(RT: user)
         }
-
+        post --> "nullable" user : author
         class user {
             int id
             string login
             string password_hash
             datetime created_at
             datetime updated_at
-            favorite(HO: post)
         }
-        user --> post : favorite
+
 
         SCHEMA, $mermaid->render($this->getSchema()));
     }
@@ -64,7 +64,19 @@ class HasOneTest extends BaseTest
                     'deleted_at' => 'deleted_at',
                     'user_id' => 'user_id',
                 ],
-                SchemaInterface::RELATIONS => [],
+                SchemaInterface::RELATIONS => [
+                    'author' => [
+                        Relation::TYPE => Relation::REFERS_TO,
+                        Relation::TARGET => 'user',
+                        Relation::LOAD => Relation::LOAD_PROMISE,
+                        Relation::SCHEMA => [
+                            Relation::CASCADE => true,
+                            Relation::NULLABLE => true,
+                            Relation::INNER_KEY => 'user_id',
+                            Relation::OUTER_KEY => ['id'],
+                        ],
+                    ],
+                ],
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'public' => 'bool',
@@ -88,19 +100,7 @@ class HasOneTest extends BaseTest
                     'created_at' => 'created_at',
                     'updated_at' => 'updated_at',
                 ],
-                SchemaInterface::RELATIONS => [
-                    'favorite' => [
-                        Relation::TYPE => Relation::HAS_ONE,
-                        Relation::TARGET => 'post',
-                        Relation::LOAD => Relation::LOAD_PROMISE,
-                        Relation::SCHEMA => [
-                            Relation::CASCADE => true,
-                            Relation::NULLABLE => false,
-                            Relation::INNER_KEY => 'id',
-                            Relation::OUTER_KEY => ['user_id'],
-                        ],
-                    ],
-                ],
+                SchemaInterface::RELATIONS => [],
                 SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
