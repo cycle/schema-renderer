@@ -129,9 +129,9 @@ final class MermaidRenderer implements SchemaRenderer
      */
     private function getClassShortName($class): string
     {
-        $ref = new \ReflectionClass($class);
+        $className = \is_object($class) ? \get_class($class) : $class;
 
-        return $ref->getShortName();
+        return \substr($className, \strrpos($className, '\\') + 1);
     }
 
     /**
