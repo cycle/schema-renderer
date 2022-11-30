@@ -190,6 +190,7 @@ final class MermaidRenderer implements SchemaRenderer
     }
 
     /**
+     * @psalm-suppress PossiblyFalseOperand
      * @param class-string|object $class
      */
     private function getClassShortName($class): string
