@@ -11,6 +11,10 @@ use Cycle\Schema\Renderer\MermaidRenderer\Row;
 final class EntityTable implements EntityInterface
 {
     private string $title;
+
+    /**
+     * @var array
+     */
     private array $rows = [];
 
     private const BLOCK = <<<BLOCK

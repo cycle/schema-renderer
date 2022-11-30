@@ -191,7 +191,6 @@ final class MermaidRenderer implements SchemaRenderer
 
     /**
      * @param class-string|object $class
-     * @return string
      */
     private function getClassShortName($class): string
     {

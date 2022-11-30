@@ -11,11 +11,8 @@ class Relation implements \Stringable
     private const BLOCK = '%s %s %s : %s';
 
     private string $parent;
-
     private string $children;
-
     private string $comment;
-
     private string $arrow;
     private bool $isNullable;
 

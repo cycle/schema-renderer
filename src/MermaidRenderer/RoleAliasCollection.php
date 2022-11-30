@@ -11,7 +11,7 @@ final class RoleAliasCollection
     private array $aliases = [];
 
     /**
-     * @param array<non-empty-string|class-string, array{0: non-empty-string}> $schema
+     * @param array<string, array<int, mixed>> $schema
      */
     public function __construct(array $schema)
     {
@@ -33,10 +33,6 @@ final class RoleAliasCollection
         }
     }
 
-    /**
-     * @param non-empty-string $role
-     * @return non-empty-string
-     */
     public function getAlias(string $role): string
     {
         return $this->aliases[$role] ?? 'undefined';
@@ -44,7 +40,7 @@ final class RoleAliasCollection
 
     /**
      * @param non-empty-string $role
-     * @return non-empty-string
+     * @return string
      */
     private function makeAlias(string $role): string
     {
