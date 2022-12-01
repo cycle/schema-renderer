@@ -6,17 +6,10 @@ namespace Cycle\Schema\Renderer\MermaidRenderer\Entity;
 
 use Cycle\Schema\Renderer\MermaidRenderer\Annotation;
 use Cycle\Schema\Renderer\MermaidRenderer\Method;
-use Cycle\Schema\Renderer\MermaidRenderer\Row;
+use Cycle\Schema\Renderer\MermaidRenderer\Column;
 
 final class EntityTable implements EntityInterface
 {
-    private string $title;
-
-    /**
-     * @var array
-     */
-    private array $rows = [];
-
     private const BLOCK = <<<BLOCK
         class %s {
             %s
@@ -25,35 +18,40 @@ final class EntityTable implements EntityInterface
 
     public const INDENT = '    ';
 
+    private string $title;
+
+    /**
+     * @var Column[]|Annotation[]|Method[]
+     */
+    private array $columns = [];
+
     public function __construct(string $title)
     {
         $this->title = $title;
     }
 
-    public function addRow(Row $row): void
+    public function addColumn(Column $column): void
     {
-        $this->rows[] = $row;
+        $this->columns[] = $column;
     }
 
     public function addMethod(Method $method): void
     {
-        $this->rows[] = $method;
+        $this->columns[] = $method;
     }
 
     public function addAnnotation(Annotation $annotation): void
     {
-        \array_unshift($this->rows, $annotation);
+        \array_unshift($this->columns, $annotation);
     }
 
     public function __toString(): string
     {
-        $rows = [];
+        $columns = \array_map(function (\Stringable $column) {
+            return (string) $column;
+        }, $this->columns);
 
-        foreach ($this->rows as $row) {
-            $rows[] = (string)$row;
-        }
-
-        $body = \implode("\n" . self::INDENT, $rows);
+        $body = \implode("\n" . self::INDENT, $columns);
 
         return \sprintf(self::BLOCK, $this->title, $body);
     }

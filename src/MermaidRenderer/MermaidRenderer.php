@@ -33,6 +33,8 @@ use Cycle\Schema\Renderer\SchemaRenderer;
 
 final class MermaidRenderer implements SchemaRenderer
 {
+    use StringFormatter;
+
     public function render(array $schema): string
     {
         $class = new ClassDiagram();
@@ -55,10 +57,8 @@ final class MermaidRenderer implements SchemaRenderer
             }
 
             foreach ($value[SchemaInterface::COLUMNS] as $column) {
-                $typecast = $this->formatTypecast($value[SchemaInterface::TYPECAST][$column] ?? 'string');
-
-                $entityTable->addRow(
-                    new Row($typecast, $column)
+                $entityTable->addColumn(
+                    new Column($value[SchemaInterface::TYPECAST][$column] ?? 'string', $column)
                 );
             }
 
@@ -187,42 +187,5 @@ final class MermaidRenderer implements SchemaRenderer
         }
 
         return (string)$class;
-    }
-
-    /**
-     * @psalm-suppress PossiblyFalseOperand
-     * @param class-string|object $class
-     */
-    private function getClassShortName($class): string
-    {
-        $className = \is_object($class) ? \get_class($class) : $class;
-
-        return \substr($className, \strrpos($className, '\\') + 1);
-    }
-
-    /**
-     * @psalm-suppress MissingParamType
-     */
-    private function formatTypecast($typecast): string
-    {
-        if (\is_array($typecast)) {
-            $typecast[0] = $this->getClassShortName($typecast[0]);
-
-            return \sprintf("[%s, '%s']", "$typecast[0]::class", $typecast[1]);
-        }
-
-        if ($typecast instanceof \Closure) {
-            return 'Closure';
-        }
-
-        if ($typecast === 'datetime') {
-            return $typecast;
-        }
-
-        if (\class_exists($typecast)) {
-            return $this->getClassShortName($typecast) . '::class';
-        }
-
-        return \htmlentities($typecast);
     }
 }

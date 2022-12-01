@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Cycle\Schema\Renderer\Tests\MermaidRenderer\Entity;
 
 use Cycle\Schema\Renderer\MermaidRenderer\Entity\EntityTable;
-use Cycle\Schema\Renderer\MermaidRenderer\Row;
+use Cycle\Schema\Renderer\MermaidRenderer\Column;
 use Cycle\Schema\Renderer\Tests\BaseTest;
 
 class EntityTableTest extends BaseTest
@@ -14,11 +14,11 @@ class EntityTableTest extends BaseTest
     {
         $table = new EntityTable('table');
 
-        $table->addRow(
-            new Row('string', 'foo')
+        $table->addColumn(
+            new Column('string', 'foo')
         );
-        $table->addRow(
-            new Row('float', 'bar')
+        $table->addColumn(
+            new Column('float', 'bar')
         );
 
         $this->assertSame(<<<BLOCK
