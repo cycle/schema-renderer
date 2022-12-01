@@ -40,6 +40,7 @@ final class RoleAliasCollection
 
     /**
      * @param non-empty-string $role
+     *
      * @return string
      */
     private function makeAlias(string $role): string
