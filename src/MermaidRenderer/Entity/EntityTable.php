@@ -21,7 +21,7 @@ final class EntityTable implements EntityInterface
     private string $title;
 
     /**
-     * @var Column[]|Annotation[]|Method[]
+     * @var Annotation[]|Column[]|Method[]
      */
     private array $columns = [];
 
