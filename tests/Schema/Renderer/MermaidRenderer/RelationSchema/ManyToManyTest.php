@@ -122,7 +122,6 @@ class ManyToManyTest extends BaseTest
                         Relation::SCHEMA => [
                             Relation::CASCADE => true,
                             Relation::WHERE => [],
-                            Relation::ORDER_BY => [],
                             Relation::INNER_KEY => ['id'],
                             Relation::OUTER_KEY => ['id'],
                             Relation::THROUGH_ENTITY => PostTag::class,
