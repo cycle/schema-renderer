@@ -119,7 +119,6 @@ class ManyToManyTest extends BaseTest
                     'posts' => [
                         Relation::TYPE => Relation::MANY_TO_MANY,
                         Relation::TARGET => 'post',
-                        Relation::COLLECTION_TYPE => 'array',
                         Relation::LOAD => Relation::LOAD_PROMISE,
                         Relation::SCHEMA => [
                             Relation::CASCADE => true,

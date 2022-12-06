@@ -94,7 +94,6 @@ class HasManyTest extends BaseTest
                     'posts' => [
                         Relation::TYPE => Relation::HAS_MANY,
                         Relation::TARGET => Post::class,
-                        Relation::COLLECTION_TYPE => 'array',
                         Relation::LOAD => Relation::LOAD_PROMISE,
                         Relation::SCHEMA => [
                             Relation::CASCADE => true,

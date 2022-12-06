@@ -29,6 +29,7 @@ use Cycle\Schema\Renderer\MermaidRenderer\Relation\MorphedHasOneRelation;
 use Cycle\Schema\Renderer\MermaidRenderer\Relation\RefersToRelation;
 use Cycle\Schema\Renderer\MermaidRenderer\Relation\SingleInheritanceRelation;
 use Cycle\Schema\Renderer\MermaidRenderer\Schema\ClassDiagram;
+use Cycle\Schema\Renderer\SchemaConstants;
 use Cycle\Schema\Renderer\SchemaRenderer;
 
 final class MermaidRenderer implements SchemaRenderer
@@ -39,6 +40,8 @@ final class MermaidRenderer implements SchemaRenderer
     {
         $class = new ClassDiagram();
         $roleAliasCollection = new RoleAliasCollection($schema);
+
+        $constants = (new SchemaConstants())->all();
 
         foreach ($schema as $key => $value) {
             if (!isset($value[SchemaInterface::COLUMNS])) {
@@ -176,9 +179,9 @@ final class MermaidRenderer implements SchemaRenderer
                 );
             }
 
-            if (isset($value[SchemaInterface::PARENT])) {
+            if (isset($constants['PARENT']) && isset($value[$constants['PARENT']])) {
                 $entityRelation->addRelation(
-                    new JoinedInheritanceRelation($value[SchemaInterface::PARENT], $role, false)
+                    new JoinedInheritanceRelation($value[$constants['PARENT']], $role, false)
                 );
             }
 

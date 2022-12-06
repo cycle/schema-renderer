@@ -53,6 +53,6 @@ final class Column implements \Stringable
             return $this->getClassShortName($typecast) . '::class';
         }
 
-        return \htmlentities($typecast);
+        return \htmlentities($typecast, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401);
     }
 }
