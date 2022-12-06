@@ -99,13 +99,11 @@ class HasManyTest extends BaseTest
                             Relation::CASCADE => true,
                             Relation::NULLABLE => false,
                             Relation::WHERE => [],
-                            Relation::ORDER_BY => [],
                             Relation::INNER_KEY => ['id'],
                             Relation::OUTER_KEY => 'user_id',
                         ],
                     ],
                 ],
-                SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'created_at' => 'datetime',

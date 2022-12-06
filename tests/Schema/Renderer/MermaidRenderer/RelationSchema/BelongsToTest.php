@@ -103,7 +103,6 @@ class BelongsToTest extends BaseTest
                     'updated_at' => 'updated_at',
                 ],
                 SchemaInterface::RELATIONS => [],
-                SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'created_at' => 'datetime',

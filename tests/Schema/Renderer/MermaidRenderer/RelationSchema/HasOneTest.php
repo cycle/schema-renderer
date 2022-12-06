@@ -101,7 +101,6 @@ class HasOneTest extends BaseTest
                         ],
                     ],
                 ],
-                SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'created_at' => 'datetime',
