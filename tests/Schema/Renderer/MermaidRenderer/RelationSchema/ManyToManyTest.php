@@ -96,7 +96,6 @@ class ManyToManyTest extends BaseTest
                     'tag_id' => 'tag_id',
                 ],
                 SchemaInterface::RELATIONS => [],
-                SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
                     'post_id' => 'int',
