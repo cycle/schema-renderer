@@ -52,7 +52,6 @@ final class SingleTableInheritanceTest extends BaseTest
                0 -> id -> int
                1 -> email
                2 -> balance -> float
-               _type -> _type
     Relations: not defined
 
 
