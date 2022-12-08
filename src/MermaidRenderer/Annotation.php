@@ -10,7 +10,7 @@ final class Annotation implements \Stringable
 
     public function __construct(string $name)
     {
-        $this->name = \preg_replace('/[^\p{L}\p{N}\s]/u', '', $name);
+        $this->name = \preg_replace('/[^\p{L}\p{N}\s&:]/u', '', $name);
     }
 
     public function __toString(): string
