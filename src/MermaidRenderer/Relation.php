@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Cycle\Schema\Renderer\MermaidRenderer;
 
-class Relation implements \Stringable
+class Relation implements Stringable
 {
     use StringFormatter;
 

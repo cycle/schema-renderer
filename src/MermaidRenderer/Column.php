@@ -7,7 +7,7 @@ namespace Cycle\Schema\Renderer\MermaidRenderer;
 /**
  * @psalm-type Ttype=class-string|string|\Closure|object|array{0: class-string, 1: non-empty-string}
  */
-final class Column implements \Stringable
+final class Column implements Stringable
 {
     use StringFormatter;
 

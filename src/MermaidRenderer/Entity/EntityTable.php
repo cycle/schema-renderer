@@ -7,6 +7,7 @@ namespace Cycle\Schema\Renderer\MermaidRenderer\Entity;
 use Cycle\Schema\Renderer\MermaidRenderer\Annotation;
 use Cycle\Schema\Renderer\MermaidRenderer\Method;
 use Cycle\Schema\Renderer\MermaidRenderer\Column;
+use Cycle\Schema\Renderer\MermaidRenderer\Stringable;
 
 final class EntityTable implements EntityInterface
 {
@@ -47,7 +48,7 @@ final class EntityTable implements EntityInterface
 
     public function __toString(): string
     {
-        $columns = \array_map(function (\Stringable $column) {
+        $columns = \array_map(function (Stringable $column) {
             return (string) $column;
         }, $this->columns);
 

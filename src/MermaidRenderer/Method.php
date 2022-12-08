@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Cycle\Schema\Renderer\MermaidRenderer;
 
-class Method implements \Stringable
+class Method implements Stringable
 {
     private string $name;
     private string $target;
