@@ -6,7 +6,7 @@ namespace Cycle\Schema\Renderer\MermaidRenderer\Schema;
 
 use Cycle\Schema\Renderer\MermaidRenderer\Entity\EntityInterface;
 
-interface SchemaInterface extends \Stringable
+interface SchemaInterface
 {
     public function addEntity(EntityInterface $entity): void;
 }
