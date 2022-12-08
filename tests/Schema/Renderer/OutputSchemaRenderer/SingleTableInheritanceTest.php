@@ -39,8 +39,31 @@ final class SingleTableInheritanceTest extends BaseTest
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        if ($this->isOrmVersion('1.8.1.0')) {
+            $this->assertSame(
+                <<<'OUTPUT'
+[user] :: default.user
+       Entity: Cycle\Schema\Renderer\Tests\Fixture\User
+       Mapper: Cycle\ORM\Mapper\Mapper
+  Primary key: id
+     Children: Cycle\Schema\Renderer\Tests\Fixture\Guest
+               Cycle\Schema\Renderer\Tests\Fixture\Admin
+       Fields:
+               (property -> db.field -> typecast)
+               0 -> id -> int
+               1 -> email
+               2 -> balance -> float
+               _type -> _type
+    Relations: not defined
+
+
+OUTPUT
+                ,
+                $renderer->render($schemaArray)
+            );
+        } else {
+            $this->assertSame(
+                <<<'OUTPUT'
 [user] :: default.user
        Entity: Cycle\Schema\Renderer\Tests\Fixture\User
        Mapper: Cycle\ORM\Mapper\Mapper
@@ -56,9 +79,10 @@ final class SingleTableInheritanceTest extends BaseTest
 
 
 OUTPUT
-            ,
-            $renderer->render($schemaArray)
-        );
+                ,
+                $renderer->render($schemaArray)
+            );
+        }
     }
 
     public function testSchemaWithChildrenAndDiscriminatorPropertiesShouldBeRendered(): void

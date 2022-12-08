@@ -24,4 +24,9 @@ abstract class BaseTest extends TestCase
     {
         return (int) \Composer\InstalledVersions::getVersion('cycle/orm') > 1;
     }
+
+    public function isOrmVersion(string $version): bool
+    {
+        return \Composer\InstalledVersions::getVersion('cycle/orm') === $version;
+    }
 }
