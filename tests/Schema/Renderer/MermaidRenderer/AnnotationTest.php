@@ -15,4 +15,11 @@ final class AnnotationTest extends BaseTest
 
         $this->assertSame('<<some good annotation>>', (string)$ann);
     }
+
+    public function testNameWithSymbols(): void
+    {
+        $ann = new Annotation('<<>>some good annotation<<>>');
+
+        $this->assertSame('<<some good annotation>>', (string)$ann);
+    }
 }
