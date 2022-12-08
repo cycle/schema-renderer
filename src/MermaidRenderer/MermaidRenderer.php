@@ -179,7 +179,7 @@ final class MermaidRenderer implements SchemaRenderer
                 );
             }
 
-            if (isset($constants['PARENT']) && isset($value[$constants['PARENT']])) {
+            if (isset($constants['PARENT'], $value[$constants['PARENT']])) {
                 $entityRelation->addRelation(
                     new JoinedInheritanceRelation($value[$constants['PARENT']], $role, false)
                 );
