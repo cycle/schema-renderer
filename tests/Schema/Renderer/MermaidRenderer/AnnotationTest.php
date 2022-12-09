@@ -18,10 +18,10 @@ final class AnnotationTest extends BaseTest
 
     public function testNameWithSymbols(): void
     {
-        $ann = new Annotation('>>some good annotation<<');
+        $ann = new Annotation('>>some:good:annotation<<');
 
         $this->assertSame(
-            '<<&gt;&gt;some good annotation&lt;&lt;>>',
+            '<<&gt;&gt;some:good:annotation&lt;&lt;>>',
             (string)$ann
         );
     }
