@@ -18,7 +18,9 @@ final class SingleTableInheritanceTest extends BaseTest
 {
     public function testSchemaWithChildrenPropertyShouldBeRendered(): void
     {
-        $this->markTestSkipped('Need fix');
+        if (!$this->isOrmV2()) {
+            $this->markTestSkipped('Need fix');
+        }
 
         $schemaArray = [
             User::class => [
