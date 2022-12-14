@@ -70,7 +70,7 @@ class CustomPropertyRenderer implements Renderer {
     {
         $data = $schema['my_custom_property'] ?? null;
 
-        return sprintf(
+        return \sprintf(
             '%s: %s',
             $formatter->title($this->title),
             $data === null ? $formatter->error('not defined') : $formatter->typecast($data)
@@ -97,7 +97,7 @@ $path = __DIR__. '/schema.php'
 
 $renderer = new PhpSchemaRenderer();
 
-file_put_contents($path, $renderer->render($schemaArray));
+\file_put_contents($path, $renderer->render($schemaArray));
 ```
 
 The Renderer generates valid PHP code, in which constants from Cycle ORM classes are substituted
