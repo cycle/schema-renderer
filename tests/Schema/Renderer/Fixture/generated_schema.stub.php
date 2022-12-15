@@ -7,8 +7,8 @@ use Cycle\ORM\SchemaInterface as Schema;
 
 return [
     'user' => [
-        Schema::ENTITY => 'Cycle\\Schema\\Renderer\\Tests\\Fixture\\User',
-        Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
+        Schema::ENTITY => Cycle\Schema\Renderer\Tests\Fixture\User::class,
+        Schema::MAPPER => Cycle\ORM\Mapper\Mapper::class,
         Schema::DATABASE => 'default',
         Schema::TABLE => 'user',
         Schema::PRIMARY_KEY => 'id',
@@ -43,8 +43,8 @@ return [
         Schema::SCHEMA => [],
     ],
     'tag' => [
-        Schema::ENTITY => 'Cycle\\Schema\\Renderer\\Tests\\Fixture\\Tag',
-        Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
+        Schema::ENTITY => Cycle\Schema\Renderer\Tests\Fixture\Tag::class,
+        Schema::MAPPER => Cycle\ORM\Mapper\Mapper::class,
         Schema::DATABASE => 'default',
         Schema::TABLE => 'tag',
         Schema::PRIMARY_KEY => ['id', 'name'],
@@ -66,8 +66,8 @@ return [
         Schema::SCHEMA => [],
     ],
     'tag_context' => [
-        Schema::ENTITY => 'Cycle\\Schema\\Renderer\\Tests\\Fixture\\TagContext',
-        Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
+        Schema::ENTITY => Cycle\Schema\Renderer\Tests\Fixture\TagContext::class,
+        Schema::MAPPER => Cycle\ORM\Mapper\Mapper::class,
         Schema::DATABASE => 'default',
         Schema::TABLE => 'tag_user_map',
         Schema::COLUMNS => [],
