@@ -144,7 +144,7 @@ final class PhpSchemaRendererTest extends BaseTest
                 return [
                     'Cycle\Schema\Renderer\Tests\Fixture\TagContext' => [
                         Schema::ROLE => 'tag_context',
-                        Schema::MAPPER => 'Cycle\\\\ORM\\\\Mapper\\\\Mapper',
+                        Schema::MAPPER => Cycle\ORM\Mapper\Mapper::class,
                         Schema::DATABASE => 'default',
                         Schema::TABLE => 'tag_user_map',
                         Schema::COLUMNS => [],
