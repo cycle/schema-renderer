@@ -21,36 +21,43 @@ final class StyledFormatter implements Formatter
         '<fg=cyan>' => "\033[36m",
     ];
 
+    #[\Override]
     public function title(string $title): string
     {
         return str_pad($title, self::TITLE_LENGTH, ' ', STR_PAD_LEFT);
     }
 
+    #[\Override]
     public function property(string $string): string
     {
         return $this->colorize("<fg=cyan>{$string}</>");
     }
 
+    #[\Override]
     public function column(string $string): string
     {
         return $this->colorize("<fg=green>{$string}</>");
     }
 
+    #[\Override]
     public function info(string $string): string
     {
         return $this->colorize("<fg=yellow>{$string}</>");
     }
 
+    #[\Override]
     public function typecast(string $string): string
     {
         return $this->colorize("<fg=blue>{$string}</>");
     }
 
+    #[\Override]
     public function entity(string $string): string
     {
         return $this->colorize("<fg=magenta>{$string}</>");
     }
 
+    #[\Override]
     public function error(string $string): string
     {
         return $this->colorize("<fg=red>{$string}</>");

@@ -21,6 +21,7 @@ class PhpSchemaRenderer implements SchemaRenderer
         'Cycle\ORM\SchemaInterface as Schema',
     ];
 
+    #[\Override]
     final public function render(array $schema): string
     {
         $result = "<?php\n\ndeclare(strict_types=1);\n\n";

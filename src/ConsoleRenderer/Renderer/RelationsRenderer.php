@@ -28,6 +28,7 @@ class RelationsRenderer implements Renderer
         Relation::LOAD_EAGER => 'eager',
     ];
 
+    #[\Override]
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
         $title = \sprintf('%s:', $formatter->title('Relations'));

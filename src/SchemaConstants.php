@@ -8,6 +8,7 @@ use Cycle\ORM\SchemaInterface;
 
 class SchemaConstants implements ConstantsInterface
 {
+    #[\Override]
     public function all(): array
     {
         return array_filter(

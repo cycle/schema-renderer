@@ -19,6 +19,7 @@ class CustomPropertiesRenderer implements Renderer
         $this->exclude = $exclude;
     }
 
+    #[\Override]
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
         $customProperties = \array_diff(\array_keys($schema), $this->exclude);

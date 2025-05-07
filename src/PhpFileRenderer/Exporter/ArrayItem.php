@@ -20,19 +20,21 @@ final class ArrayItem implements ExporterItem, Indentable
     /**
      * @param mixed $value
      */
-    public function __construct($value, string $key = null, bool $wrapKey = true)
+    public function __construct($value, ?string $key = null, bool $wrapKey = true)
     {
         $this->key = $key;
         $this->value = $value;
         $this->wrapKey = $wrapKey;
     }
 
+    #[\Override]
     public function setIndentLevel(int $indentLevel = 0): self
     {
         $this->indentLevel = $indentLevel;
         return $this;
     }
 
+    #[\Override]
     public function toString(): string
     {
         $result = \str_repeat(self::INDENT, $this->indentLevel);

@@ -25,6 +25,7 @@ class OutputRenderer implements SchemaRenderer
         }
     }
 
+    #[\Override]
     final public function render(array $schema): string
     {
         $result = '';

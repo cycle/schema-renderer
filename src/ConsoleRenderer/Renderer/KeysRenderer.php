@@ -24,6 +24,7 @@ class KeysRenderer implements Renderer
         $this->required = $required;
     }
 
+    #[\Override]
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
         $keys = $schema[$this->key] ?? null;

@@ -10,6 +10,7 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 
 class ColumnsRenderer implements Renderer
 {
+    #[\Override]
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
         $rows = [];

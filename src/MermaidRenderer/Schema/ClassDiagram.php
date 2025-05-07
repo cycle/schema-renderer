@@ -22,6 +22,7 @@ final class ClassDiagram implements SchemaInterface
         return sprintf(self::DIAGRAM, \implode("\n", $this->entities));
     }
 
+    #[\Override]
     public function addEntity(EntityInterface $entity): void
     {
         $this->entities[] = $entity;

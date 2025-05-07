@@ -18,6 +18,7 @@ class ListenersRenderer implements Renderer
         $this->title = $title;
     }
 
+    #[\Override]
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
         if (! isset($schema[$this->property])) {

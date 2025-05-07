@@ -36,6 +36,7 @@ final class MermaidRenderer implements SchemaRenderer
 {
     use StringFormatter;
 
+    #[\Override]
     public function render(array $schema): string
     {
         $class = new ClassDiagram();

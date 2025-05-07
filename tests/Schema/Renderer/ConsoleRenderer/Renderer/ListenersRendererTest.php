@@ -13,13 +13,6 @@ final class ListenersRendererTest extends BaseTest
 {
     private Formatter $formatter;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->formatter = new PlainFormatter();
-    }
-
     public function testRenderNotExistsProperty()
     {
         $renderer = new ListenersRenderer(1, 'Foo');
@@ -92,5 +85,12 @@ OUTPUT
             ,
             $result
         );
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->formatter = new PlainFormatter();
     }
 }

@@ -7,27 +7,23 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  mutation:
-    name: PHP ${{ matrix.php }}-${{ matrix.os }}
-
+  static-analysis:
+    name: PHP ${{ matrix.php }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
-
-        php:
-          - "8.0"
+        php: ['8.1', '8.2', '8.3', '8.4']
+        os: [ubuntu-latest]
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Install PHP
+      - name: Install PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "${{ matrix.php }}"
+          php-version: ${{ matrix.php }}
           tools: composer:v2, cs2pr
           coverage: none
 
@@ -35,7 +31,7 @@ jobs:
         run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ env.COMPOSER_CACHE_DIR }}
           key: php${{ matrix.php }}-composer-${{ hashFiles('**/composer.json') }}
@@ -48,5 +44,10 @@ jobs:
       - name: Install dependencies with composer
         run: composer update --with cycle/orm:^2.0 --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
 
-      - name: Static analysis
-        run: vendor/bin/psalm --shepherd --stats --output-format=checkstyle --php-version=8.0 | cs2pr --graceful-warnings --colorize
+      - name: Run Psalm Static Analysis
+        run: |
+          vendor/bin/psalm \
+            --shepherd \
+            --stats \
+            --output-format=checkstyle \
+            --php-version=${{ matrix.php }} | cs2pr --graceful-warnings --colorize

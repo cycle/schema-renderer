@@ -14,13 +14,6 @@ class CustomPropertiesRendererTest extends BaseTest
 {
     private Formatter $formatter;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->formatter = new PlainFormatter();
-    }
-
     public function testCustomPropertiesShouldBeRendered()
     {
         $renderer = new CustomPropertiesRenderer(['bar', 'baz']);
@@ -45,12 +38,19 @@ class CustomPropertiesRendererTest extends BaseTest
              array: array (
                'foo' => 'bar',
              )
-             object: Cycle\Schema\Renderer\Tests\Fixture\User::__set_state(array(
+             object: \Cycle\Schema\Renderer\Tests\Fixture\User::__set_state(array(
              ))
              bool: false
 OUTPUT
             ,
             $result
         );
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->formatter = new PlainFormatter();
     }
 }

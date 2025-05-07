@@ -20,12 +20,14 @@ class ArrayBlock implements ExporterItem, Indentable
         $this->replaceValues = $replaceValues;
     }
 
+    #[\Override]
     final public function setIndentLevel(int $indentLevel = 0): self
     {
         $this->indentLevel = $indentLevel;
         return $this;
     }
 
+    #[\Override]
     final public function toString(): string
     {
         $result = [];

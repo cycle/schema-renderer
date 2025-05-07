@@ -14,6 +14,7 @@ class RoleBlock extends ArrayBlock
      * @param int|string $key
      * @param mixed $value
      */
+    #[\Override]
     protected function wrapItem($key, $value): ArrayItem
     {
         $item = parent::wrapItem($key, $value);
