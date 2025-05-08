@@ -3,8 +3,6 @@ name: static analysis
 on:
   pull_request:
   push:
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   static-analysis:
@@ -24,20 +22,17 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          tools: composer:v2, cs2pr
-          coverage: none
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
           ini-values: error_reporting=E_ALL
           coverage: none
 
+      - name: Setup problem matchers
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --ansi --strict
+
+      - name: Install dependencies with composer
+        uses: ramsey/composer-install@v3
+
       - name: Run Psalm Static Analysis
-        run: |
-          vendor/bin/psalm \
-            --shepherd \
-            --stats \
-            --output-format=checkstyle \
-            --php-version=${{ matrix.php }} | cs2pr --graceful-warnings --colorize
+        run: composer psalm:ci

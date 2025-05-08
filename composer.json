@@ -28,6 +28,7 @@
         "cs:diff": "php-cs-fixer fix --dry-run -v --diff --show-progress dots",
         "cs:fix": "php-cs-fixer fix -v",
         "psalm": "psalm",
+        "psalm:ci": "psalm --output-format=github --shepherd --show-info=false --stats --threads=4",
         "psalm:baseline": "psalm --set-baseline=psalm-baseline.xml",
         "test": "phpunit --color=always"
     },
