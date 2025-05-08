@@ -31,7 +31,6 @@ final class Column implements Stringable
     /**
      * @param Ttype $typecast
      *
-     * @return string
      */
     private function formatTypecast($typecast): string
     {

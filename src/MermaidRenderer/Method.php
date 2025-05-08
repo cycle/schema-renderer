@@ -23,7 +23,7 @@ class Method implements Stringable
             '%s(%s: %s)',
             $this->name,
             $this->abbreviation,
-            $this->target
+            $this->target,
         );
     }
 }

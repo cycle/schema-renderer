@@ -16,7 +16,6 @@ final class EntityTable implements EntityInterface
             %s
         }
         BLOCK;
-
     public const INDENT = '    ';
 
     private string $title;
@@ -48,7 +47,7 @@ final class EntityTable implements EntityInterface
 
     public function __toString(): string
     {
-        $columns = \array_map(function (Stringable $column) {
+        $columns = \array_map(static function (Stringable $column) {
             return (string) $column;
         }, $this->columns);
 

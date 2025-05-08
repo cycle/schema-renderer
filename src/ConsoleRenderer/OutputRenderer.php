@@ -10,6 +10,7 @@ class OutputRenderer implements SchemaRenderer
 {
     /** @var Renderer[] */
     private array $renderers = [];
+
     private Formatter $formatter;
 
     public function __construct(Formatter $formatter, array $renderers = [])
@@ -25,6 +26,7 @@ class OutputRenderer implements SchemaRenderer
         }
     }
 
+    #[\Override]
     final public function render(array $schema): string
     {
         $result = '';
@@ -39,9 +41,8 @@ class OutputRenderer implements SchemaRenderer
         $rows = [];
 
         foreach ($this->renderers as $renderer) {
-            if ($row = $renderer->render($this->formatter, $schema, $role)) {
-                $rows[] = $row;
-            }
+            $row = $renderer->render($this->formatter, $schema, $role);
+            $row !== null and $row !== '' and $rows[] = $row;
         }
 
         return \implode($this->formatter::LINE_SEPARATOR, $rows);

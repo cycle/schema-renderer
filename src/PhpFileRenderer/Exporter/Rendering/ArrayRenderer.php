@@ -14,7 +14,7 @@ final class ArrayRenderer
         $inline = $aiKeys && self::isScalarArrayValues($value);
         if ($inline) {
             $result = self::renderArrayInline($value, !$aiKeys);
-            if (strlen($result) <= ExporterItem::MAX_LINE_LENGTH) {
+            if (\strlen($result) <= ExporterItem::MAX_LINE_LENGTH) {
                 return $result;
             }
         }
@@ -35,7 +35,7 @@ final class ArrayRenderer
         foreach ($value as $key => $item) {
             $str = '';
             if (!$item instanceof self && $withKeys) {
-                $str .= is_int($key) ? "{$key} => " : "'{$key}' => ";
+                $str .= \is_int($key) ? "{$key} => " : "'{$key}' => ";
             }
             $elements[] = $str . self::renderValue($item);
         }
@@ -52,7 +52,7 @@ final class ArrayRenderer
             if ($item instanceof Indentable) {
                 $item->setIndentLevel($indentLevel + 1);
             } elseif ($withKeys) {
-                $result .= is_int($key) ? "{$key} => " : "'{$key}' => ";
+                $result .= \is_int($key) ? "{$key} => " : "'{$key}' => ";
             }
             $result .= self::renderValue($item, true, $indentLevel + 1) . ',';
         }
@@ -61,13 +61,13 @@ final class ArrayRenderer
 
     private static function isAutoIncrementedKeys(array $array): bool
     {
-        return count($array) === 0 || array_keys($array) === range(0, count($array) - 1);
+        return \count($array) === 0 || \array_keys($array) === \range(0, \count($array) - 1);
     }
 
     private static function isScalarArrayValues(array $array): bool
     {
         foreach ($array as $value) {
-            if (!is_scalar($value)) {
+            if (!\is_scalar($value)) {
                 return false;
             }
         }

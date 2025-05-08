@@ -23,7 +23,6 @@ final class OutputSchemaRenderer extends OutputRenderer
 {
     public const FORMAT_PLAIN_TEXT = 0;
     public const FORMAT_CONSOLE_COLOR = 1;
-
     protected const DEFAULT_PROPERTY_LIST = [
         'ROLE' => 'Role',
         'ENTITY' => 'Entity',
@@ -46,9 +45,9 @@ final class OutputSchemaRenderer extends OutputRenderer
             new TitleRenderer(),
 
             // Default properties renderer (Without extra logic)
-            ...array_map(static function ($property, string $title) {
+            ...\array_map(static function ($property, string $title) {
                 return new PropertyRenderer($property, $title);
-            }, array_keys($properties), $properties),
+            }, \array_keys($properties), $properties),
 
             new KeysRenderer(SchemaInterface::PRIMARY_KEY, 'Primary key', true),
         ]);
@@ -94,7 +93,7 @@ final class OutputSchemaRenderer extends OutputRenderer
     {
         $result = [];
         foreach ($constants as $name => $value) {
-            if (!array_key_exists($name, self::DEFAULT_PROPERTY_LIST)) {
+            if (!\array_key_exists($name, self::DEFAULT_PROPERTY_LIST)) {
                 continue;
             }
             $result[$value] = self::DEFAULT_PROPERTY_LIST[$name];

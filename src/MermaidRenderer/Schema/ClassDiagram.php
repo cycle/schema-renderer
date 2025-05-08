@@ -17,13 +17,14 @@ final class ClassDiagram implements SchemaInterface
 
     private array $entities = [];
 
-    public function __toString(): string
-    {
-        return sprintf(self::DIAGRAM, \implode("\n", $this->entities));
-    }
-
+    #[\Override]
     public function addEntity(EntityInterface $entity): void
     {
         $this->entities[] = $entity;
+    }
+
+    public function __toString(): string
+    {
+        return \sprintf(self::DIAGRAM, \implode("\n", $this->entities));
     }
 }

@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
-         backupGlobals="false"
-         colors="true"
-         verbose="true"
-         bootstrap="vendor/autoload.php"
-         failOnRisky="true"
-         failOnWarning="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         stopOnFailure="false"
-         executionOrder="random"
-         resolveDependencies="true"
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+    bootstrap="vendor/autoload.php"
+    cacheResultFile="runtime/.phpunit.result.cache"
+    backupGlobals="false"
+    colors="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    stopOnFailure="false"
+    executionOrder="random"
+    resolveDependencies="true"
 >
     <php>
-        <ini name="display_errors" value="On" />
-        <ini name="error_reporting" value="-1" />
+        <ini name="display_errors" value="On"/>
+        <ini name="error_reporting" value="-1"/>
     </php>
 
     <testsuites>
         <testsuite name="Cycle: Schema Renderer">
             <directory>./tests/</directory>
+            <exclude>tests/Schema/Renderer/BaseTest.php</exclude>
         </testsuite>
     </testsuites>
 
-    <coverage>
+    <source>
         <include>
             <directory>src</directory>
         </include>
+    </source>
+    <coverage>
+        <report>
+            <html outputDirectory="runtime/coverage"/>
+            <text outputFile="runtime/coverage.txt"/>
+            <clover outputFile="runtime/logs/clover.xml"/>
+        </report>
     </coverage>
 </phpunit>

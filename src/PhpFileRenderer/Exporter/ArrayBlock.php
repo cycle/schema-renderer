@@ -20,12 +20,14 @@ class ArrayBlock implements ExporterItem, Indentable
         $this->replaceValues = $replaceValues;
     }
 
+    #[\Override]
     final public function setIndentLevel(int $indentLevel = 0): self
     {
         $this->indentLevel = $indentLevel;
         return $this;
     }
 
+    #[\Override]
     final public function toString(): string
     {
         $result = [];
@@ -54,10 +56,10 @@ class ArrayBlock implements ExporterItem, Indentable
     protected function wrapItem($key, $value): ArrayItem
     {
         $item = isset($this->replaceKeys[$key])
-            ? new ArrayItem($value, (string)$this->replaceKeys[$key], false)
-            : new ArrayItem($value, (string)$key, true);
+            ? new ArrayItem($value, (string) $this->replaceKeys[$key], false)
+            : new ArrayItem($value, (string) $key, true);
 
-        if (is_scalar($value) && isset($this->replaceValues[$key][$value])) {
+        if (\is_scalar($value) && isset($this->replaceValues[$key][$value])) {
             $item->setValue($this->replaceValues[$key][$value], false);
         }
         return $item;

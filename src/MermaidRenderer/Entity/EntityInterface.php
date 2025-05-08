@@ -6,6 +6,4 @@ namespace Cycle\Schema\Renderer\MermaidRenderer\Entity;
 
 use Cycle\Schema\Renderer\MermaidRenderer\Stringable;
 
-interface EntityInterface extends Stringable
-{
-}
+interface EntityInterface extends Stringable {}

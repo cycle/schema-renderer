@@ -16,20 +16,20 @@ final class ValueRenderer
         switch (true) {
             case $value === null:
                 return 'null';
-            case is_bool($value):
+            case \is_bool($value):
                 return $value ? 'true' : 'false';
-            case is_array($value):
+            case \is_array($value):
                 return ArrayRenderer::render($value, $indentLevel);
             case $value instanceof ExporterItem:
                 return $value->toString();
-            case !$wrapValue || is_int($value):
-                return (string)$value;
+            case !$wrapValue || \is_int($value):
+                return (string) $value;
             case \is_string($value) && \strpos($value, '\\') !== false && \class_exists($value):
                 return "$value::class";
-            case is_string($value):
-                return "'" . addslashes($value) . "'";
+            case \is_string($value):
+                return "'" . \addslashes($value) . "'";
             default:
-                return "unserialize('" . addslashes(serialize($value)) . "')";
+                return "unserialize('" . \addslashes(\serialize($value)) . "')";
         }
     }
 }

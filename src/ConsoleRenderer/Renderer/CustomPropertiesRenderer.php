@@ -19,6 +19,7 @@ class CustomPropertiesRenderer implements Renderer
         $this->exclude = $exclude;
     }
 
+    #[\Override]
     public function render(Formatter $formatter, array $schema, string $role): ?string
     {
         $customProperties = \array_diff(\array_keys($schema), $this->exclude);
@@ -38,7 +39,7 @@ class CustomPropertiesRenderer implements Renderer
                 '%s%s: %s',
                 $formatter->title(' '),
                 $property,
-                $formatter->typecast($this->printValue($data, $formatter))
+                $formatter->typecast($this->printValue($data, $formatter)),
             );
         }
 
@@ -52,12 +53,12 @@ class CustomPropertiesRenderer implements Renderer
     {
         $data = \trim(\var_export($value, true), '\'');
         $data = \array_map(
-            static fn (string $row): string => $formatter->title(' ') . $row,
-            \explode("\n", $data)
+            static fn(string $row): string => $formatter->title(' ') . $row,
+            \explode("\n", $data),
         );
 
         return \ltrim(
-            \implode("\n", $data)
+            \implode("\n", $data),
         );
     }
 }

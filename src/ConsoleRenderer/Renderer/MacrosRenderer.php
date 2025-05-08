@@ -7,6 +7,4 @@ namespace Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 /**
  * @deprecated use {@see ListenersRenderer} instead
  */
-class MacrosRenderer extends ListenersRenderer
-{
-}
+class MacrosRenderer extends ListenersRenderer {}

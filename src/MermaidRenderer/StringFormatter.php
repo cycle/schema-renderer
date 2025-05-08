@@ -9,7 +9,7 @@ trait StringFormatter
     private function resolveString(string $value): string
     {
         if (\preg_match('/[^_a-zA-Z0-9]/u', $value)) {
-            $value = \preg_replace('/[^a-z0-9_]/u', '_', $value);
+            $value = (string) \preg_replace('/[^a-z0-9_]/u', '_', $value);
         }
 
         return $value;
@@ -22,6 +22,6 @@ trait StringFormatter
     {
         $className = \is_object($class) ? \get_class($class) : $class;
 
-        return \substr($className, ((int)\strrpos($className, '\\')) + 1);
+        return \substr($className, ((int) \strrpos($className, '\\')) + 1);
     }
 }
