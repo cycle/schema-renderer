@@ -17,7 +17,7 @@ class KeysRenderer implements Renderer
     public function __construct(
         int $key = SchemaInterface::PRIMARY_KEY,
         string $title = 'Primary key',
-        bool $required = true
+        bool $required = true,
     ) {
         $this->title = $title;
         $this->key = $key;
@@ -36,8 +36,8 @@ class KeysRenderer implements Renderer
         }
 
         $keys = \array_map(
-            static fn (string $key) => $formatter->property($key),
-            (array)$keys
+            static fn(string $key) => $formatter->property($key),
+            (array) $keys,
         );
 
         return $row . \implode(', ', $keys);

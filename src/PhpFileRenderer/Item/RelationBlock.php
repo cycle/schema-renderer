@@ -41,7 +41,7 @@ class RelationBlock extends ArrayBlock
     protected function wrapItem($key, $value): ArrayItem
     {
         $item = parent::wrapItem($key, $value);
-        if ($key === Relation::SCHEMA && is_array($value)) {
+        if ($key === Relation::SCHEMA && \is_array($value)) {
             $item->setValue(new self($value, $this->getReplaceKeys()), false);
         }
         return $item;
@@ -58,7 +58,7 @@ class RelationBlock extends ArrayBlock
         }
         $constants = (new \ReflectionClass(Relation::class))->getConstants();
         foreach ($constants as $name => $value) {
-            if (!in_array($name, self::RELATION_SCHEMA_KEYS, true) || array_key_exists($value, $result)) {
+            if (!\in_array($name, self::RELATION_SCHEMA_KEYS, true) || \array_key_exists($value, $result)) {
                 continue;
             }
             $result[$value] = 'Relation::' . $name;

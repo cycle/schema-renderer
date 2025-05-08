@@ -39,7 +39,7 @@ class CustomPropertiesRenderer implements Renderer
                 '%s%s: %s',
                 $formatter->title(' '),
                 $property,
-                $formatter->typecast($this->printValue($data, $formatter))
+                $formatter->typecast($this->printValue($data, $formatter)),
             );
         }
 
@@ -53,12 +53,12 @@ class CustomPropertiesRenderer implements Renderer
     {
         $data = \trim(\var_export($value, true), '\'');
         $data = \array_map(
-            static fn (string $row): string => $formatter->title(' ') . $row,
-            \explode("\n", $data)
+            static fn(string $row): string => $formatter->title(' ') . $row,
+            \explode("\n", $data),
         );
 
         return \ltrim(
-            \implode("\n", $data)
+            \implode("\n", $data),
         );
     }
 }

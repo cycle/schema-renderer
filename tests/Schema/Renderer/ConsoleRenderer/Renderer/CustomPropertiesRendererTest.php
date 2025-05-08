@@ -9,12 +9,14 @@ use Cycle\Schema\Renderer\ConsoleRenderer\Formatter\PlainFormatter;
 use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\CustomPropertiesRenderer;
 use Cycle\Schema\Renderer\Tests\BaseTest;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 class CustomPropertiesRendererTest extends BaseTest
 {
     private Formatter $formatter;
 
-    public function testCustomPropertiesShouldBeRendered()
+    #[RequiresPhp('>= 8.2.0')]
+    public function testCustomPropertiesShouldBeRendered(): void
     {
         $renderer = new CustomPropertiesRenderer(['bar', 'baz']);
 

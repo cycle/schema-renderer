@@ -25,7 +25,7 @@ class ListenersRenderer implements Renderer
             return null;
         }
 
-        $listeners = (array)($schema[$this->property] ?? []);
+        $listeners = (array) ($schema[$this->property] ?? []);
 
         if ($listeners === []) {
             return null;
@@ -36,7 +36,7 @@ class ListenersRenderer implements Renderer
         ];
 
         foreach ($listeners as $definition) {
-            $data = (array)$definition;
+            $data = (array) $definition;
 
             // Listener class
             $class = \is_string($data[0] ?? null)
@@ -58,7 +58,7 @@ class ListenersRenderer implements Renderer
                     $row .= $formatter->info($this->printValue($value, $formatter));
                     $rows[] = $row;
                 }
-            } elseif (is_string($args)) {
+            } elseif (\is_string($args)) {
                 $rows[] = $formatter->title(' ') . ' - ' . $formatter->info($this->printValue($args, $formatter));
             } else {
                 $rows[] = $formatter->typecast($this->printValue($data, $formatter));
@@ -75,12 +75,12 @@ class ListenersRenderer implements Renderer
     {
         $data = \trim(\var_export($value, true), '\'');
         $data = \array_map(
-            static fn (string $row): string => $formatter->title(' ') . $row,
-            \explode("\n", $data)
+            static fn(string $row): string => $formatter->title(' ') . $row,
+            \explode("\n", $data),
         );
 
         return \ltrim(
-            \implode("\n", $data)
+            \implode("\n", $data),
         );
     }
 }

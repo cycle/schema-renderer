@@ -36,7 +36,7 @@ class PhpSchemaRenderer implements SchemaRenderer
             $item = new ArrayItem(
                 $this->wrapRoleSchema($roleSchema),
                 $role,
-                true
+                true,
             );
             $items[] = $item->setIndentLevel();
         }
@@ -50,7 +50,7 @@ class PhpSchemaRenderer implements SchemaRenderer
     {
         return new RoleBlock(
             $roleSchema,
-            $this->getSchemaConstants()
+            $this->getSchemaConstants(),
         );
     }
 
@@ -59,12 +59,12 @@ class PhpSchemaRenderer implements SchemaRenderer
      */
     final protected function getSchemaConstants(): array
     {
-        $result = array_filter(
+        $result = \array_filter(
             (new \ReflectionClass(SchemaInterface::class))->getConstants(),
-            static fn ($value): bool => is_int($value)
+            static fn($value): bool => \is_int($value),
         );
-        $result = array_flip($result);
-        array_walk($result, static function (string &$name): void {
+        $result = \array_flip($result);
+        \array_walk($result, static function (string &$name): void {
             $name = "Schema::$name";
         });
         return $result;

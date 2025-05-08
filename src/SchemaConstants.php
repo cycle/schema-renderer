@@ -11,9 +11,9 @@ class SchemaConstants implements ConstantsInterface
     #[\Override]
     public function all(): array
     {
-        return array_filter(
+        return \array_filter(
             (new \ReflectionClass(SchemaInterface::class))->getConstants(),
-            'is_int'
+            'is_int',
         );
     }
 }

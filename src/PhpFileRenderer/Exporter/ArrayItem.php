@@ -13,6 +13,7 @@ final class ArrayItem implements ExporterItem, Indentable
 
     /** @var mixed */
     private $value;
+
     private bool $wrapValue = true;
     private bool $wrapKey;
     private int $indentLevel = 0;

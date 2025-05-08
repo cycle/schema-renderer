@@ -20,7 +20,6 @@ final class SchemaToArrayConverter
     }
 
     /**
-     * @param SchemaInterface $schema
      * @param array<int, int> $customProperties
      *
      * @return array<string, array<int, mixed>>
@@ -28,13 +27,13 @@ final class SchemaToArrayConverter
     public function convert(SchemaInterface $schema, array $customProperties = []): array
     {
         // For CycleORM >= 2.x
-        if (method_exists($schema, 'toArray')) {
+        if (\method_exists($schema, 'toArray')) {
             return $schema->toArray();
         }
 
         $result = [];
 
-        $properties = array_merge($this->constants, $customProperties);
+        $properties = \array_merge($this->constants, $customProperties);
 
         foreach ($schema->getRoles() as $role) {
             foreach ($properties as $property) {

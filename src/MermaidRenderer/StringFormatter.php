@@ -22,6 +22,6 @@ trait StringFormatter
     {
         $className = \is_object($class) ? \get_class($class) : $class;
 
-        return \substr($className, ((int)\strrpos($className, '\\')) + 1);
+        return \substr($className, ((int) \strrpos($className, '\\')) + 1);
     }
 }

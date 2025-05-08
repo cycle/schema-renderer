@@ -24,7 +24,7 @@ final class StyledFormatter implements Formatter
     #[\Override]
     public function title(string $title): string
     {
-        return str_pad($title, self::TITLE_LENGTH, ' ', STR_PAD_LEFT);
+        return \str_pad($title, self::TITLE_LENGTH, ' ', STR_PAD_LEFT);
     }
 
     #[\Override]
@@ -65,10 +65,10 @@ final class StyledFormatter implements Formatter
 
     private function colorize(string $string): string
     {
-        return str_replace(
-            array_keys(self::COLORS_MAP),
-            array_values(self::COLORS_MAP),
-            $string
+        return \str_replace(
+            \array_keys(self::COLORS_MAP),
+            \array_values(self::COLORS_MAP),
+            $string,
         );
     }
 }

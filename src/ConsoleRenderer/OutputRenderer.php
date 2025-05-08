@@ -10,6 +10,7 @@ class OutputRenderer implements SchemaRenderer
 {
     /** @var Renderer[] */
     private array $renderers = [];
+
     private Formatter $formatter;
 
     public function __construct(Formatter $formatter, array $renderers = [])

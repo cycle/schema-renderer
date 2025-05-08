@@ -20,7 +20,7 @@ class TitleRenderer implements Renderer
             '%s :: %s.%s',
             $formatter->entity("[{$role}]"),
             $formatter->column($database),
-            $formatter->column($table)
+            $formatter->column($table),
         );
     }
 }

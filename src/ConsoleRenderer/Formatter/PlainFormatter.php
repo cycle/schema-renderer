@@ -11,7 +11,7 @@ final class PlainFormatter implements Formatter
     #[\Override]
     public function title(string $title): string
     {
-        return str_pad($title, self::TITLE_LENGTH, ' ', STR_PAD_LEFT);
+        return \str_pad($title, self::TITLE_LENGTH, ' ', STR_PAD_LEFT);
     }
 
     #[\Override]

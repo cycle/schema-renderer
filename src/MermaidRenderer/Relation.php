@@ -21,7 +21,7 @@ class Relation implements Stringable
         string $children,
         string $comment,
         string $arrow,
-        bool $isNullable
+        bool $isNullable,
     ) {
         $this->parent = $this->resolveString($parent);
         $this->children = $this->resolveString($children);

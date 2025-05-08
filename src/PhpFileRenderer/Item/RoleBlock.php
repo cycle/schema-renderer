@@ -18,7 +18,7 @@ class RoleBlock extends ArrayBlock
     protected function wrapItem($key, $value): ArrayItem
     {
         $item = parent::wrapItem($key, $value);
-        if ($key === SchemaInterface::RELATIONS && is_array($value)) {
+        if ($key === SchemaInterface::RELATIONS && \is_array($value)) {
             $item->setValue(new RelationsBlock($value), false);
         }
         return $item;

@@ -56,13 +56,13 @@ final class MermaidRenderer implements SchemaRenderer
 
             if (\strpos($key, ':') !== false) {
                 $entityTable->addAnnotation(
-                    new Annotation($key)
+                    new Annotation($key),
                 );
             }
 
             foreach ($value[SchemaInterface::COLUMNS] as $column) {
                 $entityTable->addColumn(
-                    new Column($value[SchemaInterface::TYPECAST][$column] ?? 'string', $column)
+                    new Column($value[SchemaInterface::TYPECAST][$column] ?? 'string', $column),
                 );
             }
 
@@ -82,26 +82,26 @@ final class MermaidRenderer implements SchemaRenderer
                 switch ($relation[SchemaRelation::TYPE]) {
                     case SchemaRelation::HAS_ONE:
                         $entityTable->addMethod(
-                            new HasOneMethod($relationKey, $target)
+                            new HasOneMethod($relationKey, $target),
                         );
                         $entityRelation->addRelation(
-                            new HasOneRelation($role, $target, $relationKey, $isNullable)
+                            new HasOneRelation($role, $target, $relationKey, $isNullable),
                         );
                         break;
                     case SchemaRelation::HAS_MANY:
                         $entityTable->addMethod(
-                            new HasManyMethod($relationKey, $target)
+                            new HasManyMethod($relationKey, $target),
                         );
                         $entityRelation->addRelation(
-                            new HasManyRelation($role, $target, $relationKey, $isNullable)
+                            new HasManyRelation($role, $target, $relationKey, $isNullable),
                         );
                         break;
                     case SchemaRelation::BELONGS_TO:
                         $entityTable->addMethod(
-                            new BelongsToMethod($relationKey, $target)
+                            new BelongsToMethod($relationKey, $target),
                         );
                         $entityRelation->addRelation(
-                            new BelongsToRelation($role, $target, $relationKey, $isNullable)
+                            new BelongsToRelation($role, $target, $relationKey, $isNullable),
                         );
                         break;
                     case SchemaRelation::MANY_TO_MANY:
@@ -113,49 +113,49 @@ final class MermaidRenderer implements SchemaRenderer
                             }
 
                             $entityTable->addMethod(
-                                new ManyToManyMethod($relationKey, $target)
+                                new ManyToManyMethod($relationKey, $target),
                             );
                             $entityRelation->addRelation(
-                                new ManyToManyRelation($role, $target, $relationKey, $isNullable)
+                                new ManyToManyRelation($role, $target, $relationKey, $isNullable),
                             );
                             $entityRelation->addRelation(
-                                new Relation($throughEntity, $role, "$role.$relationKey", '..>', $isNullable)
+                                new Relation($throughEntity, $role, "$role.$relationKey", '..>', $isNullable),
                             );
                             $entityRelation->addRelation(
-                                new Relation($throughEntity, $target, "$role.$relationKey", '..>', $isNullable)
+                                new Relation($throughEntity, $target, "$role.$relationKey", '..>', $isNullable),
                             );
                         }
                         break;
                     case SchemaRelation::REFERS_TO:
                         $entityTable->addMethod(
-                            new RefersToMethod($relationKey, $target)
+                            new RefersToMethod($relationKey, $target),
                         );
                         $entityRelation->addRelation(
-                            new RefersToRelation($role, $target, $relationKey, $isNullable)
+                            new RefersToRelation($role, $target, $relationKey, $isNullable),
                         );
                         break;
                     case SchemaRelation::MORPHED_HAS_MANY:
                         $entityTable->addMethod(
-                            new MorphedHasManyMethod($relationKey, $target)
+                            new MorphedHasManyMethod($relationKey, $target),
                         );
                         $entityRelation->addRelation(
-                            new MorphedHasManyRelation($role, $target, $relationKey, $isNullable)
+                            new MorphedHasManyRelation($role, $target, $relationKey, $isNullable),
                         );
                         break;
                     case SchemaRelation::MORPHED_HAS_ONE:
                         $entityTable->addMethod(
-                            new MorphedHasOneMethod($relationKey, $target)
+                            new MorphedHasOneMethod($relationKey, $target),
                         );
                         $entityRelation->addRelation(
-                            new MorphedHasOneRelation($role, $target, $relationKey, $isNullable)
+                            new MorphedHasOneRelation($role, $target, $relationKey, $isNullable),
                         );
                         break;
                     case SchemaRelation::BELONGS_TO_MORPHED:
                         $entityTable->addMethod(
-                            new BelongsToMorphedMethod($relationKey, $target)
+                            new BelongsToMorphedMethod($relationKey, $target),
                         );
                         $entityRelation->addRelation(
-                            new BelongsToMorphedRelation($role, $target, $relationKey, $isNullable)
+                            new BelongsToMorphedRelation($role, $target, $relationKey, $isNullable),
                         );
                         break;
                     case SchemaRelation::EMBEDDED:
@@ -163,10 +163,10 @@ final class MermaidRenderer implements SchemaRenderer
                         $prop = isset($methodTarget[2]) ? $methodTarget[2] . '_prop' : $target;
 
                         $entityTable->addMethod(
-                            new EmbeddedMethod($prop, $relation[SchemaRelation::TARGET])
+                            new EmbeddedMethod($prop, $relation[SchemaRelation::TARGET]),
                         );
                         $entityRelation->addRelation(
-                            new EmbeddedRelation($role, $target, $prop, $isNullable)
+                            new EmbeddedRelation($role, $target, $prop, $isNullable),
                         );
                         break;
                     default:
@@ -176,13 +176,13 @@ final class MermaidRenderer implements SchemaRenderer
 
             foreach ($value[SchemaInterface::CHILDREN] ?? [] as $children) {
                 $entityRelation->addRelation(
-                    new SingleInheritanceRelation($role, $children, false)
+                    new SingleInheritanceRelation($role, $children, false),
                 );
             }
 
             if (isset($constants['PARENT'], $value[$constants['PARENT']])) {
                 $entityRelation->addRelation(
-                    new JoinedInheritanceRelation($value[$constants['PARENT']], $role, false)
+                    new JoinedInheritanceRelation($value[$constants['PARENT']], $role, false),
                 );
             }
 
@@ -190,6 +190,6 @@ final class MermaidRenderer implements SchemaRenderer
             $class->addEntity($entityRelation);
         }
 
-        return (string)$class;
+        return (string) $class;
     }
 }

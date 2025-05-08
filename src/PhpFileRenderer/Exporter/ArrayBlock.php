@@ -56,10 +56,10 @@ class ArrayBlock implements ExporterItem, Indentable
     protected function wrapItem($key, $value): ArrayItem
     {
         $item = isset($this->replaceKeys[$key])
-            ? new ArrayItem($value, (string)$this->replaceKeys[$key], false)
-            : new ArrayItem($value, (string)$key, true);
+            ? new ArrayItem($value, (string) $this->replaceKeys[$key], false)
+            : new ArrayItem($value, (string) $key, true);
 
-        if (is_scalar($value) && isset($this->replaceValues[$key][$value])) {
+        if (\is_scalar($value) && isset($this->replaceValues[$key][$value])) {
             $item->setValue($this->replaceValues[$key][$value], false);
         }
         return $item;

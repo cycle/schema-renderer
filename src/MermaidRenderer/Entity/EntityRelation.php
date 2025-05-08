@@ -20,7 +20,7 @@ final class EntityRelation implements EntityInterface
 
     public function __toString(): string
     {
-        $relations = \array_map(function (Relation $relation) {
+        $relations = \array_map(static function (Relation $relation) {
             return (string) $relation;
         }, $this->relations);
 

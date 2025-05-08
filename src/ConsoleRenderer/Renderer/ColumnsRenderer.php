@@ -31,7 +31,7 @@ class ColumnsRenderer implements Renderer
             $padding,
             $formatter->property('property'),
             $formatter->column('db.field'),
-            $formatter->typecast('typecast')
+            $formatter->typecast('typecast'),
         );
 
         $types = $schema[SchemaInterface::TYPECAST] ?? [];
@@ -41,14 +41,14 @@ class ColumnsRenderer implements Renderer
             $row = \sprintf(
                 '%s%s -> %s',
                 $padding,
-                $formatter->property((string)$property),
-                $formatter->column($field)
+                $formatter->property((string) $property),
+                $formatter->column($field),
             );
 
             if ($typecast !== null && $typecast !== [] && $typecast !== '') {
                 $row .= \sprintf(
                     ' -> %s',
-                    $formatter->typecast(\implode('::', (array)$typecast))
+                    $formatter->typecast(\implode('::', (array) $typecast)),
                 );
             }
 

@@ -41,7 +41,7 @@ class PropertyRenderer implements Renderer
         return \sprintf(
             '%s%s',
             $row,
-            $formatter->typecast($propertyValue)
+            $formatter->typecast($propertyValue),
         );
     }
 
@@ -49,11 +49,11 @@ class PropertyRenderer implements Renderer
     {
         $string = \implode(
             "\n",
-            \array_map(static fn ($property) => \sprintf(
+            \array_map(static fn($property) => \sprintf(
                 '  %s%s',
                 $formatter->title(' '),
-                $formatter->typecast($property)
-            ), $values)
+                $formatter->typecast($property),
+            ), $values),
         );
 
         return \ltrim($string);

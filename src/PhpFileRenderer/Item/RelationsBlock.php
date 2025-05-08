@@ -16,7 +16,6 @@ class RelationsBlock extends ArrayBlock
         Relation::SCHEMA => 'Relation::SCHEMA',
         Relation::LOAD => 'Relation::LOAD',
     ];
-
     private const OPTION_VALUES = [
         Relation::LOAD => [
             Relation::LOAD_PROMISE => 'Relation::LOAD_PROMISE',
@@ -42,7 +41,7 @@ class RelationsBlock extends ArrayBlock
     protected function wrapItem($key, $value): ArrayItem
     {
         $item = parent::wrapItem($key, $value);
-        if (is_array($value)) {
+        if (\is_array($value)) {
             $item->setValue(new RelationBlock($value, self::OPTION_KEYS, self::OPTION_VALUES), false);
         }
         return $item;

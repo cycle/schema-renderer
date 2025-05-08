@@ -22,7 +22,6 @@ class RelationsRenderer implements Renderer
         Relation::MORPHED_HAS_ONE => 'morphed has one',
         Relation::MORPHED_HAS_MANY => 'morphed has many',
     ];
-
     private const STR_PREFETCH_MODE = [
         Relation::LOAD_PROMISE => 'lazy',
         Relation::LOAD_EAGER => 'eager',
@@ -66,14 +65,14 @@ class RelationsRenderer implements Renderer
                 $formatter->entity($role),
                 $formatter->property($field),
                 $type,
-                $formatter->entity($target)
+                $formatter->entity($target),
             );
 
             if ($morphKey !== null) {
                 $row .= \sprintf(
                     ', %s: %s',
                     $formatter->title('morphed key'),
-                    $this->renderKeys($formatter, $morphKey)
+                    $this->renderKeys($formatter, $morphKey),
                 );
             }
 
@@ -83,7 +82,7 @@ class RelationsRenderer implements Renderer
                 '       %s %s.%s <=',
                 $nullableStr,
                 $formatter->entity($role),
-                $this->renderKeys($formatter, $innerKey)
+                $this->renderKeys($formatter, $innerKey),
             );
 
             if ($mmEntity !== null) {
@@ -92,7 +91,7 @@ class RelationsRenderer implements Renderer
                     $formatter->entity($mmEntity),
                     $this->renderKeys($formatter, $mmInnerKey),
                     $formatter->entity($mmEntity),
-                    $this->renderKeys($formatter, $mmOuterKey)
+                    $this->renderKeys($formatter, $mmOuterKey),
                 );
             }
 
@@ -100,30 +99,30 @@ class RelationsRenderer implements Renderer
             $rows[] = $row . \sprintf(
                 '=> %s.%s',
                 $formatter->entity($target),
-                $this->renderKeys($formatter, $outerKey)
+                $this->renderKeys($formatter, $outerKey),
             );
 
-            if (count($where)) {
+            if (\count($where)) {
                 $rows[] = \sprintf(
                     '%s: %s',
                     $formatter->title('Where'),
                     \str_replace(
                         ["\r\n", "\n"],
                         $formatter::LINE_SEPARATOR . '       ',
-                        $formatter::LINE_SEPARATOR . print_r($where, true)
-                    )
+                        $formatter::LINE_SEPARATOR . \print_r($where, true),
+                    ),
                 );
             }
 
-            if (count($mmWhere)) {
+            if (\count($mmWhere)) {
                 $rows[] = \sprintf(
                     '%s: %s',
                     $formatter->title('Through where'),
                     \str_replace(
                         ["\r\n", "\n"],
                         $formatter::LINE_SEPARATOR . '       ',
-                        $formatter::LINE_SEPARATOR . print_r($mmWhere, true)
-                    )
+                        $formatter::LINE_SEPARATOR . \print_r($mmWhere, true),
+                    ),
                 );
             }
         }
@@ -136,18 +135,18 @@ class RelationsRenderer implements Renderer
      */
     private function renderKeys(Formatter $formatter, $keys): string
     {
-        $keys = (array)$keys;
+        $keys = (array) $keys;
         $braces = \count($keys) > 1;
         $keys = \array_map(
-            static fn (string $key) => $formatter->property($key),
-            $keys
+            static fn(string $key) => $formatter->property($key),
+            $keys,
         );
 
         return \sprintf(
             '%s%s%s',
             $braces ? '[' : '',
             \implode(', ', $keys),
-            $braces ? ']' : ''
+            $braces ? ']' : '',
         );
     }
 }
