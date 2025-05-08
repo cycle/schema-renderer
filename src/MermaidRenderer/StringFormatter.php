@@ -9,7 +9,7 @@ trait StringFormatter
     private function resolveString(string $value): string
     {
         if (\preg_match('/[^_a-zA-Z0-9]/u', $value)) {
-            $value = \preg_replace('/[^a-z0-9_]/u', '_', $value);
+            $value = (string) \preg_replace('/[^a-z0-9_]/u', '_', $value);
         }
 
         return $value;

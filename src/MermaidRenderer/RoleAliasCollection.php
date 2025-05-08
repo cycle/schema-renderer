@@ -44,7 +44,7 @@ final class RoleAliasCollection
      */
     private function makeAlias(string $role): string
     {
-        $role = \preg_replace('/[^a-z0-9_]/u', '_', $role);
+        $role = (string) \preg_replace('/[^a-z0-9_]/u', '_', $role);
         $oldRole = $role;
 
         $counter = 0;

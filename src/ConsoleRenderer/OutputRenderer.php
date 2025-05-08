@@ -41,9 +41,8 @@ class OutputRenderer implements SchemaRenderer
         $rows = [];
 
         foreach ($this->renderers as $renderer) {
-            if ($row = $renderer->render($this->formatter, $schema, $role)) {
-                $rows[] = $row;
-            }
+            $row = $renderer->render($this->formatter, $schema, $role);
+            $row !== null and $row !== '' and $rows[] = $row;
         }
 
         return \implode($this->formatter::LINE_SEPARATOR, $rows);

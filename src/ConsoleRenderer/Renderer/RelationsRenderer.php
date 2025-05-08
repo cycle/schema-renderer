@@ -47,10 +47,14 @@ class RelationsRenderer implements Renderer
             $innerKey = $relSchema[Relation::INNER_KEY] ?? '?';
             $outerKey = $relSchema[Relation::OUTER_KEY] ?? '?';
             $where = $relSchema[Relation::WHERE] ?? [];
-            $cascade = $relSchema[Relation::CASCADE] ?? null;
-            $cascadeStr = $cascade ? 'cascaded' : 'not cascaded';
-            $nullable = $relSchema[Relation::NULLABLE] ?? null;
-            $nullableStr = $nullable ? 'nullable' : ($nullable === false ? 'not null' : 'n/a');
+            $cascade = $relSchema[Relation::CASCADE] ?? false;
+            $cascadeStr = $cascade === true ? 'cascaded' : 'not cascaded';
+            $nullable = $relSchema[Relation::NULLABLE] ?? false;
+            $nullableStr = match ($nullable) {
+                true => 'nullable',
+                false => 'not nullable',
+                default => 'n/a',
+            };
             $morphKey = $relSchema[Relation::MORPH_KEY] ?? null;
 
             // Many-To-Many relation(s) options
