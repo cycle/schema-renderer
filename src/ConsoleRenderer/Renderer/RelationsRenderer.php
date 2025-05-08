@@ -49,10 +49,10 @@ class RelationsRenderer implements Renderer
             $where = $relSchema[Relation::WHERE] ?? [];
             $cascade = $relSchema[Relation::CASCADE] ?? false;
             $cascadeStr = $cascade === true ? 'cascaded' : 'not cascaded';
-            $nullable = $relSchema[Relation::NULLABLE] ?? false;
+            $nullable = $relSchema[Relation::NULLABLE] ?? null;
             $nullableStr = match ($nullable) {
                 true => 'nullable',
-                false => 'not nullable',
+                false => 'not null',
                 default => 'n/a',
             };
             $morphKey = $relSchema[Relation::MORPH_KEY] ?? null;
