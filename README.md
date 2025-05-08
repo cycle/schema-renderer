@@ -5,7 +5,6 @@
 [![static analysis](https://github.com/cycle/schema-renderer/actions/workflows/static.yml/badge.svg)](https://github.com/cycle/schema-renderer/actions/workflows/static.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/schema-renderer/badges/quality-score.png?b=1.x)](https://scrutinizer-ci.com/g/cycle/schema-renderer/?branch=1.x)
 [![Codecov](https://codecov.io/gh/cycle/schema-renderer/branch/1.x/graph/badge.svg)](https://codecov.io/gh/cycle/schema-renderer/)
-[![StyleCI](https://github.styleci.io/repos/401633317/shield?branch=1.x)](https://github.styleci.io/repos/401633317?branch=1.x)
 
 This package may be used to render Cycle ORM Schema in a terminal or generate php representation.
 
