@@ -3,12 +3,10 @@ name: build
 on:
   push:
   pull_request:
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   test:
-    name: Build (${{matrix.php}}, ${{ matrix.os }}, ${{ matrix.stability }})
+    name: Build (${{matrix.php}}, ${{ matrix.os }}, ${{ matrix.dependencies }})
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -16,7 +14,7 @@ jobs:
       matrix:
         php: ['8.1', '8.2', '8.3', '8.4']
         os: [ ubuntu-latest ]
-        stability: [ prefer-lowest, prefer-stable ]
+        dependencies: [ lowest, highest ]
 
     steps:
       - name: Set Git To Use LF
@@ -36,24 +34,17 @@ jobs:
           coverage: pcov
           tools: pecl
           ini-values: "memory_limit=-1"
-      - name: Validate Composer
-        run: composer validate
-      - name: Get Composer Cache Directory
-        # Docs: <https://github.com/actions/cache/blob/master/examples.md#php---composer>
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Restore Composer Cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ matrix.php }}-${{ matrix.stability }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.php }}-composer-
-            ${{ runner.os }}-composer-
+
+      - name: Setup problem matchers
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --ansi --strict
 
       - name: Install dependencies with composer
-        run: |
-            composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
 
       - name: Execute Tests
         run: vendor/bin/phpunit --coverage-clover=coverage.clover
@@ -64,6 +55,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.clover
           fail_ci_if_error: false
+
       - name: Upload Coverage to Scrutinizer
         continue-on-error: true
         uses: sudo-bot/action-scrutinizer@latest
