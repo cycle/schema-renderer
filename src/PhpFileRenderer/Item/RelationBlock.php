@@ -14,6 +14,7 @@ class RelationBlock extends ArrayBlock
      * @see SchemaInterface
      */
     private const RELATION_SCHEMA_KEYS = [
+        'COLLECTION_TYPE',
         'MORPH_KEY',
         'CASCADE',
         'NULLABLE',
