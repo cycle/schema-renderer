@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Cycle\Schema\Renderer\MermaidRenderer\Entity;
 
 use Cycle\Schema\Renderer\MermaidRenderer\Annotation;
-use Cycle\Schema\Renderer\MermaidRenderer\Method;
 use Cycle\Schema\Renderer\MermaidRenderer\Column;
+use Cycle\Schema\Renderer\MermaidRenderer\Method;
 use Cycle\Schema\Renderer\MermaidRenderer\Stringable;
 
 final class EntityTable implements EntityInterface
