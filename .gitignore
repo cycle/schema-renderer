@@ -1,4 +1,6 @@
 /.idea
+/.agents/
+/.claude/
 /composer.lock
 /vendor
 /runtime
