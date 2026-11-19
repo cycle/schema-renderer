@@ -1,22 +1,44 @@
-# Cycle ORM Schema renderer
+<div align="center">
+    <a href="https://cycle-orm.dev" target="_blank">
+        <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="https://github.com/cycle/.github/blob/main/logo/words-vector-dark.svg?raw=true">
+            <img width="50%" align="center" src="https://github.com/cycle/.github/blob/main/logo/words-vector-light.svg?raw=true" alt="CycleORM Logo">
+        </picture>
+    </a>
+</div>
 
-[![Latest Stable Version](https://poser.pugx.org/cycle/schema-renderer/v/stable)](https://packagist.org/packages/cycle/schema-renderer)
-[![build](https://github.com/cycle/schema-renderer/actions/workflows/main.yml/badge.svg)](https://github.com/cycle/schema-renderer/actions/workflows/main.yml)
-[![static analysis](https://github.com/cycle/schema-renderer/actions/workflows/static.yml/badge.svg)](https://github.com/cycle/schema-renderer/actions/workflows/static.yml)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cycle/schema-renderer/badges/quality-score.png?b=1.x)](https://scrutinizer-ci.com/g/cycle/schema-renderer/?branch=1.x)
-[![Codecov](https://codecov.io/gh/cycle/schema-renderer/branch/1.x/graph/badge.svg)](https://codecov.io/gh/cycle/schema-renderer/)
+<p align="center">Render a Cycle ORM schema for a terminal, a PHP file or a Mermaid diagram</p>
 
-This package may be used to render Cycle ORM Schema in a terminal or generate php representation.
+<div align="center">
 
-## Installation
+[![Documentation](https://img.shields.io/badge/Documentation-blue?style=for-the-badge&logo=gitbook&logoColor=white)](https://cycle-orm.dev/docs)
+[![Sponsor](https://img.shields.io/static/v1?style=for-the-badge&label=&message=Sponsor&logo=githubsponsors&logoColor=white&color=%23EA4AAA)](https://github.com/sponsors/cycle)
 
-The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
+[![Psalm Level](https://shepherd.dev/github/cycle/schema-renderer/level.svg)](https://shepherd.dev/github/cycle/schema-renderer)
+[![Type Coverage](https://shepherd.dev/github/cycle/schema-renderer/coverage.svg)](https://shepherd.dev/github/cycle/schema-renderer)
+[![Codecov](https://img.shields.io/codecov/c/github/cycle/schema-renderer/1.x?style=flat-square&logo=codecov)](https://codecov.io/gh/cycle/schema-renderer)
+[![Discord](https://img.shields.io/discord/538114875570913290?style=flat-square&logo=discord&labelColor=7289d9&logoColor=white&color=39456d)](https://discord.gg/spiralphp)
+
+</div>
+
+<br />
+
+This package renders a [Cycle ORM](https://github.com/cycle/orm) schema in a human-readable form: as text for a terminal, as a PHP file that returns the schema array, or as a Mermaid class diagram.
+
+## Get Started
+
+### Installation
+
+The package requires PHP 8.2+.
 
 ```bash
 composer require cycle/schema-renderer
 ```
 
-## Example
+[![PHP](https://img.shields.io/packagist/php-v/cycle/schema-renderer.svg?style=flat-square&logo=php)](https://packagist.org/packages/cycle/schema-renderer)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/cycle/schema-renderer.svg?style=flat-square&logo=packagist)](https://packagist.org/packages/cycle/schema-renderer)
+[![License](https://img.shields.io/packagist/l/cycle/schema-renderer.svg?style=flat-square)](LICENSE)
+[![Total Downloads](https://img.shields.io/packagist/dt/cycle/schema-renderer.svg?style=flat-square)](https://packagist.org/packages/cycle/schema-renderer/stats)
 
 ### Convert schema to array
 
@@ -27,10 +49,10 @@ $converter = new \Cycle\Schema\Renderer\SchemaToArrayConverter();
 $schemaArray = $converter->convert($schema);
 ```
 
-If passed `SchemaInterface` doesn't contain `toArray()` method then the `SchemaToArrayConverter`  will convert
-only common properties from `Cycle\ORM\SchemaInterface`. Null values will be skipped also.
+If the passed `SchemaInterface` doesn't have a `toArray()` method, the `SchemaToArrayConverter` converts
+only the common properties from `Cycle\ORM\SchemaInterface` and skips null values.
 
-In this case Iif you want to use custom properties you can pass them to the constructor
+To keep custom properties, pass their keys as the second argument:
 
 ```php
 $converter = new \Cycle\Schema\Renderer\SchemaToArrayConverter();
@@ -49,30 +71,31 @@ use Cycle\Schema\Renderer\OutputSchemaRenderer;
 
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 
-$renderer = new OutputSchemaRenderer(colorize: true);
+$renderer = new OutputSchemaRenderer(format: OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
 
 $output->write($renderer->render($schemaArray));
 ```
 
-By default, `DefaultSchemaOutputRenderer` renders in template only common properties and relations.
-Custom properties will be rendered as is in separated block.
-If you want to extend default rendering template you can create custom renderers and add them to the Output renderer.
+By default, `OutputSchemaRenderer` renders only the common properties and relations with its template.
+Custom properties are rendered as is in a separate block.
+To extend the default template, create custom renderers and add them to the output renderer.
 
 ```php
-use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
 use Cycle\Schema\Renderer\ConsoleRenderer\Formatter;
+use Cycle\Schema\Renderer\ConsoleRenderer\Renderer;
+use Cycle\Schema\Renderer\ConsoleRenderer\Renderer\PropertyRenderer;
 use Cycle\Schema\Renderer\OutputSchemaRenderer;
 
-class CustomPropertyRenderer implements Renderer {
-
+class CustomPropertyRenderer implements Renderer
+{
     public function render(Formatter $formatter, array $schema, string $role): string
     {
-        $data = $schema['my_custom_property'] ?? null;
+        $data = $schema[CustomClass::CUSTOM_PROPERTY] ?? null;
 
         return \sprintf(
             '%s: %s',
-            $formatter->title($this->title),
-            $data === null ? $formatter->error('not defined') : $formatter->typecast($data)
+            $formatter->title('My custom property'),
+            $data === null ? $formatter->error('not defined') : $formatter->typecast($data),
         );
     }
 }
@@ -81,10 +104,10 @@ $renderer = new OutputSchemaRenderer();
 
 $renderer->addRenderer(
     new CustomPropertyRenderer(),
-    new PropertyRenderer('my_custom_property', 'My super property')
+    new PropertyRenderer(CustomClass::OTHER_PROPERTY, 'My super property'),
 );
 
-$output->write($renderer->render($schemaArray))
+$output->write($renderer->render($schemaArray));
 ```
 
 ### Store schema in a PHP file
@@ -92,18 +115,22 @@ $output->write($renderer->render($schemaArray))
 ```php
 use Cycle\Schema\Renderer\PhpSchemaRenderer;
 
-$path = __DIR__. '/schema.php'
+$path = __DIR__ . '/schema.php';
 
 $renderer = new PhpSchemaRenderer();
 
 \file_put_contents($path, $renderer->render($schemaArray));
 ```
 
-The Renderer generates valid PHP code, in which constants from Cycle ORM classes are substituted
+The renderer generates valid PHP code in which constants from Cycle ORM classes replace raw keys
 for better readability.
 
-## License:
+### Render schema as a Mermaid diagram
 
-The MIT License (MIT). Please see [`LICENSE`](./LICENSE) for more information.
-Maintained by [Spiral Scout](https://spiralscout.com).
+```php
+use Cycle\Schema\Renderer\MermaidRenderer\MermaidRenderer;
 
+$diagram = (new MermaidRenderer())->render($schemaArray);
+```
+
+The result is a Mermaid class diagram of the entities and their relations.
