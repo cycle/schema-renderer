@@ -1,38 +1,24 @@
+on:  # yamllint disable-line rule:truthy
+  pull_request: null
+  push:
+    branches:
+      - 1.x
+
 name: static analysis
 
-on:
-  pull_request:
-  push:
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  static-analysis:
-    name: PHP ${{ matrix.php }} - ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        php: [8.3]
-        os: [ubuntu-latest]
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install PHP ${{ matrix.php }}
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          ini-values: error_reporting=E_ALL
-          coverage: none
-
-      - name: Setup problem matchers
-        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate --ansi --strict
-
-      - name: Install dependencies with composer
-        uses: ramsey/composer-install@v3
-
-      - name: Run Psalm Static Analysis
-        run: composer psalm:ci
+  psalm:
+    uses: spiral/gh-actions/.github/workflows/psalm.yml@master
+    with:
+      os: >-
+        ['ubuntu-latest']
+      php: '["8.4"]'
+      bin-tool: psalm
+      command: composer psalm:ci

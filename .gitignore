@@ -1,4 +1,8 @@
 /.idea
+/.agents/
+/.claude/
 /composer.lock
 /vendor
 /runtime
+/vendor-bin/*/vendor/
+/vendor-bin/*/composer.lock
