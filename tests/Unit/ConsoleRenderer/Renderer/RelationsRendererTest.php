@@ -159,6 +159,45 @@ OUTPUT);
 OUTPUT);
     }
 
+    public function testRenderWhereConditions(): void
+    {
+        $result = $this->renderer->render($this->formatter, [
+            SchemaInterface::RELATIONS => [
+                'tags' => [
+                    Relation::TYPE => Relation::MANY_TO_MANY,
+                    Relation::TARGET => 'tag',
+                    Relation::SCHEMA => [
+                        Relation::THROUGH_ENTITY => 'tag_context',
+                        Relation::INNER_KEY => 'id',
+                        Relation::OUTER_KEY => 'id',
+                        Relation::THROUGH_INNER_KEY => 'user_id',
+                        Relation::THROUGH_OUTER_KEY => 'tag_id',
+                        Relation::WHERE => ['active' => true],
+                        Relation::THROUGH_WHERE => ['level' => 2],
+                    ],
+                ],
+            ],
+        ], 'foo');
+
+        Assert::same($result, \implode("\n", [
+            '    Relations:',
+            '     foo->tags many to many tag, default loading, not cascaded',
+            '       n/a foo.id <= tag_context.user_id | tag_context.tag_id => tag.id',
+            '        Where: ',
+            '       Array',
+            '       (',
+            '           [active] => 1',
+            '       )',
+            '       ',
+            'Through where: ',
+            '       Array',
+            '       (',
+            '           [level] => 2',
+            '       )',
+            '       ',
+        ]));
+    }
+
     public function testRenderBelongsToMorphedRelation(): void
     {
         $result = $this->renderer->render($this->formatter, [

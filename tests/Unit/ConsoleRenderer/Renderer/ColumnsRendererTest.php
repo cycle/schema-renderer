@@ -88,6 +88,22 @@ OUT);
 OUT);
     }
 
+    public function testTypecastOfPropertyWinsOverTypecastOfField(): void
+    {
+        $renderer = new ColumnsRenderer();
+
+        $result = $renderer->render($this->formatter, [
+            SchemaInterface::COLUMNS => ['id' => 'user_id'],
+            SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'string'],
+        ], 'bar');
+
+        Assert::same($result, <<<'OUT'
+       Fields:
+               (property -> db.field -> typecast)
+               id -> user_id -> int
+OUT);
+    }
+
     #[BeforeTest]
     protected function setUp(): void
     {
