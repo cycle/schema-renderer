@@ -51,17 +51,19 @@ jobs:
       - name: Validate composer.json
         run: composer validate --ansi --strict
 
+      # TODO(cycle/testing): switch to the released package; CI cannot reach the `../../testing` path repository.
       - name: Install dependencies with composer
         uses: ramsey/composer-install@v4
         with:
           dependency-versions: ${{ matrix.dependencies }}
 
       - name: Execute Tests
-        run: vendor/bin/phpunit --coverage-clover=coverage.clover
+        run: composer test:unit -- --coverage-clover=runtime/clover.xml
 
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.clover
+          files: ./runtime/clover.xml
+          flags: unit
           fail_ci_if_error: false
