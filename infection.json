@@ -1,0 +1,19 @@
+{
+    "$schema": "vendor-bin/infection/vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "timeout": 10,
+    "minMsi": 89,
+    "minCoveredMsi": 89,
+    "testFramework": "testo",
+    "testFrameworkOptions": "--suite=Unit",
+    "tmpDir": "runtime",
+    "logs": {
+        "stryker": {
+            "report": "1.x"
+        }
+    }
+}
