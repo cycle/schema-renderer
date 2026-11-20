@@ -1,0 +1,38 @@
+[Cycle\Schema\Renderer\Tests\Fixtures\User] :: default.user
+         Role: user
+       Mapper: Cycle\ORM\Mapper\Mapper
+  Primary key: id
+       Fields:
+               (property -> db.field -> typecast)
+               0 -> id -> int
+               1 -> email
+               2 -> balance -> float
+    Relations:
+     Cycle\Schema\Renderer\Tests\Fixtures\User->tags many to many Cycle\Schema\Renderer\Tests\Fixtures\Tag, default loading, cascaded
+       n/a Cycle\Schema\Renderer\Tests\Fixtures\User.id <= tag_context.user_id | tag_context.tag_id => Cycle\Schema\Renderer\Tests\Fixtures\Tag.id
+     Cycle\Schema\Renderer\Tests\Fixtures\User->tag belongs to Cycle\Schema\Renderer\Tests\Fixtures\Tag, default loading, cascaded
+       n/a Cycle\Schema\Renderer\Tests\Fixtures\User.tag_id <==> Cycle\Schema\Renderer\Tests\Fixtures\Tag.id
+
+[Cycle\Schema\Renderer\Tests\Fixtures\Tag] :: default.tag
+         Role: tag
+       Mapper: Cycle\ORM\Mapper\Mapper
+               App\FooMapper
+  Primary key: id, name
+       Fields:
+               (property -> db.field -> typecast)
+               0 -> id -> int
+               1 -> name
+    Relations:
+     Cycle\Schema\Renderer\Tests\Fixtures\Tag->user belongs to Cycle\Schema\Renderer\Tests\Fixtures\User, default loading, cascaded
+       n/a Cycle\Schema\Renderer\Tests\Fixtures\Tag.user_id <==> Cycle\Schema\Renderer\Tests\Fixtures\User.id
+
+[Cycle\Schema\Renderer\Tests\Fixtures\TagContext] :: default.tag_user_map
+         Role: tag_context
+       Mapper: Cycle\ORM\Mapper\Mapper
+  Primary key: not defined
+       Fields: not defined
+    Relations: not defined
+ Custom props:
+             my_custom_property: super_value
+             25: super_value
+
