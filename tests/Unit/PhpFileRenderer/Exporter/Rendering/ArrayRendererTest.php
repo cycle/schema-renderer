@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Cycle\Schema\Renderer\Tests\Unit\PhpFileRenderer\Exporter\Rendering;
 
+use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ArrayBlock;
 use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\ExporterItem;
 use Cycle\Schema\Renderer\PhpFileRenderer\Exporter\Rendering\ArrayRenderer;
 use Testo\Assert;
@@ -38,6 +39,19 @@ final class ArrayRendererTest
             [
                 [1, 2],
                 [3],
+            ]
+            PHP);
+    }
+
+    public function blockItemIsIndentedOneLevelDeeper(): void
+    {
+        $result = ArrayRenderer::render([new ArrayBlock(['b' => 1])]);
+
+        Assert::same($result, <<<'PHP'
+            [
+                [
+                    'b' => 1,
+                ],
             ]
             PHP);
     }
