@@ -25,6 +25,27 @@ final class ListenersRendererTest
         Assert::null($result);
     }
 
+    public function testRenderEmptyProperty(): void
+    {
+        $renderer = new ListenersRenderer(1, 'Foo');
+
+        $result = $renderer->render($this->formatter, [1 => []], 'baz');
+
+        Assert::null($result);
+    }
+
+    public function testRenderListenerWithoutClass(): void
+    {
+        $renderer = new ListenersRenderer(1, 'Foo');
+
+        $result = $renderer->render($this->formatter, [1 => [[42]]], 'baz');
+
+        Assert::same($result, <<<'OUTPUT'
+          Foo:
+             undefined
+OUTPUT);
+    }
+
     public function testRenderStringProperty(): void
     {
         $renderer = new ListenersRenderer(1, 'Foo');
