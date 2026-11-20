@@ -6,14 +6,91 @@
         ]
     },
     "timeout": 10,
-    "minMsi": 89,
-    "minCoveredMsi": 89,
+    "minMsi": 98,
+    "minCoveredMsi": 98,
     "testFramework": "testo",
     "testFrameworkOptions": "--suite=Unit",
     "tmpDir": "runtime",
     "logs": {
         "stryker": {
             "report": "1.x"
+        }
+    },
+    "mutators": {
+        "@default": true,
+        "CastInt": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\MermaidRenderer\\StringFormatter::getClassShortName"
+            ]
+        },
+        "CastString": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\MermaidRenderer\\RoleAliasCollection::makeAlias",
+                "Cycle\\Schema\\Renderer\\MermaidRenderer\\StringFormatter::resolveString"
+            ]
+        },
+        "Concat": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\ConsoleRenderer\\Renderer\\ColumnsRenderer::render::25",
+                "Cycle\\Schema\\Renderer\\PhpFileRenderer\\Exporter\\Rendering\\ArrayRenderer::renderArrayInline"
+            ]
+        },
+        "ConcatOperandRemoval": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\PhpFileRenderer\\Exporter\\Rendering\\ArrayRenderer::renderArrayInline"
+            ]
+        },
+        "FalseValue": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\PhpFileRenderer\\Item\\RelationBlock::wrapItem",
+                "Cycle\\Schema\\Renderer\\PhpFileRenderer\\Item\\RelationsBlock::wrapItem",
+                "Cycle\\Schema\\Renderer\\PhpFileRenderer\\Item\\RoleBlock::wrapItem"
+            ]
+        },
+        "InstanceOf_": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\PhpFileRenderer\\Exporter\\Rendering\\ArrayRenderer::renderArrayInline"
+            ]
+        },
+        "LogicalAndAllSubExprNegation": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\PhpFileRenderer\\Exporter\\Rendering\\ArrayRenderer::renderArrayInline"
+            ]
+        },
+        "LogicalNot": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\PhpFileRenderer\\Exporter\\Rendering\\ArrayRenderer::renderArrayInline"
+            ]
+        },
+        "PregMatchRemoveFlags": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\MermaidRenderer\\RoleAliasCollection::__construct",
+                "Cycle\\Schema\\Renderer\\MermaidRenderer\\StringFormatter::resolveString"
+            ]
+        },
+        "ReturnRemoval": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\ConsoleRenderer\\Renderer\\ListenersRenderer::render::25",
+                "Cycle\\Schema\\Renderer\\PhpFileRenderer\\Item\\RelationBlock::getReplaceKeys"
+            ]
+        },
+        "UnwrapArrayFilter": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\PhpSchemaRenderer::getSchemaConstants",
+                "Cycle\\Schema\\Renderer\\SchemaConstants::all"
+            ]
+        },
+        "UnwrapArrayMap": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\MermaidRenderer\\Entity\\EntityRelation::__toString",
+                "Cycle\\Schema\\Renderer\\MermaidRenderer\\Entity\\EntityTable::__toString"
+            ]
+        },
+        "UnwrapArrayValues": {
+            "ignore": [
+                "Cycle\\Schema\\Renderer\\ConsoleRenderer\\Formatter\\StyledFormatter::colorize",
+                "Cycle\\Schema\\Renderer\\OutputSchemaRenderer::__construct"
+            ]
         }
     }
 }

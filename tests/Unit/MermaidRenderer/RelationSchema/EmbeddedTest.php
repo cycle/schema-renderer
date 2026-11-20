@@ -51,6 +51,43 @@ final class EmbeddedTest
         SCHEMA);
     }
 
+    public function testEmbeddedRoleWithTwoParts(): void
+    {
+        $mermaid = new MermaidRenderer();
+
+        Assert::same($mermaid->render([
+            'user' => [
+                SchemaInterface::ROLE => 'user',
+                SchemaInterface::COLUMNS => ['id'],
+                SchemaInterface::RELATIONS => [
+                    'profile' => [
+                        Relation::TYPE => Relation::EMBEDDED,
+                        Relation::TARGET => 'user:profile',
+                        Relation::SCHEMA => [],
+                    ],
+                ],
+            ],
+            'user:profile' => [
+                SchemaInterface::COLUMNS => ['id'],
+                SchemaInterface::RELATIONS => [],
+            ],
+        ]), <<<SCHEMA
+
+        classDiagram
+        class user {
+            string id
+            user_profile(Emb: user:profile)
+        }
+        user -- user_profile : user_profile
+        class user_profile {
+            <<user:profile>>
+            string id
+        }
+
+
+        SCHEMA);
+    }
+
     public function getSchema(): array
     {
         return [

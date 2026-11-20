@@ -21,6 +21,13 @@ final class ColumnTest
         Assert::same((string) $column, "[User::class, 'test'] foo");
     }
 
+    public function testTypecastWithInvalidUtf8IsSubstituted(): void
+    {
+        $column = new Column("in\xFFt", 'foo');
+
+        Assert::same((string) $column, "in\u{FFFD}t foo");
+    }
+
     public function testTypecastClosure(): void
     {
         $column = new Column(static fn() => 'test', 'foo');
