@@ -22,6 +22,53 @@ final class PhpSchemaRendererTest
 {
     private array $schema;
 
+    # First in the class: RelationBlock builds its key map once per process, so only the first rendered
+    # relation covers that code for Infection.
+    public function testRenderRelationWithCompositeKeysAndCustomOption(): void
+    {
+        $renderer = new PhpSchemaRenderer();
+
+        Assert::same($renderer->render([
+            'user' => [
+                SchemaInterface::RELATIONS => [
+                    'tag' => [
+                        Relation::TYPE => Relation::BELONGS_TO,
+                        Relation::TARGET => 'tag',
+                        Relation::SCHEMA => [
+                            Relation::INNER_KEY => ['tag_id', 'tag_name'],
+                            Relation::OUTER_KEY => ['id', 'name'],
+                            10 => 'custom',
+                        ],
+                    ],
+                ],
+            ],
+        ]), <<<PHP
+                <?php
+
+                declare(strict_types=1);
+
+                use Cycle\ORM\Relation;
+                use Cycle\ORM\SchemaInterface as Schema;
+
+                return [
+                    'user' => [
+                        Schema::RELATIONS => [
+                            'tag' => [
+                                Relation::TYPE => Relation::BELONGS_TO,
+                                Relation::TARGET => 'tag',
+                                Relation::SCHEMA => [
+                                    Relation::INNER_KEY => ['tag_id', 'tag_name'],
+                                    Relation::OUTER_KEY => ['id', 'name'],
+                                    '10' => 'custom',
+                                ],
+                            ],
+                        ],
+                    ],
+                ];
+
+                PHP);
+    }
+
     public function testRenderSchemaToPhpCode(): void
     {
         $renderer = new PhpSchemaRenderer();
