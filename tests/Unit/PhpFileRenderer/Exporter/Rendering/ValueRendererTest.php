@@ -22,6 +22,11 @@ final class ValueRendererTest
         Assert::same(ValueRenderer::render('stdClass'), "'stdClass'");
     }
 
+    public function nullIsRenderedAsKeyword(): void
+    {
+        Assert::same(ValueRenderer::render(null), 'null');
+    }
+
     public function floatIsSerialized(): void
     {
         Assert::same(ValueRenderer::render(1.5), "unserialize('d:1.5;')");
