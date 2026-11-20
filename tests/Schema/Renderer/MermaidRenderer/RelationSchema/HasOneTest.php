@@ -11,11 +11,12 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 class HasOneTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testHasOne(): void
     {
         $mermaid = new MermaidRenderer();
 
-        $this->assertSame(<<<SCHEMA
+        \Testo\Assert::same($mermaid->render($this->getSchema()), <<<SCHEMA
 
         classDiagram
         class post {
@@ -41,7 +42,7 @@ class HasOneTest extends BaseTest
         }
         user --> post : favorite
 
-        SCHEMA, $mermaid->render($this->getSchema()));
+        SCHEMA);
     }
 
     public function getSchema(): array

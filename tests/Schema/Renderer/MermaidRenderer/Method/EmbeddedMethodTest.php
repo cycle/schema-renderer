@@ -9,10 +9,11 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class EmbeddedMethodTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testMethod(): void
     {
         $method = new EmbeddedMethod('foo', 'bar');
 
-        $this->assertSame('foo(Emb: bar)', (string)$method);
+        \Testo\Assert::same((string)$method, 'foo(Emb: bar)');
     }
 }

@@ -12,11 +12,12 @@ use Cycle\Schema\Renderer\Tests\Fixture\Post;
 
 class HasManyTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testHasMany(): void
     {
         $mermaid = new MermaidRenderer();
 
-        $this->assertSame(<<<SCHEMA
+        \Testo\Assert::same($mermaid->render($this->getSchema()), <<<SCHEMA
 
         classDiagram
         class post {
@@ -42,7 +43,7 @@ class HasManyTest extends BaseTest
         }
         user --o post : posts
 
-        SCHEMA, $mermaid->render($this->getSchema()));
+        SCHEMA);
     }
 
     public function getSchema(): array

@@ -9,6 +9,7 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class MorphedHasOneRelationTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testRelation(): void
     {
         $rel = new MorphedHasOneRelation(
@@ -18,6 +19,6 @@ final class MorphedHasOneRelationTest extends BaseTest
             false
         );
 
-        $this->assertSame('foo --> bar : Foo comment', (string)$rel);
+        \Testo\Assert::same((string)$rel, 'foo --> bar : Foo comment');
     }
 }

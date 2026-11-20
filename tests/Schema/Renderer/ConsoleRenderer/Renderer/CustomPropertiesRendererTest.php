@@ -16,6 +16,7 @@ class CustomPropertiesRendererTest extends BaseTest
     private Formatter $formatter;
 
     #[RequiresPhp('>= 8.2.0')]
+    #[\Testo\Test]
     public function testCustomPropertiesShouldBeRendered(): void
     {
         $renderer = new CustomPropertiesRenderer(['bar', 'baz']);
@@ -32,8 +33,7 @@ class CustomPropertiesRendererTest extends BaseTest
             'bool' => false,
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
  Custom props:
              int: 3
              string: Hello world
@@ -43,16 +43,12 @@ class CustomPropertiesRendererTest extends BaseTest
              object: \Cycle\Schema\Renderer\Tests\Fixture\User::__set_state(array(
              ))
              bool: false
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->formatter = new PlainFormatter();
     }
 }

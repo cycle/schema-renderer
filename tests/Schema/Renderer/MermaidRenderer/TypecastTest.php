@@ -13,11 +13,12 @@ use Cycle\Schema\Renderer\Tests\Fixture\Typecast\PostSlug;
 
 class TypecastTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testTypecast(): void
     {
         $mermaid = new MermaidRenderer();
 
-        $this->assertSame(<<<SCHEMA
+        \Testo\Assert::same($mermaid->render($this->getSchema()), <<<SCHEMA
 
         classDiagram
         class post {
@@ -36,7 +37,7 @@ class TypecastTest extends BaseTest
         }
 
 
-        SCHEMA, $mermaid->render($this->getSchema()));
+        SCHEMA);
     }
 
     public function getSchema(): array

@@ -15,6 +15,7 @@
         "llm/skills": "^1.20",
         "phpunit/phpunit": "^11.5",
         "roxblnfk/unpoly": "^1.8",
+        "testo/bridge-rector": "^0.3.6",
         "testo/testo": "^0.10.60"
     },
     "repositories": [

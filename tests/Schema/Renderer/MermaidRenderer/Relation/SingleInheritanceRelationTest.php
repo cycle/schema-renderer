@@ -9,6 +9,7 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class SingleInheritanceRelationTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testRelation(): void
     {
         $rel = new SingleInheritanceRelation(
@@ -17,6 +18,6 @@ final class SingleInheritanceRelationTest extends BaseTest
             false
         );
 
-        $this->assertSame('foo --|> bar : STI', (string)$rel);
+        \Testo\Assert::same((string)$rel, 'foo --|> bar : STI');
     }
 }

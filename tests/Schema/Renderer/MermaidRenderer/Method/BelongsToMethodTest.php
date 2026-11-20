@@ -9,10 +9,11 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class BelongsToMethodTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testMethod(): void
     {
         $method = new BelongsToMethod('foo', 'bar');
 
-        $this->assertSame('foo(BT: bar)', (string)$method);
+        \Testo\Assert::same((string)$method, 'foo(BT: bar)');
     }
 }

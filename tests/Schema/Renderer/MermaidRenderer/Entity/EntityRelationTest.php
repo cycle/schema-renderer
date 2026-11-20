@@ -10,6 +10,7 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 class EntityRelationTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testToString(): void
     {
         $entityRelation = new EntityRelation();
@@ -21,9 +22,9 @@ class EntityRelationTest extends BaseTest
             new Relation('user', 'posts', 'Foo comment', '--o', true),
         );
 
-        $this->assertSame(<<<BLOCK
+        \Testo\Assert::same((string)$entityRelation, <<<BLOCK
         user --> tasks : Foo comment
         user --o "nullable" posts : Foo comment
-        BLOCK, (string)$entityRelation);
+        BLOCK);
     }
 }

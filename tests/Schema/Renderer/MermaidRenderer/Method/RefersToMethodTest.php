@@ -9,10 +9,11 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class RefersToMethodTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testMethod(): void
     {
         $method = new RefersToMethod('foo', 'bar');
 
-        $this->assertSame('foo(RT: bar)', (string)$method);
+        \Testo\Assert::same((string)$method, 'foo(RT: bar)');
     }
 }

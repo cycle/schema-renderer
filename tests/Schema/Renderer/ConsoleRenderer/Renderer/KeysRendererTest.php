@@ -13,73 +13,79 @@ class KeysRendererTest extends BaseTest
 {
     private Formatter $formatter;
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->formatter = new PlainFormatter();
     }
 
+    #[\Testo\Test]
     public function testRenderNullNotRequiredValue()
     {
         $renderer = new KeysRenderer(1, 'Foo', false);
 
         $result = $renderer->render($this->formatter, [1 => null], 'bar');
 
-        $this->assertNull($result);
+        \Testo\Assert::null($result);
     }
 
+    #[\Testo\Test]
     public function testRenderNullRequiredValue()
     {
         $renderer = new KeysRenderer(1, 'Foo', true);
 
         $result = $renderer->render($this->formatter, [1 => null], 'bar');
 
-        $this->assertSame('          Foo: not defined', $result);
+        \Testo\Assert::same($result, '          Foo: not defined');
     }
 
+    #[\Testo\Test]
     public function testRenderStringValue()
     {
         $renderer = new KeysRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [1 => 'foo'], 'bar');
 
-        $this->assertSame('          Foo: foo', $result);
+        \Testo\Assert::same($result, '          Foo: foo');
     }
 
+    #[\Testo\Test]
     public function testRenderEmptyStringValue()
     {
         $renderer = new KeysRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [1 => ''], 'bar');
 
-        $this->assertSame('          Foo: not defined', $result);
+        \Testo\Assert::same($result, '          Foo: not defined');
     }
 
+    #[\Testo\Test]
     public function testRenderEmptyArrayValue()
     {
         $renderer = new KeysRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [1 => []], 'bar');
 
-        $this->assertSame('          Foo: not defined', $result);
+        \Testo\Assert::same($result, '          Foo: not defined');
     }
 
+    #[\Testo\Test]
     public function testRenderSingleItemArrayValue()
     {
         $renderer = new KeysRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [1 => ['hello']], 'bar');
 
-        $this->assertSame('          Foo: hello', $result);
+        \Testo\Assert::same($result, '          Foo: hello');
     }
 
+    #[\Testo\Test]
     public function testRenderArrayValue()
     {
         $renderer = new KeysRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [1 => ['hello', 'world']], 'bar');
 
-        $this->assertSame('          Foo: hello, world', $result);
+        \Testo\Assert::same($result, '          Foo: hello, world');
     }
 }

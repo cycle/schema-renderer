@@ -15,10 +15,11 @@ use Cycle\Schema\Renderer\Tests\Fixture\User;
 
 final class JoinedTableInheritanceTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testSchemaWithParentPropertyShouldBeRendered(): void
     {
         if (! $this->constantSupported('PARENT', 'PARENT_KEY')) {
-            $this->markTestSkipped('Only CycleORM v2 supports JTI');
+            throw new \Testo\Core\Exception\SkipTest('Only CycleORM v2 supports JTI');
         }
 
         $schemaArray = [
@@ -40,8 +41,7 @@ final class JoinedTableInheritanceTest extends BaseTest
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($renderer->render($schemaArray), <<<'OUTPUT'
 [guest] :: default.guest
        Entity: Cycle\Schema\Renderer\Tests\Fixture\Guest
        Mapper: Cycle\ORM\Mapper\Mapper
@@ -56,9 +56,6 @@ final class JoinedTableInheritanceTest extends BaseTest
     Relations: not defined
 
 
-OUTPUT
-            ,
-            $renderer->render($schemaArray)
-        );
+OUTPUT);
     }
 }

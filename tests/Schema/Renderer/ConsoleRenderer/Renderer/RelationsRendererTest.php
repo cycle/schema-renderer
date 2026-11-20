@@ -16,14 +16,14 @@ final class RelationsRendererTest extends BaseTest
     private Formatter $formatter;
     private RelationsRenderer $renderer;
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->formatter = new PlainFormatter();
         $this->renderer = new RelationsRenderer();
     }
 
+    #[\Testo\Test]
     public function testRenderBelongsToRelation()
     {
         $result = $this->renderer->render($this->formatter, [
@@ -41,17 +41,14 @@ final class RelationsRendererTest extends BaseTest
             ],
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
     Relations:
      foo->user belongs to guest, default loading, cascaded
        not null foo.[parent_key1, parent_key2] <==> guest.[key1, key2]
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderHasOneRelation()
     {
         $result = $this->renderer->render($this->formatter, [
@@ -68,17 +65,14 @@ OUTPUT
             ],
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
     Relations:
      foo->user has one guest, default loading, cascaded
        n/a foo.[key1, key2] <==> guest.[parent_key1, parent_key2]
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderRefersToRelation()
     {
         $result = $this->renderer->render($this->formatter, [
@@ -95,17 +89,14 @@ OUTPUT
             ],
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
     Relations:
      foo->user refers to tag, default loading, cascaded
        n/a foo.tag_id <==> tag.id
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderEmbeddedRelation()
     {
         $result = $this->renderer->render($this->formatter, [
@@ -119,17 +110,14 @@ OUTPUT
             ],
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
     Relations:
      foo->user has embedded user:credentials, lazy loading, not cascaded
        n/a foo.? <==> user:credentials.?
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderHasManyRelation()
     {
         $result = $this->renderer->render($this->formatter, [
@@ -147,17 +135,14 @@ OUTPUT
             ],
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
     Relations:
      foo->user has many tag, default loading, cascaded
        nullable foo.id <==> tag.user_id
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderManyToManyRelation()
     {
         $result = $this->renderer->render($this->formatter, [
@@ -177,17 +162,14 @@ OUTPUT
             ],
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
     Relations:
      foo->user many to many tag, default loading, cascaded
        n/a foo.id <= tag_context.user_id | tag_context.tag_id => tag.id
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderBelongsToMorphedRelation()
     {
         $result = $this->renderer->render($this->formatter, [
@@ -208,17 +190,14 @@ OUTPUT
             ],
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
     Relations:
      foo->user belongs to morphed image,   morphed key: parentType, lazy loading, cascaded
        nullable foo.parentId <==> image.id
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderHasOneMorphedRelation()
     {
         $result = $this->renderer->render($this->formatter, [
@@ -236,17 +215,14 @@ OUTPUT
             ],
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
     Relations:
      foo->image morphed has one user,   morphed key: parentType, default loading, cascaded
        n/a foo.id <==> user.parentId
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderHasManyMorphedRelation()
     {
         $result = $this->renderer->render($this->formatter, [
@@ -264,14 +240,10 @@ OUTPUT
             ],
         ], 'foo');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
     Relations:
      foo->post morphed has many comment,   morphed key: parent_type, default loading, cascaded
        n/a foo.id <==> comment.parent_id
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 }

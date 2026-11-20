@@ -14,31 +14,33 @@ class ColumnsRendererTest extends BaseTest
 {
     private Formatter $formatter;
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->formatter = new PlainFormatter();
     }
 
+    #[\Testo\Test]
     public function testRenderNullValue()
     {
         $renderer = new ColumnsRenderer();
 
         $result = $renderer->render($this->formatter, [SchemaInterface::COLUMNS => null], 'bar');
 
-        $this->assertSame('       Fields: not defined', $result);
+        \Testo\Assert::same($result, '       Fields: not defined');
     }
 
+    #[\Testo\Test]
     public function testRenderStringValue()
     {
         $renderer = new ColumnsRenderer();
 
         $result = $renderer->render($this->formatter, [SchemaInterface::COLUMNS => 'foo'], 'bar');
 
-        $this->assertSame('       Fields: not defined', $result);
+        \Testo\Assert::same($result, '       Fields: not defined');
     }
 
+    #[\Testo\Test]
     public function testRenderArrayWithoutTypecastValue()
     {
         $renderer = new ColumnsRenderer();
@@ -51,19 +53,16 @@ class ColumnsRendererTest extends BaseTest
             ],
         ], 'bar');
 
-        $this->assertSame(
-            <<<'OUT'
+        \Testo\Assert::same($result, <<<'OUT'
        Fields:
                (property -> db.field -> typecast)
                id -> integer
                title -> string(36)
                description -> string
-OUT
-            ,
-            $result
-        );
+OUT);
     }
 
+    #[\Testo\Test]
     public function testRenderArrayWithTypecastValue()
     {
         $renderer = new ColumnsRenderer();
@@ -85,8 +84,7 @@ OUT
             ],
         ], 'bar');
 
-        $this->assertSame(
-            <<<'OUT'
+        \Testo\Assert::same($result, <<<'OUT'
        Fields:
                (property -> db.field -> typecast)
                id -> integer -> int
@@ -94,9 +92,6 @@ OUT
                slug -> string
                json -> json -> Json::cast
                description -> text
-OUT
-            ,
-            $result
-        );
+OUT);
     }
 }

@@ -18,12 +18,11 @@ class CycleOrmV2Test extends BaseTest
 {
     private Schema $schema;
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         if (! $this->isOrmV2()) {
-            $this->markTestSkipped('Test for CycleORM v2');
+            throw new \Testo\Core\Exception\SkipTest('Test for CycleORM v2');
         }
 
         $this->schema = new Schema([
@@ -65,9 +64,10 @@ class CycleOrmV2Test extends BaseTest
         ]);
     }
 
+    #[\Testo\Test]
     public function testObjectShouldBeConvertedToArray()
     {
-        $this->assertEquals([
+        \Testo\Assert::equals((new SchemaToArrayConverter())->convert($this->schema), [
             'user' => [
                 SchemaInterface::ENTITY => User::class,
                 SchemaInterface::MAPPER => Mapper::class,
@@ -106,6 +106,6 @@ class CycleOrmV2Test extends BaseTest
                 SchemaInterface::SCHEMA => [],
                 123 => 'value',
             ],
-        ], (new SchemaToArrayConverter())->convert($this->schema));
+        ]);
     }
 }

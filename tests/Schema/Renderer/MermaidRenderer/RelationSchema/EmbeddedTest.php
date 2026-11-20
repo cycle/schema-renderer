@@ -11,11 +11,12 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 class EmbeddedTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testEmbedded(): void
     {
         $mermaid = new MermaidRenderer();
 
-        $this->assertSame(<<<SCHEMA
+        \Testo\Assert::same($mermaid->render($this->getSchema()), <<<SCHEMA
 
         classDiagram
         class user {
@@ -46,7 +47,7 @@ class EmbeddedTest extends BaseTest
         }
 
 
-        SCHEMA, $mermaid->render($this->getSchema()));
+        SCHEMA);
     }
 
     public function getSchema(): array

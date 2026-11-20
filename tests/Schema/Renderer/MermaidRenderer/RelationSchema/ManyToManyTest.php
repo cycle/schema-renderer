@@ -13,11 +13,12 @@ use Cycle\Schema\Renderer\Tests\Fixture\Tag;
 
 class ManyToManyTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testManyToMany(): void
     {
         $mermaid = new MermaidRenderer();
 
-        $this->assertSame(<<<SCHEMA
+        \Testo\Assert::same($mermaid->render($this->getSchema()), <<<SCHEMA
 
         classDiagram
         class post {
@@ -49,7 +50,7 @@ class ManyToManyTest extends BaseTest
         postTag ..> tag : tag.posts
         postTag ..> post : tag.posts
 
-        SCHEMA, $mermaid->render($this->getSchema()));
+        SCHEMA);
     }
 
     public function getSchema(): array

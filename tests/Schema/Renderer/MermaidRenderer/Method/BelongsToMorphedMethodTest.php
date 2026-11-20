@@ -9,10 +9,11 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class BelongsToMorphedMethodTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testMethod(): void
     {
         $method = new BelongsToMorphedMethod('foo', 'bar');
 
-        $this->assertSame('foo(BtM: bar)', (string)$method);
+        \Testo\Assert::same((string)$method, 'foo(BtM: bar)');
     }
 }

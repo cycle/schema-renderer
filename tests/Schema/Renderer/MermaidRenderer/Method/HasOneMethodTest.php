@@ -9,10 +9,11 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class HasOneMethodTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testMethod(): void
     {
         $method = new HasOneMethod('foo', 'bar');
 
-        $this->assertSame('foo(HO: bar)', (string)$method);
+        \Testo\Assert::same((string)$method, 'foo(HO: bar)');
     }
 }

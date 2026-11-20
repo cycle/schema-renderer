@@ -14,14 +14,13 @@ use Cycle\Schema\Renderer\Tests\Fixture\TagContext;
 use Cycle\Schema\Renderer\Tests\Fixture\User;
 use PHPUnit\Framework\TestCase;
 
-final class CommonTest extends TestCase
+final class CommonTest
 {
     private array $schemaArray;
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->schemaArray = [
             User::class => [
                 SchemaInterface::ROLE => 'user',
@@ -98,30 +97,27 @@ final class CommonTest extends TestCase
         ];
     }
 
+    #[\Testo\Test]
     public function testSchemaShouldBeRendered(): void
     {
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
 
         $expected = file_get_contents(__DIR__ . '/../Fixture/console_output.stub.txt');
 
-        $this->assertSame(
-            $expected,
-            $renderer->render($this->schemaArray)
-        );
+        \Testo\Assert::same($renderer->render($this->schemaArray), $expected);
     }
 
+    #[\Testo\Test]
     public function testPlainFormat(): void
     {
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
         $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_plain.stub.txt');
 
-        $this->assertSame(
-            $expected,
-            $renderer->render($this->schemaArray)
-        );
+        \Testo\Assert::same($renderer->render($this->schemaArray), $expected);
     }
 
+    #[\Testo\Test]
     public function testSchemaWithExtraPropertiesShouldBeRendered(): void
     {
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
@@ -129,9 +125,6 @@ final class CommonTest extends TestCase
 
         $expected = file_get_contents(__DIR__ . '/../Fixture/console_output_with_custom_properties.stub.txt');
 
-        $this->assertSame(
-            $expected,
-            $renderer->render($this->schemaArray)
-        );
+        \Testo\Assert::same($renderer->render($this->schemaArray), $expected);
     }
 }

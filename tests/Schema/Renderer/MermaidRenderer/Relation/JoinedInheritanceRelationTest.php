@@ -9,6 +9,7 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class JoinedInheritanceRelationTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testRelation(): void
     {
         $rel = new JoinedInheritanceRelation(
@@ -17,6 +18,6 @@ final class JoinedInheritanceRelationTest extends BaseTest
             false
         );
 
-        $this->assertSame('foo --|> bar : JTI', (string)$rel);
+        \Testo\Assert::same((string)$rel, 'foo --|> bar : JTI');
     }
 }

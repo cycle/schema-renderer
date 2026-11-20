@@ -11,11 +11,12 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 class RefersToTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testRefersTo(): void
     {
         $mermaid = new MermaidRenderer();
 
-        $this->assertSame(<<<SCHEMA
+        \Testo\Assert::same($mermaid->render($this->getSchema()), <<<SCHEMA
 
         classDiagram
         class post {
@@ -41,7 +42,7 @@ class RefersToTest extends BaseTest
         }
 
 
-        SCHEMA, $mermaid->render($this->getSchema()));
+        SCHEMA);
     }
 
     public function getSchema(): array

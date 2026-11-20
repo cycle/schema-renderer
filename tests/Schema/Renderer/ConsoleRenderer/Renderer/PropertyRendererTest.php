@@ -13,31 +13,33 @@ class PropertyRendererTest extends BaseTest
 {
     private Formatter $formatter;
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->formatter = new PlainFormatter();
     }
 
+    #[\Testo\Test]
     public function testRenderNotExistsProperty()
     {
         $renderer = new PropertyRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [], 'baz');
 
-        $this->assertNull($result);
+        \Testo\Assert::null($result);
     }
 
+    #[\Testo\Test]
     public function testRenderNotExistsRequiredProperty()
     {
         $renderer = new PropertyRenderer(1, 'Foo', true);
 
         $result = $renderer->render($this->formatter, [], 'baz');
 
-        $this->assertSame('          Foo: not defined', $result);
+        \Testo\Assert::same($result, '          Foo: not defined');
     }
 
+    #[\Testo\Test]
     public function testRenderNullNotRequiredProperty()
     {
         $renderer = new PropertyRenderer(1, 'Foo');
@@ -46,9 +48,10 @@ class PropertyRendererTest extends BaseTest
             1 => null,
         ], 'baz');
 
-        $this->assertNull($result);
+        \Testo\Assert::null($result);
     }
 
+    #[\Testo\Test]
     public function testRenderNullRequiredProperty()
     {
         $renderer = new PropertyRenderer(1, 'Foo', true);
@@ -57,9 +60,10 @@ class PropertyRendererTest extends BaseTest
             1 => null,
         ], 'baz');
 
-        $this->assertSame('          Foo: not defined', $result);
+        \Testo\Assert::same($result, '          Foo: not defined');
     }
 
+    #[\Testo\Test]
     public function testRenderStringProperty()
     {
         $renderer = new PropertyRenderer(1, 'Foo');
@@ -68,9 +72,10 @@ class PropertyRendererTest extends BaseTest
             1 => 'bar',
         ], 'baz');
 
-        $this->assertSame('          Foo: bar', $result);
+        \Testo\Assert::same($result, '          Foo: bar');
     }
 
+    #[\Testo\Test]
     public function testRenderSingleItemArrayProperty()
     {
         $renderer = new PropertyRenderer(1, 'Foo');
@@ -79,9 +84,10 @@ class PropertyRendererTest extends BaseTest
             1 => ['hello'],
         ], 'baz');
 
-        $this->assertSame('          Foo: hello', $result);
+        \Testo\Assert::same($result, '          Foo: hello');
     }
 
+    #[\Testo\Test]
     public function testRenderEmptyArrayProperty()
     {
         $renderer = new PropertyRenderer(1, 'Foo');
@@ -90,9 +96,10 @@ class PropertyRendererTest extends BaseTest
             1 => [],
         ], 'baz');
 
-        $this->assertSame('          Foo: []', $result);
+        \Testo\Assert::same($result, '          Foo: []');
     }
 
+    #[\Testo\Test]
     public function testRenderArrayProperty()
     {
         $renderer = new PropertyRenderer(1, 'Foo');
@@ -101,14 +108,10 @@ class PropertyRendererTest extends BaseTest
             1 => ['hello', 'world', 'baz'],
         ], 'baz');
 
-        $this->assertSame(
-            <<<'OUT'
+        \Testo\Assert::same($result, <<<'OUT'
           Foo: hello
                world
                baz
-OUT
-            ,
-            $result
-        );
+OUT);
     }
 }

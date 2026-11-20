@@ -9,10 +9,11 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class MorphedHasManyMethodTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testMethod(): void
     {
         $method = new MorphedHasManyMethod('foo', 'bar');
 
-        $this->assertSame('foo(MoHM: bar)', (string)$method);
+        \Testo\Assert::same((string)$method, 'foo(MoHM: bar)');
     }
 }

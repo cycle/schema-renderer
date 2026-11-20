@@ -12,11 +12,12 @@ use Cycle\Schema\Renderer\Tests\Fixture\User;
 
 class BelongsToTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testBelongsTo(): void
     {
         $mermaid = new MermaidRenderer();
 
-        $this->assertSame(<<<SCHEMA
+        \Testo\Assert::same($mermaid->render($this->getSchema()), <<<SCHEMA
 
         classDiagram
         class post {
@@ -42,7 +43,7 @@ class BelongsToTest extends BaseTest
         }
 
 
-        SCHEMA, $mermaid->render($this->getSchema()));
+        SCHEMA);
     }
 
     public function getSchema(): array

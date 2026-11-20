@@ -10,11 +10,12 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 class STITest extends BaseTest
 {
+    #[\Testo\Test]
     public function testSTI(): void
     {
         $mermaid = new MermaidRenderer();
 
-        $this->assertSame(<<<DIAGRAM
+        \Testo\Assert::same($mermaid->render($this->getSchema()), <<<DIAGRAM
 
         classDiagram
         class employee_table {
@@ -33,7 +34,7 @@ class STITest extends BaseTest
         }
         manager --|> employee_table : STI
 
-        DIAGRAM, $mermaid->render($this->getSchema()));
+        DIAGRAM);
     }
 
     public function getSchema(): array

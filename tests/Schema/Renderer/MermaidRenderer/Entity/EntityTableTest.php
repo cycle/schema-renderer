@@ -10,6 +10,7 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 class EntityTableTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testToString(): void
     {
         $table = new EntityTable('table');
@@ -21,11 +22,11 @@ class EntityTableTest extends BaseTest
             new Column('float', 'bar')
         );
 
-        $this->assertSame(<<<BLOCK
+        \Testo\Assert::same((string)$table, <<<BLOCK
         class table {
             string foo
             float bar
         }
-        BLOCK, (string)$table);
+        BLOCK);
     }
 }

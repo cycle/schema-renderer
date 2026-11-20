@@ -16,6 +16,7 @@ use Cycle\Schema\Renderer\Tests\Fixture\User;
 
 final class SingleTableInheritanceTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testSchemaWithChildrenPropertyShouldBeRendered(): void
     {
         $schemaArray = [
@@ -40,8 +41,7 @@ final class SingleTableInheritanceTest extends BaseTest
         //$schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($renderer->render($schemaArray), <<<'OUTPUT'
 [Cycle\Schema\Renderer\Tests\Fixture\User] :: default.user
          Role: user
        Mapper: Cycle\ORM\Mapper\Mapper
@@ -56,10 +56,7 @@ final class SingleTableInheritanceTest extends BaseTest
     Relations: not defined
 
 
-OUTPUT
-            ,
-            $renderer->render($schemaArray)
-        );
+OUTPUT);
 
 // TODO related to todo above
 //        $this->assertSame(
@@ -84,10 +81,11 @@ OUTPUT
 //        );
     }
 
+    #[\Testo\Test]
     public function testSchemaWithChildrenAndDiscriminatorPropertiesShouldBeRendered(): void
     {
         if (! $this->constantSupported('CHILDREN', 'DISCRIMINATOR')) {
-            $this->markTestSkipped('Only CycleORM v2 supports STI with discriminator');
+            throw new \Testo\Core\Exception\SkipTest('Only CycleORM v2 supports STI with discriminator');
         }
 
         $schemaArray = [
@@ -112,8 +110,7 @@ OUTPUT
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($renderer->render($schemaArray), <<<'OUTPUT'
 [user] :: default.user
        Entity: Cycle\Schema\Renderer\Tests\Fixture\User
        Mapper: Cycle\ORM\Mapper\Mapper
@@ -129,9 +126,6 @@ Discriminator: type
     Relations: not defined
 
 
-OUTPUT
-            ,
-            $renderer->render($schemaArray)
-        );
+OUTPUT);
     }
 }

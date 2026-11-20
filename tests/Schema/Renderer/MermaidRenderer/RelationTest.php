@@ -9,6 +9,7 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class RelationTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testValidRelation(): void
     {
         $rel = new Relation(
@@ -19,9 +20,10 @@ final class RelationTest extends BaseTest
             false
         );
 
-        $this->assertSame('user --> files : Foo comment', (string) $rel);
+        \Testo\Assert::same((string) $rel, 'user --> files : Foo comment');
     }
 
+    #[\Testo\Test]
     public function testInvalidRelation(): void
     {
         $rel = new Relation(
@@ -32,9 +34,10 @@ final class RelationTest extends BaseTest
             false
         );
 
-        $this->assertSame('_user____ --> _files_12___ : *& Foo comment -)', (string) $rel);
+        \Testo\Assert::same((string) $rel, '_user____ --> _files_12___ : *& Foo comment -)');
     }
 
+    #[\Testo\Test]
     public function testNullableRelation(): void
     {
         $rel = new Relation(
@@ -45,6 +48,6 @@ final class RelationTest extends BaseTest
             true
         );
 
-        $this->assertSame('user --> "nullable" files : Foo comment', (string) $rel);
+        \Testo\Assert::same((string) $rel, 'user --> "nullable" files : Foo comment');
     }
 }

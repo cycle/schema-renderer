@@ -18,10 +18,9 @@ final class PhpSchemaRendererTest extends BaseTest
 {
     private array $schema;
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $schema = new Schema([
             User::class => [
                 SchemaInterface::ROLE => 'user',
@@ -92,6 +91,7 @@ final class PhpSchemaRendererTest extends BaseTest
         $this->schema = (new SchemaToArrayConverter())->convert($schema);
     }
 
+    #[\Testo\Test]
     public function testRenderSchemaToPhpCode(): void
     {
         $renderer = new PhpSchemaRenderer();
@@ -101,18 +101,15 @@ final class PhpSchemaRendererTest extends BaseTest
             $expected = file_get_contents(__DIR__.'/Fixture/generated_schema.stub.php');
         }
 
-        $this->assertSame(
-            $expected,
-            $renderer->render($this->schema)
-        );
+        \Testo\Assert::same($renderer->render($this->schema), $expected);
     }
 
+    #[\Testo\Test]
     public function testRenderEmptySchemaToPhpCode(): void
     {
         $renderer = new PhpSchemaRenderer();
 
-        $this->assertSame(
-            <<<PHP
+        \Testo\Assert::same($renderer->render([]), <<<PHP
                 <?php
 
                 declare(strict_types=1);
@@ -122,18 +119,27 @@ final class PhpSchemaRendererTest extends BaseTest
 
                 return [];
 
-                PHP
-            ,
-            $renderer->render([])
-        );
+                PHP);
     }
 
+    #[\Testo\Test]
     public function testRenderSchemaWithCustomPropertyToPhpCode(): void
     {
         $renderer = new PhpSchemaRenderer();
 
-        $this->assertSame(
-            <<<PHP
+        \Testo\Assert::same($renderer->render([
+            TagContext::class => [
+                SchemaInterface::ROLE => 'tag_context',
+                SchemaInterface::MAPPER => Mapper::class,
+                SchemaInterface::DATABASE => 'default',
+                SchemaInterface::TABLE => 'tag_user_map',
+                SchemaInterface::COLUMNS => [],
+                SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
+                SchemaInterface::SCHEMA => [],
+                100 => 'Hello world',
+                'hello' => 'world',
+            ],
+        ]), <<<PHP
                 <?php
 
                 declare(strict_types=1);
@@ -159,21 +165,6 @@ final class PhpSchemaRendererTest extends BaseTest
                     ],
                 ];
 
-                PHP
-            ,
-            $renderer->render([
-                TagContext::class => [
-                    SchemaInterface::ROLE => 'tag_context',
-                    SchemaInterface::MAPPER => Mapper::class,
-                    SchemaInterface::DATABASE => 'default',
-                    SchemaInterface::TABLE => 'tag_user_map',
-                    SchemaInterface::COLUMNS => [],
-                    SchemaInterface::TYPECAST => ['id' => 'int', 'user_id' => 'int', 'tag_id' => 'int'],
-                    SchemaInterface::SCHEMA => [],
-                    100 => 'Hello world',
-                    'hello' => 'world',
-                ],
-            ])
-        );
+                PHP);
     }
 }

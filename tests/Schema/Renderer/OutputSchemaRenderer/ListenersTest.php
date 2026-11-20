@@ -14,15 +14,15 @@ use Cycle\Schema\Renderer\Tests\Fixture\User;
 
 final class ListenersTest extends BaseTest
 {
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         if (! $this->constantSupported('LISTENERS')) {
-            $this->markTestSkipped('Only CycleORM v2 supports listener');
+            throw new \Testo\Core\Exception\SkipTest('Only CycleORM v2 supports listener');
         }
     }
 
+    #[\Testo\Test]
     public function testSchemaWithListenerPropertyAsStringShouldBeRendered()
     {
         $schemaArray = [
@@ -43,8 +43,7 @@ final class ListenersTest extends BaseTest
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($renderer->render($schemaArray), <<<'OUTPUT'
 [user] :: default.user
        Entity: Cycle\Schema\Renderer\Tests\Fixture\User
        Mapper: Cycle\ORM\Mapper\Mapper
@@ -59,12 +58,10 @@ final class ListenersTest extends BaseTest
     Relations: not defined
 
 
-OUTPUT
-            ,
-            $renderer->render($schemaArray)
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testSchemaWithListenerPropertyAsArrayShouldBeRendered()
     {
         $schemaArray = [
@@ -88,8 +85,7 @@ OUTPUT
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($renderer->render($schemaArray), <<<'OUTPUT'
 [user] :: default.user
        Entity: Cycle\Schema\Renderer\Tests\Fixture\User
        Mapper: Cycle\ORM\Mapper\Mapper
@@ -105,12 +101,10 @@ OUTPUT
     Relations: not defined
 
 
-OUTPUT
-            ,
-            $renderer->render($schemaArray)
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testSchemaWithListenerPropertyAsAssocArrayShouldBeRendered()
     {
         $schemaArray = [
@@ -136,8 +130,7 @@ OUTPUT
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($renderer->render($schemaArray), <<<'OUTPUT'
 [user] :: default.user
        Entity: Cycle\Schema\Renderer\Tests\Fixture\User
        Mapper: Cycle\ORM\Mapper\Mapper
@@ -163,9 +156,6 @@ array (
     Relations: not defined
 
 
-OUTPUT
-            ,
-            $renderer->render($schemaArray)
-        );
+OUTPUT);
     }
 }

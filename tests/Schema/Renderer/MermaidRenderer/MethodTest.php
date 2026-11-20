@@ -9,6 +9,7 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class MethodTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testCasting(): void
     {
         $method = new Method(
@@ -17,6 +18,6 @@ final class MethodTest extends BaseTest
             'FB'
         );
 
-        $this->assertSame('foo(FB: bar)', (string)$method);
+        \Testo\Assert::same((string)$method, 'foo(FB: bar)');
     }
 }

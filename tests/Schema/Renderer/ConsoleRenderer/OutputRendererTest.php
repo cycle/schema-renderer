@@ -20,10 +20,9 @@ class OutputRendererTest extends BaseTest
 {
     private array $schemaArray;
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $schema = new Schema([
             Tag::class => [
                 SchemaInterface::ROLE => 'tag',
@@ -51,39 +50,35 @@ class OutputRendererTest extends BaseTest
         $this->schemaArray = (new SchemaToArrayConverter())->convert($schema);
     }
 
+    #[\Testo\Test]
     public function testSchemaShouldBeRenderedByGivenRenderers(): void
     {
         $renderer = new OutputRenderer(new StyledFormatter(), [
             new TitleRenderer(),
         ]);
 
-        $this->assertSame(
-            <<<TEXT
+        \Testo\Assert::same($renderer->render($this->schemaArray), <<<TEXT
             [35m[tag][39m :: [32mdefault[39m.[32mtag[39m
 
             [35m[tag_context][39m :: [32mdefault[39m.[32mtag_user_map[39m
 
 
-            TEXT,
-            $renderer->render($this->schemaArray)
-        );
+            TEXT);
     }
 
+    #[\Testo\Test]
     public function testSchemaShouldBeRenderedByGivenFormatter(): void
     {
         $renderer = new OutputRenderer(new PlainFormatter(), [
             new TitleRenderer(),
         ]);
 
-        $this->assertSame(
-            <<<TEXT
+        \Testo\Assert::same($renderer->render($this->schemaArray), <<<TEXT
             [tag] :: default.tag
 
             [tag_context] :: default.tag_user_map
 
 
-            TEXT,
-            $renderer->render($this->schemaArray)
-        );
+            TEXT);
     }
 }

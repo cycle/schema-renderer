@@ -14,13 +14,13 @@ class TitleRendererTest extends BaseTest
 {
     private Formatter $formatter;
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->formatter = new PlainFormatter();
     }
 
+    #[\Testo\Test]
     public function testRenderWithDefinedProperties()
     {
         $renderer = new TitleRenderer();
@@ -30,9 +30,10 @@ class TitleRendererTest extends BaseTest
             SchemaInterface::TABLE => 'bar',
         ], 'foo');
 
-        $this->assertSame('[foo] :: foo.bar', $result);
+        \Testo\Assert::same($result, '[foo] :: foo.bar');
     }
 
+    #[\Testo\Test]
     public function testRenderWithNullDatabaseProperties()
     {
         $renderer = new TitleRenderer();
@@ -42,9 +43,10 @@ class TitleRendererTest extends BaseTest
             SchemaInterface::TABLE => 'bar',
         ], 'foo');
 
-        $this->assertSame('[foo] :: <undefined databse>.bar', $result);
+        \Testo\Assert::same($result, '[foo] :: <undefined databse>.bar');
     }
 
+    #[\Testo\Test]
     public function testRenderWithNulTableProperties()
     {
         $renderer = new TitleRenderer();
@@ -54,9 +56,10 @@ class TitleRendererTest extends BaseTest
             SchemaInterface::TABLE => null,
         ], 'foo');
 
-        $this->assertSame('[foo] :: foo.<undefined table>', $result);
+        \Testo\Assert::same($result, '[foo] :: foo.<undefined table>');
     }
 
+    #[\Testo\Test]
     public function testRenderWithoutDatabaseProperties()
     {
         $renderer = new TitleRenderer();
@@ -65,9 +68,10 @@ class TitleRendererTest extends BaseTest
             SchemaInterface::TABLE => 'bar',
         ], 'foo');
 
-        $this->assertSame('[foo] :: <undefined databse>.bar', $result);
+        \Testo\Assert::same($result, '[foo] :: <undefined databse>.bar');
     }
 
+    #[\Testo\Test]
     public function testRenderWithoutTableProperties()
     {
         $renderer = new TitleRenderer();
@@ -76,9 +80,10 @@ class TitleRendererTest extends BaseTest
             SchemaInterface::DATABASE => 'foo',
         ], 'foo');
 
-        $this->assertSame('[foo] :: foo.<undefined table>', $result);
+        \Testo\Assert::same($result, '[foo] :: foo.<undefined table>');
     }
 
+    #[\Testo\Test]
     public function testRenderWithoutProperties()
     {
         $renderer = new TitleRenderer();
@@ -86,6 +91,6 @@ class TitleRendererTest extends BaseTest
         $result = $renderer->render($this->formatter, [
         ], 'foo');
 
-        $this->assertSame('[foo] :: <undefined databse>.<undefined table>', $result);
+        \Testo\Assert::same($result, '[foo] :: <undefined databse>.<undefined table>');
     }
 }

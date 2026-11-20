@@ -13,15 +13,17 @@ final class ListenersRendererTest extends BaseTest
 {
     private Formatter $formatter;
 
+    #[\Testo\Test]
     public function testRenderNotExistsProperty()
     {
         $renderer = new ListenersRenderer(1, 'Foo');
 
         $result = $renderer->render($this->formatter, [], 'baz');
 
-        $this->assertNull($result);
+        \Testo\Assert::null($result);
     }
 
+    #[\Testo\Test]
     public function testRenderStringProperty()
     {
         $renderer = new ListenersRenderer(1, 'Foo');
@@ -30,16 +32,13 @@ final class ListenersRendererTest extends BaseTest
             1 => 'bar',
         ], 'baz');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
           Foo:
              bar
-OUTPUT
-            ,
-            $result
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderArrayProperty()
     {
         $renderer = new ListenersRenderer(1, 'Foo');
@@ -48,17 +47,14 @@ OUTPUT
             1 => ['foo-listener', 'bar-listener'],
         ], 'baz');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
                       Foo:
                          foo-listener
                          bar-listener
-            OUTPUT
-            ,
-            $result
-        );
+            OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testRenderAssocArrayProperty()
     {
         $renderer = new ListenersRenderer(1, 'Foo');
@@ -71,8 +67,7 @@ OUTPUT
             ],
         ], 'baz');
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($result, <<<'OUTPUT'
                       Foo:
                          foo-listener
                          bar-listener
@@ -81,16 +76,12 @@ OUTPUT
                           - baz2
                          baz-listener
                           - baz
-            OUTPUT
-            ,
-            $result
-        );
+            OUTPUT);
     }
 
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         $this->formatter = new PlainFormatter();
     }
 }

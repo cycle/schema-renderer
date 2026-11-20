@@ -10,6 +10,7 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 class RoleAliasCollectionTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testGetAlias(): void
     {
         $collection = new RoleAliasCollection([
@@ -33,10 +34,10 @@ class RoleAliasCollectionTest extends BaseTest
             ],
         ]);
 
-        $this->assertSame('user', $collection->getAlias('user'));
-        $this->assertSame('user_credentials_2', $collection->getAlias('user:credentials'));
-        $this->assertSame('_foo_bar__1__', $collection->getAlias('?foo#bar.@1-='));
-        $this->assertSame('foo_bar_buz', $collection->getAlias('foo bar buz'));
-        $this->assertSame('undefined', $collection->getAlias('task'));
+        \Testo\Assert::same($collection->getAlias('user'), 'user');
+        \Testo\Assert::same($collection->getAlias('user:credentials'), 'user_credentials_2');
+        \Testo\Assert::same($collection->getAlias('?foo#bar.@1-='), '_foo_bar__1__');
+        \Testo\Assert::same($collection->getAlias('foo bar buz'), 'foo_bar_buz');
+        \Testo\Assert::same($collection->getAlias('task'), 'undefined');
     }
 }

@@ -9,10 +9,11 @@ use Cycle\Schema\Renderer\Tests\BaseTest;
 
 final class ManyToManyMethodTest extends BaseTest
 {
+    #[\Testo\Test]
     public function testMethod(): void
     {
         $method = new ManyToManyMethod('foo', 'bar');
 
-        $this->assertSame('foo(MtM: bar)', (string)$method);
+        \Testo\Assert::same((string)$method, 'foo(MtM: bar)');
     }
 }

@@ -7,7 +7,7 @@ namespace Cycle\Schema\Renderer\Tests;
 use Cycle\ORM\SchemaInterface;
 use PHPUnit\Framework\TestCase;
 
-abstract class BaseTest extends TestCase
+abstract class BaseTest
 {
     public function constantSupported(string ...$constants): bool
     {

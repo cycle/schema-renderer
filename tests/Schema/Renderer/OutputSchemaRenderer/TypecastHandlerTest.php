@@ -14,15 +14,15 @@ use Cycle\Schema\Renderer\Tests\Fixture\User;
 
 final class TypecastHandlerTest extends BaseTest
 {
+    #[\Testo\Lifecycle\BeforeTest]
     protected function setUp(): void
     {
-        parent::setUp();
-
         if (! $this->constantSupported('TYPECAST_HANDLER')) {
-            $this->markTestSkipped('Only CycleORM v2 supports typecast handlers');
+            throw new \Testo\Core\Exception\SkipTest('Only CycleORM v2 supports typecast handlers');
         }
     }
 
+    #[\Testo\Test]
     public function testSchemaWithTypecastHandlerPropertyAsStringShouldBeRendered(): void
     {
         $schemaArray = [
@@ -43,8 +43,7 @@ final class TypecastHandlerTest extends BaseTest
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($renderer->render($schemaArray), <<<'OUTPUT'
 [user] :: default.user
        Entity: Cycle\Schema\Renderer\Tests\Fixture\User
        Mapper: Cycle\ORM\Mapper\Mapper
@@ -58,12 +57,10 @@ final class TypecastHandlerTest extends BaseTest
     Relations: not defined
 
 
-OUTPUT
-            ,
-            $renderer->render($schemaArray)
-        );
+OUTPUT);
     }
 
+    #[\Testo\Test]
     public function testSchemaWithTypecastHandlerPropertyAsArrayShouldBeRendered(): void
     {
         $schemaArray = [
@@ -87,8 +84,7 @@ OUTPUT
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_PLAIN_TEXT);
 
-        $this->assertSame(
-            <<<'OUTPUT'
+        \Testo\Assert::same($renderer->render($schemaArray), <<<'OUTPUT'
 [user] :: default.user
        Entity: Cycle\Schema\Renderer\Tests\Fixture\User
        Mapper: Cycle\ORM\Mapper\Mapper
@@ -103,9 +99,6 @@ OUTPUT
     Relations: not defined
 
 
-OUTPUT
-            ,
-            $renderer->render($schemaArray)
-        );
+OUTPUT);
     }
 }
