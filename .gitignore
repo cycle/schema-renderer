@@ -1,8 +1,7 @@
-/.idea
-/.agents/
-/.claude/
+/.*/
+!/.github/
+/runtime/
+/vendor/
 /composer.lock
-/vendor
-/runtime
-/vendor-bin/*/vendor/
-/vendor-bin/*/composer.lock
+/.env
+*.log
